@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="edu.dlufl.ohrigei.dao.UserDao">
+    <resultMap id="UserType" type="edu.dlufl.ohrigei.model.User">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="phone" property="phone"/>
+        <result column="email" property="email"/>
+        <result column="enable_login" property="enable_Login"/>
+        <result column="password" property="password"/>
+        <result column="role" property="role"/>
+    </resultMap>
+    <select id="findById" resultType="edu.dlufl.ohrigei.model.User">
+        select * from user where id = #{id}
+    </select>
+    <select id="loginCheck" resultType="edu.dlufl.ohrigei.model.User" parameterType="edu.dlufl.ohrigei.model.User">
+        select * from ohrigei.user where email=#{email} and password=#{password}
+    </select>
+    <select id="login" resultMap="UserType">
+        select ohrigei.user.id,name,phone,password,email,enable_login,user_role.role from ohrigei.user LEFT JOIN ohrigei.user_role ON ohrigei.user.role_ID=user_role.id where email=#{email}
+    </select>
+    <select id="authorityControl" resultType="int">
+        select type from ohrigei.user where email=#{email}
+    </select>
+    <insert id="userSignUp" parameterType="edu.dlufl.ohrigei.model.User">
+        insert into ohrigei.user(name,last_name,first_name,email,password,phone,role_ID) values(#{name},#{last_name},#{first_name},#{email},#{password},#{phone},2)
+    </insert>
+    <insert id="insertDelegate" parameterType="edu.dlufl.ohrigei.model.User">
+        insert into ohrigei.delegate(id) select id from ohrigei.user where email=#{email}
+    </insert>
+    <select id="userEmailCheck" resultType="String">
+        select email from ohrigei.user where email=#{email}
+    </select>
+</mapper>
