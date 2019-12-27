@@ -26,13 +26,15 @@
 <button class="btn btn-primary" onclick="showDIV()">上传头像</button>
 <div class="card col-xl-6 align-items-center m-auto" hidden="hidden">
     <div class="card-body">
+        <div class="imgBox" style="max-height: 500px;width: auto">
         <button id="uploadButton" class="btn btn-primary" onclick="$('#uploadFile').click();">上传</button>
         <img src="" alt="" id="img" style="max-width: 100%;height: auto;">
         <input name="file" type="file" style="display: none" id="uploadFile"
                accept="image/jpg, image/png, image/jpeg">
+        </div>
     </div>
     <div class="card-footer">
-        <button class="btn btn-secondary" type="button">取消</button>
+        <button class="btn btn-secondary" type="button" onclick="clearImg()">取消</button>
         <a class="btn btn-primary" href="#">确认</a>
     </div>
 </div>
@@ -63,6 +65,11 @@
     </div>
 </div>
 <script>
+    function clearImg() {
+        $("img").attr("src","");
+        $("#uploadButton").removeAttr("hidden");
+        $(".cropper-container").attr("hidden","hidden")
+    }
     function showDIV() {
         $("div").removeAttr("hidden")
     }

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class IndexController {
-    int cont = 0;
+    int CONT = 0;
     @Autowired
     AdminCountService adminCountService;
     @Autowired
@@ -49,9 +49,9 @@ public class IndexController {
     }
     @RequestMapping("/signUp")
     public String SignUp(@ModelAttribute(value = "User") User user, Model model, HttpSession httpSession) {
-        if (cont==0){
+        if (CONT==0){
             model.addAttribute("User",new User());
-            cont=cont+1;
+            CONT=CONT+1;
             return "allUser/SignUp";
         }else {
             return userService.userSignUp(user,model);

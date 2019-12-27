@@ -13,5 +13,11 @@
 <div sec:authorize="isAnonymous()">
     点击<a th:href="@{/login}">登录</a>
 </div>
+<div sec:authorize="hasRole('ADMIN')">
+    <p>当前为ADMIN</p>
+</div>
+<div sec:authorize="hasRole('USER')">
+    <p>当前为USER</p>
+</div>
 </body>
 </html>

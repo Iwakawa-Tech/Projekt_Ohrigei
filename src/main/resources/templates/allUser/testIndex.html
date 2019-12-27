@@ -16,7 +16,7 @@
     <link href="../css/googleapis.css" rel="stylesheet">
     <title>DashBoard-Гулаш&nbsp;система&nbsp;会议管理系统</title>
 </head>
-<body id="page-top" th:fragment="testheader">
+<body id="page-top">
 <!-- Page Wrapper -->
 <div id="wrapper">
 
@@ -496,13 +496,7 @@
         <!-- End of Main Content -->
 
         <!-- Footer -->
-        <footer class="sticky-footer bg-white">
-            <div class="container my-auto">
-                <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; Your Website 2019</span>
-                </div>
-            </div>
-        </footer>
+        <div th:replace="allUser/footer::footer"></div>
         <!-- End of Footer -->
 
     </div>

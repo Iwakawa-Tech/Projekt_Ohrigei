@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -32,9 +33,9 @@
                 <!-- 404 Error Text -->
                 <div class="text-center">
                     <div class="error mx-auto" data-text="403">403</div>
-                    <p class="lead text-gray-800 mb-5">Page Not Found</p>
-                    <p class="text-gray-500 mb-0">It looks like you found a glitch in the matrix...</p>
-                    <a href="index.html">&larr; Back to Dashboard</a>
+                    <p class="lead text-gray-800 mb-5">你的用户组不允许访问该页面……</p>
+                    <p class="text-gray-500 mb-0">详情请咨询管理员……</p>
+                    <a href="#" onclick="history.back(-1);">&larr; 返回上一页</a>
                 </div>
 
             </div>

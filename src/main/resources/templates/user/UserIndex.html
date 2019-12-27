@@ -1,16 +1,24 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
     <script src="../js/popper.min.js"></script>
     <script src="../js/bootstrap.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/echarts.min.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
     <link href="../css/bootstrap.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/font-awesome.css">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/googleapis.css" rel="stylesheet">
     <title>用户界面</title>
 </head>
+<body id="page-top">
 <div th:replace="allUser/header::header"></div>
-<body>
+<div id="res" hidden>
 <ul>
     <li>首页</li>
     <li>个人信息</li>
@@ -33,5 +41,21 @@
         </tbody>
     </table>
 </form>
+<!--    <div th:replace="allUser/footer::footer"></div>-->
+</div>
 </body>
+<script>
+    $("#sidebarToggle, #sidebarToggleTop").onclick(function(e) {
+        $("body").attr("class","sidebar-toggled");
+        $(".sidebar").toggleClass("toggled");
+        if ($(".sidebar").hasClass("toggled")) {
+            $('.sidebar .collapse').collapse('hide');
+        }
+    });
+</script>
+<script>
+    $(function () {
+        $('#main').append($('#res').html());
+    });
+</script>
 </html>
