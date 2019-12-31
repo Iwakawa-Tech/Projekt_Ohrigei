@@ -44,7 +44,7 @@ class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         if (roles[0] == "ROLE_ADMIN") {
             return "admin/DashBoard"
         }
-        return "user/UserIndex"
+        return "user/index"
     }
 
 

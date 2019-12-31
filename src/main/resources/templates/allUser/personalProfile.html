@@ -2,15 +2,144 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
     <script src="../js/popper.min.js"></script>
     <script src="../js/bootstrap.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/echarts.min.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
     <link href="../css/bootstrap.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/font-awesome.css">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/googleapis.css" rel="stylesheet">
     <title>个人信息-Гулаш&nbsp;система&nbsp;会议管理系统</title>
 </head>
-<body>
-    <div th:replace=""></div>
+<body id="page-top">
+<div th:replace="allUser/header::header"></div>
+<div id="res" hidden="hidden">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">个人资料</h1>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-3 rounded-left">
+            <div class="list-group list-group-flush">
+                <a href="#" class="list-group-item list-group-item-action">待办事项1</a>
+                <a href="#" class="list-group-item list-group-item-action">待办事项1</a>
+                <a href="#" class="list-group-item list-group-item-action">待办事项1</a>
+                <a href="#" class="list-group-item list-group-item-action">待办事项1</a>
+                <a href="#" class="list-group-item list-group-item-action">待办事项1</a>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                <div class="col">
+                    <div class="card shadow h-100">
+                        <div class="card-header">个人信息</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <p>姓名</p>
+                                </div>
+                                <div class="col-md-10">
+                                    <p>testUser</p>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-md-2">
+                                    <p>账户类型</p>
+                                </div>
+                                <div class="col-md-10">
+                                    <span><i class="fa fa-user"></i>代表</span>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-md-2">
+                                    <label for="email">电子邮箱</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <div class="input-group">
+                                        <input type="text" id="email" disabled value="123@qq.com">
+                                        <button class="btn btn-primary" id="emailEditButton"
+                                                onclick="editItem('#email','#emailEditButton','#emailCancelButton')"><i
+                                                class="fa fa-pencil"></i></button>
+                                        <button class="btn btn-secondary" id="emailCancelButton"
+                                                onclick="cancelEdit('#email','#emailEditButton','#emailCancelButton')"
+                                                hidden><i
+                                                class="fa fa-remove"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-md-2">
+                                    <label for="phone">手机</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <div class="input-group">
+                                        <input type="text" id="phone" disabled value="17615107203">
+                                        <button class="btn btn-primary" id="phoneEditButton"
+                                                onclick="editItem('#phone','#phoneEditButton','#phoneCancelButton')"><i
+                                                class="fa fa-pencil"></i></button>
+                                        <button class="btn btn-secondary" id="phoneCancelButton"
+                                                onclick="cancelEdit('#phone','#phoneEditButton','#phoneCancelButton')"
+                                                hidden><i class="fa fa-remove"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-primary">保存更改</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col">
+                    <div class="card shadow h-100">
+                        <div class="card-header">个人头像</div>
+                    </div>
+                    <div class="card-body">
+                        <div style="width: 144px;height: 144px">
+                            <img src="" alt="当前头像">
+                        </div>
+                        <button class="btn btn-primary"><i class="fa fa-image"></i>更改头像</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
-<div th:replace="allUser/footer::footer"></div>
+<script>
+    $(function () {
+        $('#main').append($('#res').html());
+    });
+</script>
+<script>
+    $("#sidebarToggle, #sidebarToggleTop").onclick(function (e) {
+        $("body").attr("class", "sidebar-toggled");
+        $(".sidebar").toggleClass("toggled");
+        if ($(".sidebar").hasClass("toggled")) {
+            $('.sidebar .collapse').collapse('hide');
+        }
+    });
+
+    function editItem(item, editButton, cancelButton) {
+        console.log(item);
+        $(item).removeAttr("disabled");
+        $(editButton).attr("hidden", "hidden");
+        $(cancelButton).removeAttr("hidden")
+    }
+
+    function cancelEdit(item, editButton, cancelButton) {
+        console.log(this);
+        $(item).attr("disabled", "disabled");
+        $(cancelButton).attr("hidden", "hidden");
+        $(editButton).removeAttr("hidden")
+    }
+</script>
 </html>

@@ -1,5 +1,7 @@
 package edu.dlufl.ohrigei.controller
 
+import com.alibaba.fastjson.JSON
+import com.alibaba.fastjson.JSONObject
 import edu.dlufl.ohrigei.util.Base64ToFile
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
@@ -13,11 +15,17 @@ import javax.servlet.http.HttpServletResponse
 
 @Controller
 class TestController {
-    Base64ToFile base64ToFile=new Base64ToFile()
-    @RequestMapping(value = "testUpload/upload",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
+    Base64ToFile base64ToFile = new Base64ToFile()
+
+    @RequestMapping(value = "testUpload/upload", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
-    String testUpload(@RequestParam("imgData")String base64,HttpServletResponse response,HttpServletRequest request){
-        base64ToFile.base64ToFile(base64)
-        return null
+    JSONObject testUpload(@RequestParam("imgData") String base64, HttpServletResponse response, HttpServletRequest request) {
+        JSONObject status = base64ToFile.base64ToFile(base64, "paohui")
+        return status
     }
+    @RequestMapping("/testProfile")
+    String testProfile(){
+        return "allUser/personalProfile"
+    }
+
 }

@@ -45,17 +45,17 @@
 </div>
 </body>
 <script>
+    $(function () {
+        $('#main').append($('#res').html());
+    });
+</script>
+<script>
     $("#sidebarToggle, #sidebarToggleTop").onclick(function(e) {
         $("body").attr("class","sidebar-toggled");
         $(".sidebar").toggleClass("toggled");
         if ($(".sidebar").hasClass("toggled")) {
             $('.sidebar .collapse').collapse('hide');
         }
-    });
-</script>
-<script>
-    $(function () {
-        $('#main').append($('#res').html());
     });
 </script>
 </html>
