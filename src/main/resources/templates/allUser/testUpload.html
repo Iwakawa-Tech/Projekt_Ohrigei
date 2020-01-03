@@ -59,7 +59,7 @@
 <body>
 <button class="btn btn-primary" onclick="$('#uploadFile').click();">上传头像</button>
 <div class="container">
-    <div class="row" hidden="hidden">
+    <div class="row" hidden="hidden" id="cropperBox">
         <div class="imgBox col-md-7" style="max-height: 400px;max-width: 100%;box-shadow: 0 0 5px #adadad;">
             <img src="" alt="" id="img" style="max-width: 100%;height: auto;">
             <input name="file" type="file" style="display: none" id="uploadFile"
@@ -112,7 +112,8 @@
     }
 
     function clearImg() {
-        $("img").attr("src", "");
+        //选取cropperBox下的全部img标签
+        $('#cropperBox img').attr('src','');
         $("#uploadButton").removeAttr("hidden");
         $(".cropper-container").attr("hidden", "hidden");
         $(".row").attr("hidden", "hidden")
