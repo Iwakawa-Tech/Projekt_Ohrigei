@@ -15,7 +15,6 @@
     <link href="../css/sb-admin-2.css" rel="stylesheet">
     <link href="../css/font-awesome.css" rel="stylesheet">
     <link href="../css/cropper.css" rel="stylesheet">
-    <link href="../css/googleapis.css" rel="stylesheet">
     <title>个人信息-Гулаш&nbsp;система&nbsp;会议管理系统</title>
 </head>
 <style>
@@ -143,13 +142,13 @@
                     <div class="card shadow h-100">
                         <div class="card-header">个人头像</div>
                         <div class="card-body">
-                            <div>
-                                <img src="../img/head/defaultHead.png" style="width: 144px;height: 144px" alt="当前头像">
+                            <div id="personHeaderGroup">
+                                <div>
+                                    <img src="../img/head/defaultHead.png" style="width: 144px;height: 144px"
+                                         alt="当前头像">
+                                </div>
                             </div>
-                            <button class="btn btn-primary mt-2" id="uploadButton" onclick="$('#uploadFile').click();">
-                                <i class="fa fa-image"></i>更改头像
-                            </button>
-                            <div class="row" hidden="hidden" id="cropperBox">
+                            <div class="row mt-1 ml-0" hidden="hidden" id="cropperBox">
                                 <div class="imgBox col-md-7"
                                      style="max-height: 400px;max-width: 100%;box-shadow: 0 0 5px #adadad;">
                                     <img src="" alt="" id="img" style="max-width: 100%;height: auto;">
@@ -164,7 +163,13 @@
                                     <div class="preview preview-r"></div>
                                 </div>
                             </div>
-                            <div class="row mt-1" id="cropperButtonGroup" hidden="hidden">
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-primary mt-2" id="uploadButton"
+                                    onclick="$('#uploadFile').click();">
+                                <i class="fa fa-image"></i>更改头像
+                            </button>
+                            <div class="row mt-1 ml-0" id="cropperButtonGroup" hidden="hidden">
                                 <div class="btn-group">
                                     <button class="btn btn-primary" onclick="getData()">
                                         <i class="fa fa-check"></i>
@@ -187,6 +192,50 @@
                     </div>
                 </div>
             </div>
+            <div class="row mt-2">
+                <div class="col">
+                    <div class="card shadow h-100">
+                        <div class="card-header">修改密码</div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <label for="password-before">原始密码</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <input type="password" id="password-before" disabled>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-md-2">
+                                    <label for="password-after">新密码</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <input type="password" id="password-after" disabled>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-md-2">
+                                    <label for="password-confirm">确认密码</label>
+                                </div>
+                                <div class="col-md-10">
+                                    <input type="password" id="password-confirm" disabled>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-primary mt-1" id="changePasswordButton" onclick="changePassword()">
+                                修改密码
+                            </button>
+                            <div class="btn-group mt-1" id="changePassBtnGroup" hidden>
+                                <button class="btn btn-primary"><i class="fa fa-check"></i>确认修改</button>
+                                <button class="btn btn-secondary" onclick="cancelChangePassword()"><i
+                                        class="fa fa-close"></i>取消修改
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -197,9 +246,10 @@
         $('#main').append($('#res').html());
         $('#res').remove();
         $("#uploadFile").change(function () {
-            // $(".row").removeAttr("hidden");
-            $("#cropper-container").removeAttr("hidden", "hidden");
-            $("#cropperBox").removeAttr("hidden", "hidden");
+            $("#cropper-container").removeAttr("hidden");
+            $("#cropperBox").removeAttr("hidden");
+            $("#cropperButtonGroup").removeAttr("hidden");
+            $("#personHeaderGroup").attr("hidden", "hidden");
             $("#uploadFile").click();
             uploadImg(this);
         })
@@ -225,10 +275,29 @@
         console.log(cropUrl)
     }
 
+    function changePassword() {
+        $('#password-before').removeAttr('disabled');
+        $('#password-after').removeAttr('disabled');
+        $('#password-confirm').removeAttr('disabled');
+        $('#changePassBtnGroup').removeAttr('hidden');
+        $('#changePasswordButton').attr('hidden', 'hidden');
+    }
+
+    function cancelChangePassword() {
+        $('#password-before').attr('disabled', 'disabled');
+        $('#password-before').val("");
+        $('#password-after').attr('disabled', 'disabled');
+        $('#password-after').val("");
+        $('#password-confirm').attr('disabled', 'disabled');
+        $('#password-confirm').val("");
+        $('#changePassBtnGroup').attr('hidden', 'hidden');
+        $('#changePasswordButton').removeAttr('hidden');
+    }
+
     function clearImg() {
         //选取cropperBox下的全部img标签
         $('#cropperBox img').attr('src', '');
-        $("#uploadButton").removeAttr("hidden");
+        $('#personHeaderGroup').removeAttr("hidden");
         $(".cropper-container").attr("hidden", "hidden");
         $("#cropperBox").attr("hidden", "hidden");
         $("#cropperButtonGroup").attr("hidden", "hidden")
@@ -249,19 +318,20 @@
         reader.onload = function () {
             console.log(this.result);
             var imgSrc = this.result;
-            Cropper = $("#img").cropper('replace', imgSrc, false);
+            Cropper = $('#img').cropper({
+                aspectRatio: 1 / 1,
+                viewMode: 1,
+                dragMode: "move",
+                preview: $(".preview"),
+                crop: function (e) {
+                    console.log(e);
+                }
+            });
+            Cropper.cropper('replace', imgSrc);
         }
     }
 
-    $('#img').cropper({
-        aspectRatio: 1 / 1,
-        viewMode: 1,
-        dragMode: "move",
-        preview: $('.preview'),
-        crop: function (e) {
-            console.log(e);
-        }
-    });
+
     $("#sidebarToggle, #sidebarToggleTop").onclick(function (e) {
         $("body").attr("class", "sidebar-toggled");
         $(".sidebar").toggleClass("toggled");
@@ -283,15 +353,5 @@
         $(cancelButton).attr("hidden", "hidden");
         $(editButton).removeAttr("hidden")
     }
-
-    $('#img').cropper({
-        aspectRatio: 1 / 1,
-        viewMode: 1,
-        dragMode: "move",
-        preview: $('.preview'),
-        crop: function (e) {
-            console.log(e);
-        }
-    });
 </script>
 </html>
