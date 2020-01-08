@@ -1,14 +1,18 @@
 package edu.dlufl.ohrigei.controller.adminController
 
+import edu.dlufl.ohrigei.dao.UserDao
 import edu.dlufl.ohrigei.model.Admin
+import edu.dlufl.ohrigei.model.User
 import edu.dlufl.ohrigei.service.adminService.service.AdminAddService
 import edu.dlufl.ohrigei.service.adminService.service.AdminDetailService
 import edu.dlufl.ohrigei.service.adminService.service.AdminQueryService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.RequestMapping
+import sun.awt.ModalExclude
 
 import javax.servlet.http.HttpSession
 
@@ -21,9 +25,14 @@ class AdminController {
     AdminAddService adminAddService
     @Autowired
     AdminDetailService adminDetailService
+    @Autowired
+    UserDao userDao
 
     @RequestMapping("/DashBoard")
-    String dashboard() {
+    String dashboard(Model model, Authentication authentication) {
+        String email = authentication.getName()
+        User admin = userDao.getUserByEmail(email)
+        model.addAttribute("admin", admin)
         return "admin/DashBoard";
     }
 
@@ -61,7 +70,7 @@ class AdminController {
     }
 
     @RequestMapping("/adminDetail")
-    String adminDetail(Model model,HttpSession httpSession,String id) {
-        return adminDetailService.adminDetail(httpSession,model,id)
+    String adminDetail(Model model, HttpSession httpSession, String id) {
+        return adminDetailService.adminDetail(httpSession, model, id)
     }
 }

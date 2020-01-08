@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
-
+/**
+ * @author yifei.yuan
+ */
 @Controller
 public class IndexController {
     int CONT = 0;
@@ -48,7 +50,7 @@ public class IndexController {
         return "allUser/login";
     }
     @RequestMapping("/signUp")
-    public String SignUp(@ModelAttribute(value = "User") User user, Model model, HttpSession httpSession) {
+    public String signUp(@ModelAttribute(value = "User") User user, Model model, HttpSession httpSession) {
         if (CONT==0){
             model.addAttribute("User",new User());
             CONT=CONT+1;

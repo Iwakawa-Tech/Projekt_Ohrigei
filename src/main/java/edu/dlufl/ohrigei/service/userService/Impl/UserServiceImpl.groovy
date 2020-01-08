@@ -41,6 +41,11 @@ class UserServiceImpl implements UserService, UserDetailsService {
         else if (!user.getEnable_Login()){
             throw new LockedException("账户不可用")
         }
+  //      addUserDetailToModel(user,model)
         return user
+    }
+
+    static void addUserDetailToModel(User user, Model model){
+        model.addAttribute("userInfo",user)
     }
 }

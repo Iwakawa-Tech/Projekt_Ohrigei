@@ -36,11 +36,11 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();   // 使用 BCrypt 加密
     }
     @Bean
-    public AuthenticationSuccessHandler successHandler(){
+    AuthenticationSuccessHandler successHandler(){
         return new CustomSuccessHandler()
     }
     @Bean
-    public AuthenticationProvider authenticationProvider() {
+    AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider()
         authenticationProvider.setUserDetailsService(customUserService())
         authenticationProvider.setPasswordEncoder(passwordEncoder) // 设置密码加密方式

@@ -10,9 +10,6 @@
         <result column="password" property="password"/>
         <result column="role" property="role"/>
     </resultMap>
-    <select id="findById" resultType="edu.dlufl.ohrigei.model.User">
-        select * from user where id = #{id}
-    </select>
     <select id="loginCheck" resultType="edu.dlufl.ohrigei.model.User" parameterType="edu.dlufl.ohrigei.model.User">
         select * from ohrigei.user where email=#{email} and password=#{password}
     </select>
@@ -30,5 +27,8 @@
     </insert>
     <select id="userEmailCheck" resultType="String">
         select email from ohrigei.user where email=#{email}
+    </select>
+    <select id="getUserByEmail" resultMap="UserType">
+        select id,name,phone,email from user where email=#{email}
     </select>
 </mapper>
