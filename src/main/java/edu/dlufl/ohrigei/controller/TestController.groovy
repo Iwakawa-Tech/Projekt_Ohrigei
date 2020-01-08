@@ -25,7 +25,7 @@ class TestController {
     }
     @RequestMapping("/testProfile")
     String testProfile(){
-        return "allUser/personalProfile"
+        return "allUser/testPersonalProfile"
     }
 
 }
