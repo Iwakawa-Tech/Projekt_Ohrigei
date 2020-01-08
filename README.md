@@ -1,6 +1,6 @@
 # Projekt\_Ohrigei
 
-[EN](www.baidu.com)|[简体中文](www.baidu.com)
+[EN](https://github.com/Iwakawa-Tech/Projekt_Ohrigei/blob/develop/README.md)|[简体中文](https://github.com/Iwakawa-Tech/Projekt_Ohrigei/blob/develop/README-ZH.md)
 
 * This project is base on Spring Boot。
 * This project is try to solve the problem of inefficient student organization。
