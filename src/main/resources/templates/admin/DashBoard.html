@@ -10,7 +10,7 @@
     <title>会议后台管理系统</title>
 </head>
 <body>
-<div class="row" th:object="${admin}">
+<div class="row" th:object="${session.USER_INFO}">
     <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
         <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Company name</a>
         <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
@@ -26,7 +26,7 @@
             <div class="panel-heading">
                 <h3 class="panel-title">控制板</h3>
             </div>
-            <p th:text="${admin.name}">1</p>
+            <p th:text="${session.USER_INFO.name}">1</p>
 
             <div class="panel-body">
                 <div class="row">

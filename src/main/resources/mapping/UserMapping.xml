@@ -29,6 +29,6 @@
         select email from ohrigei.user where email=#{email}
     </select>
     <select id="getUserByEmail" resultMap="UserType">
-        select id,name,phone,email from user where email=#{email}
+        select user.id,name,phone,email,user_role.role from user left join user_role on user.role_ID = user_role.id where email=#{email}
     </select>
 </mapper>

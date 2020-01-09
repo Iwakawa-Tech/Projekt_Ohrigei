@@ -17,9 +17,9 @@
     <title>DashBoard-Гулаш&nbsp;система&nbsp;会议管理系统</title>
 </head>
 <body id="page-top">
-<div th:fragment="header">
+<div th:fragment="adminHeader">
 <!-- Page Wrapper -->
-<div id="wrapper">
+<div id="wrapper" th:object="${session.USER_INFO}">
 
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -367,8 +367,8 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">test User</span>
-                            <img class="img-profile rounded-circle" src="../img/head/test.png">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text="${session.USER_INFO.name}">test User</span>
+                            <img class="img-profile rounded-circle" src="../img/head/test.png" alt="head">
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"

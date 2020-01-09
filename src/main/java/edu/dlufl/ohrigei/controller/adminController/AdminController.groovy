@@ -29,13 +29,16 @@ class AdminController {
     UserDao userDao
 
     @RequestMapping("/DashBoard")
-    String dashboard(Model model, Authentication authentication) {
+    String dashboard(Authentication authentication,HttpSession httpSession) {
         String email = authentication.getName()
-        User admin = userDao.getUserByEmail(email)
-        model.addAttribute("admin", admin)
+        User userInfo = userDao.getUserByEmail(email)
+        httpSession.setAttribute("USER_INFO",userInfo)
         return "admin/DashBoard";
     }
-
+    @RequestMapping("/profile")
+    String profile(HttpSession session){
+        return "admin/AdminPersonalProfile"
+    }
     @RequestMapping("/manage")
     String queryMembers(HttpSession session, Model model, String type) {
         switch (type) {
@@ -56,6 +59,7 @@ class AdminController {
         }
         return "admin/DashBoard"
     }
+
     private int cont = 0
 
     @RequestMapping("/addAdmin")
@@ -72,5 +76,9 @@ class AdminController {
     @RequestMapping("/adminDetail")
     String adminDetail(Model model, HttpSession httpSession, String id) {
         return adminDetailService.adminDetail(httpSession, model, id)
+    }
+    @RequestMapping("addGroup")
+    String addGroup(){
+        return
     }
 }

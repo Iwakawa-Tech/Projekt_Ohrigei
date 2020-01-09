@@ -83,7 +83,7 @@
                                     <p>账户类型</p>
                                 </div>
                                 <div class="col-md-10">
-                                    <span><i class="fa fa-user"></i>代表</span>
+                                    <span th:if="${session.USER_INFO.role}"><i class="fa fa-user"></i>代表</span>
                                 </div>
                             </div>
                             <div class="row mt-1">

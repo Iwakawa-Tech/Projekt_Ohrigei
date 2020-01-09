@@ -39,7 +39,7 @@ public class IndexController {
     }
     @RequestMapping("/header")
     public String header(){
-        return "allUser/header";
+        return "adminHeader";
     }
     @RequestMapping("/question")
     public String question(){

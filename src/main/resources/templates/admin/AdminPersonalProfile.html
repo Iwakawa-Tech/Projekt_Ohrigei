@@ -57,7 +57,7 @@
 </style>
 <body id="page-top">
 <!-- 将侧边栏及导航栏抽出为单独的文件，减少冗余度-->
-<div th:replace="allUser/header::header"></div>
+<div th:replace="allUser/adminHeader::adminHeader"></div>
 <div id="res" hidden="hidden">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">个人资料</h1>
@@ -75,7 +75,7 @@
                                     <p>姓名</p>
                                 </div>
                                 <div class="col-md-10">
-                                    <p>testUser</p>
+                                    <p th:text="${session.USER_INFO.name}">testUser</p>
                                 </div>
                             </div>
                             <div class="row mt-1">
@@ -83,7 +83,8 @@
                                     <p>账户类型</p>
                                 </div>
                                 <div class="col-md-10">
-                                    <span><i class="fa fa-user"></i>代表</span>
+                                    <span th:if="${session.USER_INFO.role} eq 'ROLE_ADMIN'"><i class="fa fa-user"></i>管理员（<a href="#">更改</a>）</span>
+                                    <span th:if="${session.USER_INFO.role} eq 'ROLE_USER'"><i class="fa fa-user"></i>代表</span>
                                 </div>
                             </div>
                             <div class="row mt-1">
@@ -92,7 +93,7 @@
                                 </div>
                                 <div class="col-md-10">
                                     <div class="input-group">
-                                        <input type="text" id="email" disabled value="123@qq.com">
+                                        <input type="text" id="email" disabled th:value="${session.USER_INFO.email}">
                                         <button class="btn btn-primary" id="emailEditButton"
                                                 onclick="editItem('#email','#emailEditButton','#emailCancelButton')"><i
                                                 class="fa fa-pencil"></i></button>
@@ -110,7 +111,7 @@
                                 </div>
                                 <div class="col-md-10">
                                     <div class="input-group">
-                                        <input type="text" id="phone" disabled value="17615107203">
+                                        <input type="text" id="phone" disabled th:value="${session.USER_INFO.phone}">
                                         <button class="btn btn-primary" id="phoneEditButton"
                                                 onclick="editItem('#phone','#phoneEditButton','#phoneCancelButton')"><i
                                                 class="fa fa-pencil"></i></button>
@@ -341,7 +342,6 @@
     }
 
     function cancelEdit(item, editButton, cancelButton) {
-        console.log(this);
         $(item).attr("disabled", "disabled");
         $(cancelButton).attr("hidden", "hidden");
         $(editButton).removeAttr("hidden")
