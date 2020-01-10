@@ -12,7 +12,10 @@
         <result column="phone" property="phone"/>
     </resultMap>
     <resultMap id="Group" type="edu.dlufl.ohrigei.model.Group">
+        <result column="id" property="id"/>
+        <result column="school_ID" property="schoolID"/>
         <result column="school_name" property="schoolName"/>
+        <result column="head_delegate_ID" property="headDelegateID"/>
         <result column="name" property="headDelegateName"/>
         <result column="group_size" property="groupSize"/>
     </resultMap>
@@ -50,15 +53,16 @@
                  left join school_info on ohrigei.group.school_ID = school_info.id
                  left join application_type on application_type.id = delegate.application_type_ID
                  left join application_status on application_status.id = delegate.application_status_ID
-        WHERE ohrigei.delegate.role_ID = #{type} AND `user`.role_ID=2
+        WHERE ohrigei.delegate.role_ID = #{type}
+          AND `user`.role_ID = 2
     </select>
     <select id="queryAllGroup" resultMap="Group">
-        SELECT school_name, ohrigei.user.name, ohrigei.`group`.group_size
-        from ohrigei.`group`,
-             school_info,
-             ohrigei.user
-        where school_info.id = school_ID
-          and ohrigei.user.id = head_delegate_ID
+        SELECT `group`.id, school_ID, head_delegate_ID, group_size, school_name, name
+        FROM `group`
+                 LEFT JOIN delegate d on `group`.head_delegate_ID = d.id
+                 LEFT JOIN user u on d.id = u.id
+                 LEFT JOIN school_info si on `group`.school_ID = si.id
+
     </select>
     <select id="queryAllAdmin" resultMap="Admin">
         SELECT ohrigei.user.id,
@@ -98,7 +102,7 @@
     </select>
     <insert id="addAdminStep2" parameterType="edu.dlufl.ohrigei.model.Admin">
         insert into ohrigei.admin(id, title, role_AG, role_AD, role_D, role_L, role_F, role_SG)
-        VALUES (#{id}, #{title}, #{role_AG}, #{role_AD},#{role_D},#{role_L},#{role_F},#{role_SG})
+        VALUES (#{id}, #{title}, #{role_AG}, #{role_AD}, #{role_D}, #{role_L}, #{role_F}, #{role_SG})
     </insert>
     <select id="adminDetail" resultMap="Admin">
         SELECT ohrigei.user.name,
@@ -113,9 +117,11 @@
         from ohrigei.user
                  LEFT JOIN ohrigei.admin ON ohrigei.user.id = admin.id
                  LEFT JOIN ohrigei.committee ON ohrigei.admin.committee_ID = ohrigei.committee.id
-        where user.id=#{id}
+        where user.id = #{id}
     </select>
     <select id="countDelegate" resultType="int">
-        SELECT count(*) from ohrigei.delegate where role_ID=#{roleId}
+        SELECT count(*)
+        from ohrigei.delegate
+        where role_ID = #{roleId}
     </select>
 </mapper>

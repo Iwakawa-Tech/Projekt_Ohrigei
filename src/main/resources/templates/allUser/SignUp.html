@@ -98,10 +98,10 @@
     <input class="form-control" name="firstName" id="firstName" th:field="${User.first_name}" placeholder="请输入姓名拼音"
            required>
     <label for="phone" class="sr-only"></label>
-    <input class="form-control" name="phone" id="phone" th:field="${User.phone}" placeholder="请输入手机号" required>
+    <input class="form-control" name="phone" id="phone" th:field="${User.phone}" placeholder="请输入手机号" required type="tel">
     <label for="email" class="sr-only"></label>
-    <input class="form-control" name="email" id="email" value="" th:field="${User.email}" type="text"
-           placeholder="请输入电子邮箱" required pattern="^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$" >
+    <input class="form-control" name="email" id="email" value="" th:field="${User.email}" type="email"
+           placeholder="请输入电子邮箱" required>
     <label for="password" class="sr-only"></label>
     <input class="form-control" name="password" id="password" value="" th:field="${User.password}" type="password"
            placeholder="请输入密码" pattern="[a-zA-Z0-9]{6,16}"

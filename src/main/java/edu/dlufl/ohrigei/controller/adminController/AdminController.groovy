@@ -77,8 +77,8 @@ class AdminController {
     String adminDetail(Model model, HttpSession httpSession, String id) {
         return adminDetailService.adminDetail(httpSession, model, id)
     }
-    @RequestMapping("addGroup")
-    String addGroup(){
-        return
+    @RequestMapping("/addGroup")
+    String addGroup(HttpSession httpSession){
+        return "admin/AddGroup"
     }
 }

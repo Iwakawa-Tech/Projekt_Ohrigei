@@ -2,9 +2,31 @@ package edu.dlufl.ohrigei.model
 
 class Group {
     private int id
+    private int schoolID
     private String schoolName
+    private int headDelegateID
     private String headDelegateName
     private int groupSize
+
+    int getSchoolID() {
+        return schoolID
+    }
+
+    int getHeadDelegateID() {
+        return headDelegateID
+    }
+
+    void setSchoolID(int schoolID) {
+        this.schoolID = schoolID
+    }
+
+    void setHeadDelegateID(int headDelegateID) {
+        this.headDelegateID = headDelegateID
+    }
+
+    void setHeadDelegateName(String headDelegateName) {
+        this.headDelegateName = headDelegateName
+    }
 
     int getId() {
         return id
@@ -39,11 +61,13 @@ class Group {
     }
 
     @Override
-    String toString() {
+    public String toString() {
         return "Group{" +
                 "id=" + id +
+                ", schoolID=" + schoolID +
                 ", schoolName='" + schoolName + '\'' +
-                ", headDelegateName=" + headDelegateName +
+                ", headDelegateID=" + headDelegateID +
+                ", headDelegateName='" + headDelegateName + '\'' +
                 ", groupSize=" + groupSize +
                 '}';
     }
