@@ -17,7 +17,7 @@
     <link href="../css/sb-admin-2.css" rel="stylesheet">
     <link href="../css/font-awesome.css" rel="stylesheet">
     <link href="../css/cropper.css" rel="stylesheet">
-    <link href="css/bootstrap-select.css" rel="stylesheet">
+    <link href="../css/bootstrap-select.css" rel="stylesheet">
     <title>代表团管理-Гулаш&nbsp;система&nbsp;会议管理系统</title>
 </head>
 <body>
@@ -29,25 +29,29 @@
     <div class="card">
         <div class="card-header">添加代表团</div>
         <div class="card-body">
-            <form>
+            <div class="mt-2">
                 <label for="school">所属学校</label>
                 <select id="school" class="selectpicker" title="请选择一所学校">
-                    <option th:value="1" th:text="'北京大学'"></option>
-                    <option th:value="2" th:text="'清华大学'"></option>
+                    <option th:each="school:${schoolList}" th:value="${school.id}"
+                            th:text="${school.schoolName}"></option>
                 </select>
-                <label for="delegateName">负责代表</label>
-                <select id="delegateName" class="selectpicker" title="请选择一位代表">
-                    <option th:value="1" th:text="'冬马和纱'"></option>
-                    <option th:value="2" th:text="'小木曾'"></option>
-                    <option th:value="3" th:text="'北原'"></option>
-                    <option th:value="4" th:text="'铃原'"></option>
+            </div>
+            <br>
+            <div class="mt-2">
+                <label for="headDelegateName">负责代表</label>
+                <select id="headDelegateName" class="selectpicker" title="请选择一位代表">
+                    <option th:each="delegate:${delegateList}" th:value="${delegate.ID}"
+                            th:text="${delegate.name}"></option>
                 </select>
+            </div>
+            <br>
+            <div class="mt-2">
                 <label for="groupSize">代表团容量</label>
                 <input id="groupSize" placeholder="请输入代表团容量" type="number">
-            </form>
+            </div>
         </div>
         <div class="card-footer">
-            <button class="btn btn-primary">保存更改</button>
+            <button class="btn btn-primary" onclick="addGroup()">保存更改</button>
         </div>
     </div>
 </div>
@@ -61,6 +65,25 @@
             }
         );
         $('#res').remove();
-    })
+    });
+
+    function addGroup() {
+        var pattern=/^[1-9]*$/;
+        var size=$('#groupSize').val();
+        if(!pattern.test(size)||size===''){
+            alert('代表团容量必须为正整数！');
+            $('#groupSize').val('')
+        }
+        // $.ajax({
+        //     type: 'POST',
+        //     url: 'admin/addGroup',
+        //     dataType: 'json',
+        //     data: {
+        //         'schoolID': $('#school').val(),
+        //         'headDelegateID': $('#headDelegateName').val(),
+        //         'groupSize': $('#groupSize').val()
+        //     }
+        // })
+    }
 </script>
 </html>

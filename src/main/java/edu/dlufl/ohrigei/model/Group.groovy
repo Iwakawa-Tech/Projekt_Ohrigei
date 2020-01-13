@@ -61,7 +61,7 @@ class Group {
     }
 
     @Override
-    public String toString() {
+    String toString() {
         return "Group{" +
                 "id=" + id +
                 ", schoolID=" + schoolID +

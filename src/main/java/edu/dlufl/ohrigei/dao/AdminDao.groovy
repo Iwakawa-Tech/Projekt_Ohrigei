@@ -4,6 +4,7 @@ import edu.dlufl.ohrigei.model.Admin
 import edu.dlufl.ohrigei.model.Committee
 import edu.dlufl.ohrigei.model.Delegate
 import edu.dlufl.ohrigei.model.Group
+import edu.dlufl.ohrigei.model.School
 
 interface AdminDao {
     List<Delegate> queryAllMember(int type)
@@ -25,4 +26,8 @@ interface AdminDao {
     Admin adminDetail(int id)
 
     int countDelegate(int roleId)
+
+    List<School> queryAllSchool()
+
+    List<Delegate> queryMemberAbleToUse()
 }

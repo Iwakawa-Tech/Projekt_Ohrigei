@@ -5,6 +5,7 @@ import edu.dlufl.ohrigei.model.Admin
 import edu.dlufl.ohrigei.model.Committee
 import edu.dlufl.ohrigei.model.Delegate
 import edu.dlufl.ohrigei.model.Group
+import edu.dlufl.ohrigei.model.School
 import edu.dlufl.ohrigei.service.adminService.service.AdminQueryService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -70,5 +71,14 @@ class AdminQueryServiceImpl implements AdminQueryService {
         List<Committee> committeeList = adminQueryService.queryCommittee(session, model)
         model.addAttribute("committeeList", committeeList)
         return adminDao.queryAllCommittee()
+    }
+
+    @Override
+    String queryAllDelegateAndSchool(Model model) {
+        List<School> schoolList=adminDao.queryAllSchool()
+        List<Delegate> delegateList=adminDao.queryMemberAbleToUse()
+        model.addAttribute("schoolList",schoolList)
+        model.addAttribute("delegateList",delegateList)
+        return "admin/AddGroup"
     }
 }

@@ -14,4 +14,5 @@ interface AdminQueryService {
     String  queryAdmin(HttpSession session ,Model model)
     List<Group> queryGroup(HttpSession session ,Model model)
     List<Committee> queryCommittee(HttpSession session,Model model)
+    String queryAllDelegateAndSchool(Model model)
 }

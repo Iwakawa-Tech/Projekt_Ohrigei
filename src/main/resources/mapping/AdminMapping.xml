@@ -38,6 +38,15 @@
         <result column="seat_width" property="seatWidth"/>
         <result column="uname" property="chairManName"/>
     </resultMap>
+    <resultMap id="School" type="edu.dlufl.ohrigei.model.School">
+        <result column="id" property="id"/>
+        <result column="school_name" property="schoolName"/>
+        <result column="school_name_EN" property="schoolNameEN"/>
+        <result column="school_type" property="schoolType"/>
+        <result column="school_address" property="schoolAddress"/>
+        <result column="size" property="size"/>
+        <result column="club_ID" property="clubID"/>
+    </resultMap>
     <select id="queryAllMember" resultMap="Delegate">
         SELECT ohrigei.user.id,
                ohrigei.user.name,
@@ -62,7 +71,6 @@
                  LEFT JOIN delegate d on `group`.head_delegate_ID = d.id
                  LEFT JOIN user u on d.id = u.id
                  LEFT JOIN school_info si on `group`.school_ID = si.id
-
     </select>
     <select id="queryAllAdmin" resultMap="Admin">
         SELECT ohrigei.user.id,
@@ -123,5 +131,28 @@
         SELECT count(*)
         from ohrigei.delegate
         where role_ID = #{roleId}
+    </select>
+    <select id="queryAllSchool" resultMap="School">
+        SELECT school_info.id, school_name, school_name_EN, school_address, size, club_ID, school_type
+        FROM school_info
+                 LEFT JOIN school_type st on school_info.school_type_ID = st.id
+    </select>
+    <select id="queryMemberAbleToUse" resultMap="Delegate">
+        SELECT ohrigei.user.id,
+               ohrigei.user.name,
+               ohrigei.user.email,
+               ohrigei.user.phone,
+               ohrigei.school_info.school_name,
+               ohrigei.application_type.application_type,
+               ohrigei.application_status.application_status_text
+        FROM ohrigei.delegate
+                 left join user on delegate.id = ohrigei.user.id
+                 left join `group` on delegate.group_ID = `group`.id
+                 left join school_info on ohrigei.group.school_ID = school_info.id
+                 left join application_type on application_type.id = delegate.application_type_ID
+                 left join application_status on application_status.id = delegate.application_status_ID
+        WHERE ohrigei.delegate.role_ID = 1
+          AND user.enable_login = 1
+          AND `user`.role_ID = 2
     </select>
 </mapper>
