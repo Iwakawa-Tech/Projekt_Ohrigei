@@ -40,7 +40,7 @@
         <hr class="sidebar-divider my-0">
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" th:href="@{/admin/DashBoard}">
                 <i class="fa fa-fw fa-tachometer"></i>
                 <span>Dashboard</span></a>
         </li>
@@ -112,7 +112,7 @@
             </a>
             <div id="collapseCommittee" class="collapse" aria-labelledby="headingCommittee" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="#">代表团列表</a>
+                    <a class="collapse-item" th:href="@{/admin/groupDetailPage}">代表团列表</a>
                     <a class="collapse-item" th:href="@{/admin/addGroupPage}">添加代表团</a>
                 </div>
             </div>
@@ -128,6 +128,20 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" href="#">全部席位</a>
                     <a class="collapse-item" href="#">添加席位</a>
+                </div>
+            </div>
+        </li>
+        <!-- Nav Item - school Collapse Menu -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSchool"
+               aria-expanded="true" aria-controls="collapsePages">
+                <i class="fa fa-fw fa-folder"></i>
+                <span>学校管理</span>
+            </a>
+            <div id="collapseSchool" class="collapse" aria-labelledby="headingSchool" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" href="#">全部学校</a>
+                    <a class="collapse-item" href="#">添加学校</a>
                 </div>
             </div>
         </li>
@@ -377,7 +391,7 @@
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                              aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" th:href="@{/admin/profile(id=${session.USER_INFO.id})}">
                                 <i class="fa fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 个人资料
                             </a>

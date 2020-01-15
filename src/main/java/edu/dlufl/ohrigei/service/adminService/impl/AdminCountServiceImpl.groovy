@@ -19,6 +19,6 @@ class AdminCountServiceImpl implements AdminCountService{
         delegateMap.put("teacher",adminDao.countDelegate(3))
         delegateMap.put("leader",adminDao.countDelegate(4))
         model.addAttribute("countMap",delegateMap)
-        return "allUser/testIndex"
+        return "admin/DashBoard"
     }
 }

@@ -81,4 +81,11 @@ class AdminQueryServiceImpl implements AdminQueryService {
         model.addAttribute("delegateList",delegateList)
         return "admin/AddGroup"
     }
+
+    @Override
+    String queryAllGroup(Model model) {
+        List<Group> groupList=adminDao.queryAllGroup()
+        model.addAttribute("groupList",groupList)
+        return "admin/GroupList"
+    }
 }

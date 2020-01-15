@@ -1,5 +1,6 @@
 package edu.dlufl.ohrigei.service.adminService.impl
 
+import com.alibaba.fastjson.JSONObject
 import edu.dlufl.ohrigei.dao.AdminDao
 import edu.dlufl.ohrigei.model.Admin
 import edu.dlufl.ohrigei.service.adminService.service.AdminAddService
@@ -27,5 +28,18 @@ class AdminAddServiceImpl implements AdminAddService {
         adminDao.addAdminStep2(admin)
         model.addAttribute("message", "添加管理员成功")
         return "admin/AddAdmin"
+    }
+
+    @Override
+    JSONObject addGroup(int schoolID, int headDelegateID, int size) {
+        JSONObject object=new JSONObject()
+        try{
+            adminDao.addGroup(schoolID,headDelegateID,size)
+            object.put("status","SUCCESS")
+        }
+        catch (Exception ignored){
+            object.put("status","ERROR")
+        }
+        return object
     }
 }

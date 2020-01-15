@@ -261,7 +261,7 @@
                 "imgData": cropUrl
             },
             success: function (data) {
-                if (data['status'] == "SUCCESS") {
+                if (data['status'] === "SUCCESS") {
                     alert("上传成功");
                 } else alert("上传失败")
             },
@@ -335,16 +335,24 @@
     });
 
     function editItem(item, editButton, cancelButton) {
-        console.log(item);
         $(item).removeAttr("disabled");
         $(editButton).attr("hidden", "hidden");
-        $(cancelButton).removeAttr("hidden")
+        $(cancelButton).removeAttr("hidden");
     }
 
+
+</script>
+<script th:inline="javascript">
     function cancelEdit(item, editButton, cancelButton) {
+        if(item==='#phone'){
+            $(item).val([[${session.USER_INFO.phone}]])
+        }else {
+            $(item).val([[${session.USER_INFO.email}]])
+        }
         $(item).attr("disabled", "disabled");
         $(cancelButton).attr("hidden", "hidden");
         $(editButton).removeAttr("hidden")
     }
+
 </script>
 </html>

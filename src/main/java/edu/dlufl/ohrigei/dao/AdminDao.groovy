@@ -30,4 +30,6 @@ interface AdminDao {
     List<School> queryAllSchool()
 
     List<Delegate> queryMemberAbleToUse()
+
+    int addGroup(int schoolID,int headDelegateID,int size)
 }

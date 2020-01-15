@@ -136,6 +136,7 @@
         SELECT school_info.id, school_name, school_name_EN, school_address, size, club_ID, school_type
         FROM school_info
                  LEFT JOIN school_type st on school_info.school_type_ID = st.id
+        WHERE school_info.id NOT IN (SELECT school_ID FROM `group`)
     </select>
     <select id="queryMemberAbleToUse" resultMap="Delegate">
         SELECT ohrigei.user.id,
@@ -155,4 +156,8 @@
           AND user.enable_login = 1
           AND `user`.role_ID = 2
     </select>
+    <insert id="addGroup">
+        INSERT into `group`(school_ID, head_delegate_ID, group_size)
+        VALUES (#{param1},#{param2},#{param3})
+    </insert>
 </mapper>
