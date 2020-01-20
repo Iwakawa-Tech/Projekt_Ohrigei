@@ -160,4 +160,12 @@
         INSERT into `group`(school_ID, head_delegate_ID, group_size)
         VALUES (#{param1},#{param2},#{param3})
     </insert>
+    <select id="queryGroupById" resultMap="Group">
+        SELECT `group`.id, school_ID, head_delegate_ID, group_size, school_name, name
+        FROM `group`
+                 LEFT JOIN delegate d on `group`.head_delegate_ID = d.id
+                 LEFT JOIN user u on d.id = u.id
+                 LEFT JOIN school_info si on `group`.school_ID = si.id
+        WHERE `group`.id=#{id}
+    </select>
 </mapper>

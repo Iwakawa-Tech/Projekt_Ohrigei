@@ -98,6 +98,16 @@ class AdminController {
     String groupDetail(Model model){
         return adminQueryService.queryAllGroup(model)
     }
+
+    @RequestMapping("/modifyGroupPage")
+    String modifyGroup(Model model,String groupID){
+        return adminQueryService.queryGroupById(model,groupID)
+    }
+    @RequestMapping("/groupMemberDetail")
+    String groupMemberDetail(Model model,String groupID){
+
+    }
+
     @RequestMapping(value = "/addGroup", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     JSONObject addGroup(HttpServletRequest request, HttpServletResponse response) {

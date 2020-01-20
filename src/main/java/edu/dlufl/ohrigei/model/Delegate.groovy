@@ -3,6 +3,9 @@ package edu.dlufl.ohrigei.model
 class Delegate {
     private int ID
     private String name
+    private int schoolID
+    private String committeeName
+    private int committeeID
     private String schoolName
     private String applicationType
     private String applicationStatus
@@ -74,11 +77,38 @@ class Delegate {
         this.enable_Login = enable_Login
     }
 
+    int getSchoolID() {
+        return schoolID
+    }
+
+    void setSchoolID(int schoolID) {
+        this.schoolID = schoolID
+    }
+
+    String getCommitteeName() {
+        return committeeName
+    }
+
+    void setCommitteeName(String committeeName) {
+        this.committeeName = committeeName
+    }
+
+    int getCommitteeID() {
+        return committeeID
+    }
+
+    void setCommitteeID(int committeeID) {
+        this.committeeID = committeeID
+    }
+
     @Override
     public String toString() {
         return "Delegate{" +
                 "ID=" + ID +
                 ", name='" + name + '\'' +
+                ", schoolID=" + schoolID +
+                ", committeeName='" + committeeName + '\'' +
+                ", committeeID=" + committeeID +
                 ", schoolName='" + schoolName + '\'' +
                 ", applicationType='" + applicationType + '\'' +
                 ", applicationStatus='" + applicationStatus + '\'' +

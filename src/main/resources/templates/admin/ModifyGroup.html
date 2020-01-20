@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="../js/jquery-3.4.1.min.js"></script>
+    <script src="../js/popper.min.js"></script>
+    <script src="../js/bootstrap.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/cropper.js"></script>
+    <script src="../js/jquery.easing.js"></script>
+    <script src="../js/jquery-cropper.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/dataTables.bootstrap4.min.js"></script>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.css" rel="stylesheet">
+    <link href="../css/font-awesome.css" rel="stylesheet">
+    <link href="../css/cropper.css" rel="stylesheet">
+    <link href="../css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <title>代表团管理-Гулаш&nbsp;система&nbsp;会议管理系统</title>
+</head>
+<body>
+<div th:replace="allUser/adminHeader::adminHeader"></div>
+<div id="res" hidden="hidden">
+    <h1>代表团管理</h1>
+    <hr>
+    <div class="card">
+        <div class="card-header">代表团管理</div>
+        <div class="card-body">
+            testttt
+        </div>
+        <div class="card-footer">
+            <div class="btn-group">
+                <button class="btn btn-primary">修改代表团</button>
+                <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModel">删除代表团</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="deleteModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">确定删除？</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">请再次确认以删除</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
+                <button class="btn btn-danger">删除</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $("#sidebarToggle, #sidebarToggleTop").onclick(function (e) {
+        $("body").attr("class", "sidebar-toggled");
+        $(".sidebar").toggleClass("toggled");
+        if ($(".sidebar").hasClass("toggled")) {
+            $('.sidebar .collapse').collapse('hide');
+        }
+    });
+</script>
+<script>
+    //将id=res的div内部的html标签传递给id为main的div
+    $(function () {
+        $('#main').append($('#res').html());
+        $('#res').remove();
+    });
+</script>
+</html>

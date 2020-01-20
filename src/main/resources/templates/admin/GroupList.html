@@ -17,21 +17,21 @@
     <link href="../css/font-awesome.css" rel="stylesheet">
     <link href="../css/cropper.css" rel="stylesheet">
     <link href="../css/dataTables.bootstrap4.min.css" rel="stylesheet">
-    <title>DashBoard-Гулаш&nbsp;система&nbsp;会议管理系统</title>
+    <title>代表团信息-Гулаш&nbsp;система&nbsp;会议管理系统</title>
 </head>
 <body>
 <div th:replace="allUser/adminHeader::adminHeader"></div>
 <div id="res" hidden="hidden">
     <h1>代表团列表</h1>
     <hr>
-    <table id="groupDetailTable" class="text-center">
+    <table id="groupDetailTable" class="table table-hover text-center">
         <thead>
         <tr>
-            <td>ID</td>
+            <td>#</td>
             <td>所属学校</td>
             <td>领队代表</td>
             <td>代表团容量</td>
-            <td></td>
+            <td>操作</td>
         </tr>
         </thead>
         <tbody>
@@ -41,15 +41,26 @@
             <td><a th:text="${group.headDelegateName}"
                    th:href="@{/admin/manageDelegateProfile(id=${group.headDelegateID})}"></a>
             </td>
-            <td th:text="${group.groupSize}"></td>
+            <td th:text="${group.groupSize}+'人'"></td>
             <td>
-                <button class="btn btn-primary">test</button>
+                <a th:href="@{/admin/groupMemberDetail(groupID=${group.id})}"><i class="fa fa-users" aria-hidden="true"></i>成员</a>
+                <a th:href="@{/admin/modifyGroupPage(groupID=${group.id})}"><i class="fa fa-pencil-square-o"
+                                                                      aria-hidden="true"></i>编辑</a>
             </td>
         </tr>
         </tbody>
     </table>
 </div>
 </body>
+<script>
+    $("#sidebarToggle, #sidebarToggleTop").onclick(function (e) {
+        $("body").attr("class", "sidebar-toggled");
+        $(".sidebar").toggleClass("toggled");
+        if ($(".sidebar").hasClass("toggled")) {
+            $('.sidebar .collapse').collapse('hide');
+        }
+    });
+</script>
 <script>
     // $('#groupDetailTable').DataTable( {
     //     data: data,
