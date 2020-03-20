@@ -6,6 +6,7 @@ import edu.dlufl.ohrigei.model.Committee
 import edu.dlufl.ohrigei.model.Delegate
 import edu.dlufl.ohrigei.model.Group
 import edu.dlufl.ohrigei.model.School
+import edu.dlufl.ohrigei.model.SchoolType
 import edu.dlufl.ohrigei.service.adminService.service.AdminQueryService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -75,31 +76,49 @@ class AdminQueryServiceImpl implements AdminQueryService {
 
     @Override
     String queryAllDelegateAndSchool(Model model) {
-        List<School> schoolList=adminDao.queryAllSchool()
-        List<Delegate> delegateList=adminDao.queryMemberAbleToUse()
-        model.addAttribute("schoolList",schoolList)
-        model.addAttribute("delegateList",delegateList)
+        List<School> schoolList = adminDao.queryAllSchool()
+        List<Delegate> delegateList = adminDao.queryMemberAbleToUse()
+        model.addAttribute("schoolList", schoolList)
+        model.addAttribute("delegateList", delegateList)
         return "admin/AddGroup"
     }
 
     @Override
     String queryAllGroup(Model model) {
-        List<Group> groupList=adminDao.queryAllGroup()
-        model.addAttribute("groupList",groupList)
+        List<Group> groupList = adminDao.queryAllGroup()
+        model.addAttribute("groupList", groupList)
         return "admin/GroupList"
     }
 
     @Override
     String queryGroupById(Model model, String id) {
-        Group group=adminDao.queryGroupById(id)
-        model.addAttribute("groupInfo",group)
+        Group group = adminDao.queryGroupById(id)
+        List<School> schoolList = adminDao.queryAllSchool()
+        List<Delegate> delegateList = adminDao.queryMemberAbleToUse()
+        model.addAttribute("groupInfo", group)
+        model.addAttribute("schoolList", schoolList)
+        model.addAttribute("delegateList", delegateList)
         return "admin/modifyGroup"
     }
 
     @Override
     String queryDelegateByGroupId(Model model, String groupID) {
         List<Delegate> delegateList = adminDao.queryDelegateByGroupId(Integer.parseInt(groupID))
-        model.addAttribute("delegateList",delegateList)
+        model.addAttribute("delegateList", delegateList)
         return "admin/GroupMemberList"
+    }
+
+    @Override
+    String queryMemberByID(Model model, int id) {
+        Delegate delegate = adminDao.queryMemberById(id)
+        model.addAttribute("delegate", delegate)
+        return "admin/MemberDetail"
+    }
+
+    @Override
+    String queryAllSchoolType(Model model) {
+        List<SchoolType> schoolTypeList=adminDao.queryAllSchoolType()
+        model.addAttribute("schoolTypeList",schoolTypeList)
+        return "admin/AddSchool"
     }
 }

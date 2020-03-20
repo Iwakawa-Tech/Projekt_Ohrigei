@@ -39,7 +39,7 @@
             <td th:text="${group.id}"></td>
             <td><a th:text="${group.schoolName}" th:href="@{/admin/schoolDetail(id=${group.schoolID})}"></a></td>
             <td><a th:text="${group.headDelegateName}"
-                   th:href="@{/admin/manageDelegateProfile(id=${group.headDelegateID})}"></a>
+                   th:href="@{/admin/memberDetailPage(id=${group.headDelegateID})}"></a>
             </td>
             <td th:text="${group.groupSize}+'人'"></td>
             <td>

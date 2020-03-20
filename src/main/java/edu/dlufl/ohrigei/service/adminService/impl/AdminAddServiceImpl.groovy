@@ -8,37 +8,84 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
-import org.springframework.ui.Model
 
-import javax.servlet.http.HttpSession
+import javax.servlet.http.HttpServletRequest
 
 @Service("AdminAddService")
 class AdminAddServiceImpl implements AdminAddService {
     @Autowired
     AdminDao adminDao
 
-    String addAdmin(HttpSession session, Model model, Admin admin) throws UsernameNotFoundException {
-        if (adminDao.emailCheck(admin.getEmail()) != null) {
-            throw new UsernameNotFoundException("邮箱已被使用")
+    @Override
+    JSONObject addSchool(HttpServletRequest request) {
+        JSONObject jsonObject=new JSONObject()
+        String schoolName = request.getParameter("schoolName")
+        String schoolNameEN=request.getParameter("schoolNameEN")
+        String schoolAddress=request.getParameter("schoolAddress")
+        int schoolTypeID=request.getParameter("schoolType") as int
+        int schoolSize=request.getParameter("schoolSize") as int
+        try {
+            adminDao.addSchool(schoolName,schoolNameEN,schoolAddress,schoolTypeID,schoolSize)
+            jsonObject.put("status","SUCCESS")
         }
-        String password = new BCryptPasswordEncoder().encode(admin.getPassword())
-        admin.setPassword(password)
-        adminDao.addAdminStep1(admin)
-        admin.setId(adminDao.getInsertID(admin.getEmail()))
-        adminDao.addAdminStep2(admin)
-        model.addAttribute("message", "添加管理员成功")
-        return "admin/AddAdmin"
+        catch (Exception ignored){
+            jsonObject.put("status","ERROR")
+        }
+        return jsonObject
+    }
+
+    JSONObject addAdmin(HttpServletRequest request) throws UsernameNotFoundException {
+        JSONObject jsonObject = new JSONObject()
+        String adminName = request.getParameter("adminName")
+        String adminPhone = request.getParameter("adminPhone")
+        String adminEmail = request.getParameter("adminEmail")
+        String adminPassword = new BCryptPasswordEncoder().encode(request.getParameter("adminPassword"))
+        String adminTitle = request.getParameter("adminTitle")
+        Boolean role_AG = Boolean.parseBoolean(request.getParameter("role_AG"))
+        Boolean role_AD = Boolean.parseBoolean(request.getParameter("role_AD"))
+        Boolean role_D = Boolean.parseBoolean(request.getParameter("role_D"))
+        Boolean role_SG = Boolean.parseBoolean(request.getParameter("role_SG"))
+        Boolean role_F = Boolean.parseBoolean(request.getParameter("role_F"))
+        Boolean role_L = Boolean.parseBoolean(request.getParameter("role_L"))
+        if (adminDao.emailCheck(adminEmail) != null) {
+            jsonObject.put("status", "ERROR")
+            jsonObject.put("errorText", "邮箱已被使用")
+            return jsonObject
+        }
+        Admin admin = new Admin()
+        admin.setName(adminName)
+        admin.setEmail(adminEmail)
+        admin.setPhone(adminPhone)
+        admin.setPassword(adminPassword)
+        admin.setTitle(adminTitle)
+        admin.setRole_AG(role_AG)
+        admin.setRole_AD(role_AD)
+        admin.setRole_D(role_D)
+        admin.setRole_SG(role_SG)
+        admin.setRole_F(role_F)
+        admin.setRole_L(role_L)
+        try {
+            adminDao.addAdminStep1(admin)
+            admin.setId(adminDao.getInsertID(admin.getEmail()))
+            adminDao.addAdminStep2(admin)
+            jsonObject.put("status", "SUCCESS")
+        }
+        catch (Exception ignored) {
+            jsonObject.put("status", "ERROR")
+            jsonObject.put("errorText", ignored)
+        }
+        return jsonObject
     }
 
     @Override
-    JSONObject addGroup(int schoolID, int headDelegateID, int size) {
-        JSONObject object=new JSONObject()
-        try{
-            adminDao.addGroup(schoolID,headDelegateID,size)
-            object.put("status","SUCCESS")
+    JSONObject addGroup(int schoolID, Integer headDelegateID, int size) {
+        JSONObject object = new JSONObject()
+        try {
+            adminDao.addGroup(schoolID, headDelegateID, size)
+            object.put("status", "SUCCESS")
         }
-        catch (Exception ignored){
-            object.put("status","ERROR")
+        catch (Exception ignored) {
+            object.put("status", "ERROR")
         }
         return object
     }

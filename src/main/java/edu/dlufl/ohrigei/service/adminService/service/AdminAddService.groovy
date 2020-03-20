@@ -5,11 +5,14 @@ import edu.dlufl.ohrigei.model.Admin
 import org.springframework.stereotype.Service
 import org.springframework.ui.Model
 
+import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpSession
 
 @Service
 interface AdminAddService {
-    String addAdmin(HttpSession httpSession, Model model, Admin admin)
+    JSONObject addAdmin(HttpServletRequest request)
 
-    JSONObject addGroup(int schoolID, int headDelegateID, int size)
+    JSONObject addGroup(int schoolID, Integer headDelegateID, int size)
+
+    JSONObject addSchool(HttpServletRequest request)
 }

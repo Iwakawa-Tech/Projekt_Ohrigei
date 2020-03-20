@@ -10,6 +10,7 @@
         <result column="application_status_text" property="applicationStatus"/>
         <result column="email" property="email"/>
         <result column="phone" property="phone"/>
+        <result column="group_ID" property="groupID"/>
     </resultMap>
     <resultMap id="Group" type="edu.dlufl.ohrigei.model.Group">
         <result column="id" property="id"/>
@@ -47,12 +48,18 @@
         <result column="size" property="size"/>
         <result column="club_ID" property="clubID"/>
     </resultMap>
+    <resultMap id="SchoolType" type="edu.dlufl.ohrigei.model.SchoolType">
+        <result column="id" property="id"/>
+        <result column="school_type" property="schoolType"/>
+    </resultMap>
+    <!--    select-->
     <select id="queryAllMember" resultMap="Delegate">
         SELECT ohrigei.user.id,
                ohrigei.user.name,
                ohrigei.user.enable_login,
                ohrigei.user.email,
                ohrigei.user.phone,
+               ohrigei.delegate.group_ID,
                ohrigei.school_info.school_name,
                ohrigei.application_type.application_type,
                ohrigei.application_status.application_status_text
@@ -65,12 +72,31 @@
         WHERE ohrigei.delegate.role_ID = #{type}
           AND `user`.role_ID = 2
     </select>
+    <select id="queryMemberById" resultMap="Delegate">
+        SELECT ohrigei.user.id,
+               ohrigei.user.name,
+               ohrigei.user.enable_login,
+               ohrigei.user.email,
+               ohrigei.user.phone,
+               ohrigei.delegate.group_ID,
+               ohrigei.school_info.school_name,
+               ohrigei.application_type.application_type,
+               ohrigei.application_status.application_status_text
+        FROM ohrigei.delegate
+                 left join user on delegate.id = ohrigei.user.id
+                 left join `group` on delegate.group_ID = `group`.id
+                 left join school_info on ohrigei.group.school_ID = school_info.id
+                 left join application_type on application_type.id = delegate.application_type_ID
+                 left join application_status on application_status.id = delegate.application_status_ID
+        WHERE `user`.id=#{id}
+    </select>
     <select id="queryAllGroup" resultMap="Group">
         SELECT `group`.id, school_ID, head_delegate_ID, group_size, school_name, name
         FROM `group`
                  LEFT JOIN delegate d on `group`.head_delegate_ID = d.id
                  LEFT JOIN user u on d.id = u.id
                  LEFT JOIN school_info si on `group`.school_ID = si.id
+        WHERE `group`.delete_status=0
     </select>
     <select id="queryAllAdmin" resultMap="Admin">
         SELECT ohrigei.user.id,
@@ -99,19 +125,6 @@
         from ohrigei.user
         where email = #{email}
     </select>
-    <insert id="addAdminStep1" parameterType="edu.dlufl.ohrigei.model.Admin">
-        insert into ohrigei.user(name, email, password, phone, role_ID)
-        values (#{name}, #{email}, #{password}, #{phone}, 1)
-    </insert>
-    <select id="getInsertID" resultType="int">
-        select ohrigei.user.id
-        from ohrigei.user
-        where email = #{email}
-    </select>
-    <insert id="addAdminStep2" parameterType="edu.dlufl.ohrigei.model.Admin">
-        insert into ohrigei.admin(id, title, role_AG, role_AD, role_D, role_L, role_F, role_SG)
-        VALUES (#{id}, #{title}, #{role_AG}, #{role_AD}, #{role_D}, #{role_L}, #{role_F}, #{role_SG})
-    </insert>
     <select id="adminDetail" resultMap="Admin">
         SELECT ohrigei.user.name,
                admin.title,
@@ -156,10 +169,11 @@
           AND user.enable_login = 1
           AND `user`.role_ID = 2
     </select>
-    <insert id="addGroup">
-        INSERT into `group`(school_ID, head_delegate_ID, group_size)
-        VALUES (#{param1},#{param2},#{param3})
-    </insert>
+    <select id="getInsertID" resultType="int">
+        select ohrigei.user.id
+        from ohrigei.user
+        where email = #{email}
+    </select>
     <select id="queryGroupById" resultMap="Group">
         SELECT `group`.id, school_ID, head_delegate_ID, group_size, school_name, name
         FROM `group`
@@ -168,4 +182,35 @@
                  LEFT JOIN school_info si on `group`.school_ID = si.id
         WHERE `group`.id=#{id}
     </select>
+    <select id="queryAllSchoolType" resultMap="SchoolType">
+        select * from school_type
+    </select>
+    <!--    insert-->
+
+    <insert id="addAdminStep1" parameterType="edu.dlufl.ohrigei.model.Admin">
+        insert into ohrigei.user(name, email, password, phone, role_ID)
+        values (#{name}, #{email}, #{password}, #{phone}, 1)
+    </insert>
+    <insert id="addAdminStep2" parameterType="edu.dlufl.ohrigei.model.Admin">
+        insert into ohrigei.admin(id, title, role_AG, role_AD, role_D, role_L, role_F, role_SG)
+        VALUES (#{id}, #{title}, #{role_AG}, #{role_AD}, #{role_D}, #{role_L}, #{role_F}, #{role_SG})
+    </insert>
+    <insert id="addGroup">
+        INSERT into `group`(school_ID, head_delegate_ID, group_size)
+        VALUES (#{param1},#{param2},#{param3})
+    </insert>
+    <insert id="addSchool">
+        insert into school_info(school_name,school_name_EN,school_type_ID,school_address,size) VALUES (#{param1},#{param2},#{param4},#{param3},#{param5})
+    </insert>
+    <!--    update-->
+
+    <update id="modifyGroup">
+        UPDATE `ohrigei`.`group` SET `school_ID` = #{param1}, `head_delegate_ID` = #{param2}, `group_size` = #{param3} WHERE `id` = #{param4}
+    </update>
+    <update id="deleteGroup">
+        UPDATE `ohrigei`.`group` SET `group`.delete_status=1 WHERE `id` = #{groupID}
+    </update>
+    <update id="modifyLoginStatusById">
+        UPDATE `ohrigei`.`user` SET `user`.enable_login=#{param2} WHERE `id`=#{param1}
+    </update>
 </mapper>

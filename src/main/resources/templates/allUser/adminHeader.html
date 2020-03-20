@@ -70,7 +70,7 @@
                     <div class="collapse-divider"></div>
                     <h6 class="collapse-header">管理员管理：</h6>
                     <a class="collapse-item" th:href="@{/admin/manage(type=admin)}">管理员列表</a>
-                    <a class="collapse-item" th:href="@{/admin/addAdmin}">添加管理员</a>
+                    <a class="collapse-item" th:href="@{/admin/addAdminPage}">添加管理员</a>
                 </div>
             </div>
         </li>
@@ -141,7 +141,7 @@
             <div id="collapseSchool" class="collapse" aria-labelledby="headingSchool" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" href="#">全部学校</a>
-                    <a class="collapse-item" href="#">添加学校</a>
+                    <a class="collapse-item" th:href="@{/admin/addSchoolPage}">添加学校</a>
                 </div>
             </div>
         </li>

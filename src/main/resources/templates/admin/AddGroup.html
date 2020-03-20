@@ -68,20 +68,19 @@
     });
 
     function addGroup() {
-        var pattern=/^[1-9]*$/;
-        var size=$('#groupSize').val();
-        var school=$('#school').val();
-        var delegate=$('#headDelegateName').val();
-        console.log(size);
-        if(!pattern.test(size)||size===''){
+        var pattern = /^[1-9][0-9]*$/;
+        var size = $('#groupSize').val();
+        var school = $('#school').val();
+        var delegate = $('#headDelegateName').val();
+        if (!pattern.test(size) || size === '') {
             alert('代表团容量必须为正整数！');
             $('#groupSize').val('')
         }
-        if (size>100){
+        if (size > 100) {
             alert('代表团容量不能超过100人！');
             $('#groupSize').val('')
         }
-        if (school!==''){
+        if (school !== '') {
             $.ajax({
                 type: 'POST',
                 url: '/admin/addGroup',
@@ -91,18 +90,17 @@
                     'headDelegateID': delegate,
                     'groupSize': size
                 },
-                success:function (data) {
-                    if(data['status']==='SUCCESS'){
+                success: function (data) {
+                    if (data['status'] === 'SUCCESS') {
                         alert('添加成功！');
                         window.location.reload()
-                    }else {
+                    } else {
                         alert('添加失败，请稍后重试！');
                         window.location.reload()
                     }
                 }
             })
-        }
-        else {
+        } else {
             alert('所属学校不能为空！');
         }
     }

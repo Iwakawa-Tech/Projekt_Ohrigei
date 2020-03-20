@@ -1,13 +1,17 @@
 package edu.dlufl.ohrigei.controller.adminController
 
+import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import edu.dlufl.ohrigei.dao.UserDao
 import edu.dlufl.ohrigei.model.Admin
 import edu.dlufl.ohrigei.model.User
 import edu.dlufl.ohrigei.service.adminService.service.AdminAddService
 import edu.dlufl.ohrigei.service.adminService.service.AdminCountService
+import edu.dlufl.ohrigei.service.adminService.service.AdminDeleteService
 import edu.dlufl.ohrigei.service.adminService.service.AdminDetailService
+import edu.dlufl.ohrigei.service.adminService.service.AdminModifyService
 import edu.dlufl.ohrigei.service.adminService.service.AdminQueryService
+import groovyjarjarantlr.StringUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Controller
@@ -34,6 +38,10 @@ class AdminController {
     AdminDetailService adminDetailService
     @Autowired
     AdminCountService adminCountService
+    @Autowired
+    AdminModifyService adminModifyService
+    @Autowired
+    AdminDeleteService adminDeleteService
     @Autowired
     UserDao userDao
 
@@ -73,15 +81,9 @@ class AdminController {
 
     private int cont = 0
 
-    @RequestMapping("/addAdmin")
-    String addAdmin(@ModelAttribute(value = "Admin") Admin admin, Model model, HttpSession httpSession) {
-        if (cont == 0) {
-            model.addAttribute("Admin", new Admin())
-            cont = 1
-            return "admin/AddAdmin"
-        }
-        cont = 0
-        return adminAddService.addAdmin(httpSession, model, admin)
+    @RequestMapping("/addAdminPage")
+    String addAdmin(HttpServletRequest request, Model model, HttpSession httpSession) {
+        return "admin/AddAdmin"
     }
 
     @RequestMapping("/adminDetail")
@@ -95,25 +97,80 @@ class AdminController {
     }
 
     @RequestMapping("/groupDetailPage")
-    String groupDetail(Model model){
+    String groupDetail(Model model) {
         return adminQueryService.queryAllGroup(model)
     }
-
-    @RequestMapping("/modifyGroupPage")
-    String modifyGroup(Model model,String groupID){
-        return adminQueryService.queryGroupById(model,groupID)
+    @RequestMapping("/addSchoolPage")
+    String addSchoolPage(Model model){
+        return adminQueryService.queryAllSchoolType(model)
     }
-    @RequestMapping("/groupMemberDetail")
-    String groupMemberDetail(Model model,String groupID){
+    @RequestMapping("/modifyGroupPage")
+    String modifyGroup(Model model, String groupID) {
+        return adminQueryService.queryGroupById(model, groupID)
+    }
 
+    @RequestMapping("/groupMemberDetail")
+    String groupMemberDetail(Model model, String groupID) {
+        return null
+    }
+
+    @RequestMapping("/memberDetailPage")
+    String memberDetailPage(Model model, String id) {
+        int ID = Integer.parseInt(id)
+        return adminQueryService.queryMemberByID(model, ID)
     }
 
     @RequestMapping(value = "/addGroup", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
     JSONObject addGroup(HttpServletRequest request, HttpServletResponse response) {
+        Integer headDelegateID
+        if (request.getParameter("headDelegateID") == '' || request.getParameter("headDelegateID") == null) {
+            headDelegateID = null
+        } else {
+            headDelegateID = Integer.parseInt(request.getParameter("headDelegateID"))
+        }
         int schoolID = request.getParameter("schoolID") as int
-        int headDelegateID = request.getParameter("headDelegateID") as int
         int size = request.getParameter("groupSize") as int
         return adminAddService.addGroup(schoolID, headDelegateID, size)
+    }
+
+    @RequestMapping(value = "/modifyGroup", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    JSONObject modifyGroup(HttpServletRequest request) {
+        Integer headDelegateID
+        if (request.getParameter("headDelegateID") == '' || request.getParameter("headDelegateID") == null) {
+            headDelegateID = null
+        } else {
+            headDelegateID = Integer.parseInt(request.getParameter("headDelegateID"))
+        }
+        int schoolID = request.getParameter("schoolID") as int
+        int size = request.getParameter("groupSize") as int
+        int groupID = request.getParameter("groupID") as int
+        return adminModifyService.modifyGroup(schoolID, headDelegateID, size, groupID)
+    }
+
+    @RequestMapping(value = "/deleteGroup", method = RequestMethod.POST)
+    @ResponseBody
+    JSONObject deleteGroup(HttpServletRequest request) {
+        int groupID = request.getParameter("groupID") as int
+        return adminDeleteService.deleteGroup(groupID)
+    }
+
+    @RequestMapping(value = "/addAdmin", method = RequestMethod.POST)
+    @ResponseBody
+    JSONObject addAdmin(HttpServletRequest request) {
+        return adminAddService.addAdmin(request)
+    }
+
+    @RequestMapping(value = "/modifyUserLoginStatus", method = RequestMethod.POST)
+    @ResponseBody
+    JSONObject modifyLoginStatus(HttpServletRequest request) {
+        adminModifyService.modifyLoginStatus(request)
+    }
+
+    @RequestMapping(value = "/addSchool",method = RequestMethod.POST)
+    @ResponseBody
+    JSONObject addSchool(HttpServletRequest request){
+        adminAddService.addSchool(request)
     }
 }

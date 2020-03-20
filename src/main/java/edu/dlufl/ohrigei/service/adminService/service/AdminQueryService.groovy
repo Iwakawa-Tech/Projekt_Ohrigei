@@ -18,4 +18,6 @@ interface AdminQueryService {
     String queryAllGroup(Model model)
     String queryGroupById(Model model,String id)
     String queryDelegateByGroupId(Model model,String groupID)
+    String queryMemberByID(Model model,int id)
+    String queryAllSchoolType(Model model)
 }

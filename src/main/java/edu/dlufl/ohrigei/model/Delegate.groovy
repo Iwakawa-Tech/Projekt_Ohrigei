@@ -11,6 +11,7 @@ class Delegate {
     private String applicationStatus
     private String phone
     private String email
+    private Integer groupID
     private boolean enable_Login
 
     String getPhone() {
@@ -101,6 +102,15 @@ class Delegate {
         this.committeeID = committeeID
     }
 
+
+    Integer getGroupID() {
+        return groupID
+    }
+
+    void setGroupID(Integer groupID) {
+        this.groupID = groupID
+    }
+
     @Override
     public String toString() {
         return "Delegate{" +
@@ -114,6 +124,7 @@ class Delegate {
                 ", applicationStatus='" + applicationStatus + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
+                ", groupID=" + groupID +
                 ", enable_Login=" + enable_Login +
                 '}';
     }
