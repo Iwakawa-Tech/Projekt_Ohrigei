@@ -35,9 +35,12 @@
         <result column="committee_name" property="committeeName"/>
     </resultMap>
     <resultMap id="Committee" type="edu.dlufl.ohrigei.model.Committee">
-        <result column="name" property="name"/>
+        <result column="id" property="id"/>
+        <result column="committee_name" property="committeeName"/>
         <result column="seat_width" property="seatWidth"/>
-        <result column="uname" property="chairManName"/>
+        <result column="chairman_name" property="chairmanName"/>
+        <result column="name" property="chairmanName"/>
+        <result column="chairman_ID" property="chairmanID"/>
     </resultMap>
     <resultMap id="School" type="edu.dlufl.ohrigei.model.School">
         <result column="id" property="id"/>
@@ -51,6 +54,13 @@
     <resultMap id="SchoolType" type="edu.dlufl.ohrigei.model.SchoolType">
         <result column="id" property="id"/>
         <result column="school_type" property="schoolType"/>
+    </resultMap>
+    <resultMap id="Seat" type="edu.dlufl.ohrigei.model.Seat">
+        <result column="id" property="id"/>
+        <result column="seat_name" property="seatName"/>
+        <result column="committee_ID" property="committeeID"/>
+        <result column="committee_name" property="committeeName"/>
+        <result column="seat_difficulty" property="seatDifficulty"/>
     </resultMap>
     <!--    select-->
     <select id="queryAllMember" resultMap="Delegate">
@@ -88,7 +98,7 @@
                  left join school_info on ohrigei.group.school_ID = school_info.id
                  left join application_type on application_type.id = delegate.application_type_ID
                  left join application_status on application_status.id = delegate.application_status_ID
-        WHERE `user`.id=#{id}
+        WHERE `user`.id = #{id}
     </select>
     <select id="queryAllGroup" resultMap="Group">
         SELECT `group`.id, school_ID, head_delegate_ID, group_size, school_name, name
@@ -96,7 +106,7 @@
                  LEFT JOIN delegate d on `group`.head_delegate_ID = d.id
                  LEFT JOIN user u on d.id = u.id
                  LEFT JOIN school_info si on `group`.school_ID = si.id
-        WHERE `group`.delete_status=0
+        WHERE `group`.delete_status = 0
     </select>
     <select id="queryAllAdmin" resultMap="Admin">
         SELECT ohrigei.user.id,
@@ -115,10 +125,13 @@
         where role_ID = 1
     </select>
     <select id="queryAllCommittee" resultMap="Committee">
-        SELECT committee.name, seat_width, ohrigei.user.name uname
-        from committee,
-             user
-        where ohrigei.committee.chairman_ID
+        SELECT committee.id, committee.committee_name, seat_width, ohrigei.user.name, chairman_ID
+        FROM committee
+                 left join user on chairman_ID = user.id
+    </select>
+    <select id="queryCommitteeIDAndName" resultMap="Committee">
+        SELECT id, committee_name
+        FROM committee
     </select>
     <select id="emailCheck" resultType="string">
         SELECT ohrigei.user.email
@@ -145,11 +158,18 @@
         from ohrigei.delegate
         where role_ID = #{roleId}
     </select>
+    <select id="countSeatByCommitteeID" resultType="int">
+        SELECT count(*)
+        FROM seat
+        WHERE committee_ID = #{committeeID}
+    </select>
+    <select id="committeeWidthSizeGet" resultType="int">
+        SELECT seat_width FROM committee WHERE id=#{committeeID}
+    </select>
     <select id="queryAllSchool" resultMap="School">
         SELECT school_info.id, school_name, school_name_EN, school_address, size, club_ID, school_type
         FROM school_info
                  LEFT JOIN school_type st on school_info.school_type_ID = st.id
-        WHERE school_info.id NOT IN (SELECT school_ID FROM `group`)
     </select>
     <select id="queryMemberAbleToUse" resultMap="Delegate">
         SELECT ohrigei.user.id,
@@ -180,10 +200,16 @@
                  LEFT JOIN delegate d on `group`.head_delegate_ID = d.id
                  LEFT JOIN user u on d.id = u.id
                  LEFT JOIN school_info si on `group`.school_ID = si.id
-        WHERE `group`.id=#{id}
+        WHERE `group`.id = #{id}
     </select>
     <select id="queryAllSchoolType" resultMap="SchoolType">
-        select * from school_type
+        select *
+        from school_type
+    </select>
+    <select id="queryAdminIDAndName" resultMap="Admin">
+        SELECT ohrigei.user.id, name
+        FROM user
+        WHERE role_ID = 1
     </select>
     <!--    insert-->
 
@@ -197,20 +223,37 @@
     </insert>
     <insert id="addGroup">
         INSERT into `group`(school_ID, head_delegate_ID, group_size)
-        VALUES (#{param1},#{param2},#{param3})
+        VALUES (#{param1}, #{param2}, #{param3})
     </insert>
     <insert id="addSchool">
-        insert into school_info(school_name,school_name_EN,school_type_ID,school_address,size) VALUES (#{param1},#{param2},#{param4},#{param3},#{param5})
+        insert into school_info(school_name, school_name_EN, school_type_ID, school_address, size)
+        VALUES (#{param1}, #{param2}, #{param4}, #{param3}, #{param5})
+    </insert>
+    <insert id="addCommittee">
+        INSERT INTO committee(committee_name, seat_width, chairman_ID)
+        VALUES (#{param1}, #{param2}, #{param3})
+    </insert>
+    <insert id="addSeat">
+        INSERT INTO seat(seat_name, committee_ID, seat_difficulty)
+        VALUES (#{param1}, #{param2}, #{param3})
     </insert>
     <!--    update-->
 
     <update id="modifyGroup">
-        UPDATE `ohrigei`.`group` SET `school_ID` = #{param1}, `head_delegate_ID` = #{param2}, `group_size` = #{param3} WHERE `id` = #{param4}
+        UPDATE `ohrigei`.`group`
+        SET `school_ID`        = #{param1},
+            `head_delegate_ID` = #{param2},
+            `group_size`       = #{param3}
+        WHERE `id` = #{param4}
     </update>
     <update id="deleteGroup">
-        UPDATE `ohrigei`.`group` SET `group`.delete_status=1 WHERE `id` = #{groupID}
+        UPDATE `ohrigei`.`group`
+        SET `group`.delete_status=1
+        WHERE `id` = #{groupID}
     </update>
     <update id="modifyLoginStatusById">
-        UPDATE `ohrigei`.`user` SET `user`.enable_login=#{param2} WHERE `id`=#{param1}
+        UPDATE `ohrigei`.`user`
+        SET `user`.enable_login=#{param2}
+        WHERE `id` = #{param1}
     </update>
 </mapper>

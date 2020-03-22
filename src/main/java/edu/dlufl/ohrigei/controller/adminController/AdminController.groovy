@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
 import sun.awt.ModalExclude
 
+import javax.jws.WebParam.Mode
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpSession
@@ -86,6 +87,19 @@ class AdminController {
         return "admin/AddAdmin"
     }
 
+    @RequestMapping("/addCommitteePage")
+    String addCommitteePage(Model model){
+        adminQueryService.queryAdminIDAndName(model)
+    }
+
+    @RequestMapping("/committeeListPage")
+    String committeeList(Model model){
+        return adminQueryService.queryAllCommittee(model)
+    }
+    @RequestMapping("/addSeatPage")
+    String addSeatPage(Model model){
+        return adminQueryService.queryCommitteeIDAndName(model)
+    }
     @RequestMapping("/adminDetail")
     String adminDetail(Model model, HttpSession httpSession, String id) {
         return adminDetailService.adminDetail(httpSession, model, id)
@@ -100,10 +114,12 @@ class AdminController {
     String groupDetail(Model model) {
         return adminQueryService.queryAllGroup(model)
     }
+
     @RequestMapping("/addSchoolPage")
-    String addSchoolPage(Model model){
+    String addSchoolPage(Model model) {
         return adminQueryService.queryAllSchoolType(model)
     }
+
     @RequestMapping("/modifyGroupPage")
     String modifyGroup(Model model, String groupID) {
         return adminQueryService.queryGroupById(model, groupID)
@@ -118,6 +134,11 @@ class AdminController {
     String memberDetailPage(Model model, String id) {
         int ID = Integer.parseInt(id)
         return adminQueryService.queryMemberByID(model, ID)
+    }
+
+    @RequestMapping("/allSchoolList")
+    String allSchoolList(Model model) {
+        adminQueryService.queryAllSchool(model)
     }
 
     @RequestMapping(value = "/addGroup", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
@@ -168,9 +189,20 @@ class AdminController {
         adminModifyService.modifyLoginStatus(request)
     }
 
-    @RequestMapping(value = "/addSchool",method = RequestMethod.POST)
+    @RequestMapping(value = "/addSchool", method = RequestMethod.POST)
     @ResponseBody
-    JSONObject addSchool(HttpServletRequest request){
+    JSONObject addSchool(HttpServletRequest request) {
         adminAddService.addSchool(request)
+    }
+    @RequestMapping(value = '/addCommittee',method = RequestMethod.POST)
+    @ResponseBody
+    JSONObject addCommittee(HttpServletRequest request){
+      return   adminAddService.addCommittee(request)
+    }
+
+    @RequestMapping(value = "/addSeat",method = RequestMethod.POST)
+    @ResponseBody
+    JSONObject addSeat(HttpServletRequest request){
+        return adminAddService.addSeat(request)
     }
 }

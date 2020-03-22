@@ -18,20 +18,37 @@ class AdminAddServiceImpl implements AdminAddService {
 
     @Override
     JSONObject addSchool(HttpServletRequest request) {
-        JSONObject jsonObject=new JSONObject()
+        JSONObject jsonObject = new JSONObject()
         String schoolName = request.getParameter("schoolName")
-        String schoolNameEN=request.getParameter("schoolNameEN")
-        String schoolAddress=request.getParameter("schoolAddress")
-        int schoolTypeID=request.getParameter("schoolType") as int
-        int schoolSize=request.getParameter("schoolSize") as int
+        String schoolNameEN = request.getParameter("schoolNameEN")
+        String schoolAddress = request.getParameter("schoolAddress")
+        int schoolTypeID = request.getParameter("schoolType") as int
+        int schoolSize = request.getParameter("schoolSize") as int
         try {
-            adminDao.addSchool(schoolName,schoolNameEN,schoolAddress,schoolTypeID,schoolSize)
-            jsonObject.put("status","SUCCESS")
+            adminDao.addSchool(schoolName, schoolNameEN, schoolAddress, schoolTypeID, schoolSize)
+            jsonObject.put("status", "SUCCESS")
         }
-        catch (Exception ignored){
-            jsonObject.put("status","ERROR")
+        catch (Exception ignored) {
+            jsonObject.put("status", "ERROR")
         }
         return jsonObject
+    }
+
+    @Override
+    JSONObject addCommittee(HttpServletRequest request) {
+        JSONObject jsonObject = new JSONObject()
+        String committeeName = request.getParameter("committeeName")
+        int seatWidth = request.getParameter("seatWidth") as int
+        int chairmanID = request.getParameter("chairmanID") as int
+        try {
+            adminDao.addCommittee(committeeName, seatWidth, chairmanID)
+            jsonObject.put("status", "SUCCESS")
+            return jsonObject
+        }
+        catch (Exception ignored) {
+            jsonObject.put("status", "ERROR")
+            return jsonObject
+        }
     }
 
     JSONObject addAdmin(HttpServletRequest request) throws UsernameNotFoundException {
@@ -88,5 +105,35 @@ class AdminAddServiceImpl implements AdminAddService {
             object.put("status", "ERROR")
         }
         return object
+    }
+
+    @Override
+    JSONObject addSeat(HttpServletRequest request) {
+        /**
+         * 'seatName':seatName,
+         * 'committeeID':committeeID,
+         * 'seatDifficulty':seatDifficulty
+         */
+        JSONObject jsonObject=new JSONObject()
+        String seatName =request.getParameter("seatName")
+        int committeeID=request.getParameter("committeeID")as int
+        int seatDifficulty=request.getParameter("seatDifficulty")as int
+        int committeeSeatWidth=adminDao.committeeWidthSizeGet(committeeID)
+        int seatCount=adminDao.countSeatByCommitteeID(committeeID)
+        if (seatCount<committeeSeatWidth){
+            try {
+                adminDao.addSeat(seatName,committeeID,seatDifficulty)
+                jsonObject.put("status","SUCCESS")
+            }
+            catch (Exception ignored){
+                jsonObject.put("status","ERROR")
+                jsonObject.put("errorText","添加失败")
+            }
+        }else {
+            jsonObject.put("status","ERROR")
+            jsonObject.put("errorText","委员会席位已满")
+        }
+
+        return jsonObject
     }
 }

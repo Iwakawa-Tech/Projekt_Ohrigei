@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-cn" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -18,35 +18,32 @@
     <link href="../css/font-awesome.css" rel="stylesheet">
     <link href="../css/cropper.css" rel="stylesheet">
     <link href="../css/bootstrap-select.css" rel="stylesheet">
-    <title>学校列表-Гулаш&nbsp;система&nbsp;会议管理系统</title>
+    <title>委员会列表-Гулаш&nbsp;система&nbsp;会议管理系统</title>
 </head>
 <body>
 <div th:replace="allUser/adminHeader::adminHeader"></div>
 <div id="res">
-    <h3>学校列表</h3>
+    <h3>委员会列表</h3>
+    <hr>
     <table class="table table-hover text-center">
         <thead>
         <tr>
             <td>#</td>
-            <td>学校名称</td>
-            <td>学校英文名称</td>
-            <td>学校类型</td>
-            <td>学校地址</td>
-            <td>预计参会人数</td>
+            <td>委员会名称</td>
+            <td>席位容量</td>
+            <td>委员会主席</td>
             <td>操作</td>
         </tr>
         </thead>
-        <tr th:each="school:${schoolList}">
-            <td th:text="${school.id}"></td>
-            <td th:text="${school.schoolName}"></td>
-            <td th:text="${school.schoolNameEN}"></td>
-            <td th:text="${school.schoolType}"></td>
-            <td th:text="${school.schoolAddress}"></td>
-            <td th:text="${school.size}"></td>
-            <td>
-                <a th:href="@{/admin/modifySchool(id=${school.id})}">修改</a>
-            </td>
+        <tbody>
+        <tr th:each="committee:${committeeList}">
+            <td th:text="${committee.id}"></td>
+            <td th:text="${committee.committeeName}"></td>
+            <td th:text="${committee.seatWidth}"></td>
+            <td><a th:text="${committee.chairmanName}" th:href="@{/admin/adminDetail(id=${committee.chairmanID})}"></a></td>
+            <td><a th:text="详情" th:href="@{/admin/modifyCommitteePage(id=${committee.id})}"></a></td>
         </tr>
+        </tbody>
     </table>
 </div>
 </body>

@@ -105,12 +105,12 @@
 
         <!-- Nav Item - Committee Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCommittee"
-               aria-expanded="true" aria-controls="collapseCommittee">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGroup"
+               aria-expanded="true" aria-controls="collapseGroup">
                 <i class="fa fa-fw fa-folder"></i>
                 <span>代表团管理</span>
             </a>
-            <div id="collapseCommittee" class="collapse" aria-labelledby="headingCommittee" data-parent="#accordionSidebar">
+            <div id="collapseGroup" class="collapse" aria-labelledby="headingCommittee" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" th:href="@{/admin/groupDetailPage}">代表团列表</a>
                     <a class="collapse-item" th:href="@{/admin/addGroupPage}">添加代表团</a>
@@ -127,7 +127,7 @@
             <div id="collapseSeat" class="collapse" aria-labelledby="headingSeat" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" href="#">全部席位</a>
-                    <a class="collapse-item" href="#">添加席位</a>
+                    <a class="collapse-item" th:href="@{/admin/addSeatPage}">添加席位</a>
                 </div>
             </div>
         </li>
@@ -140,8 +140,21 @@
             </a>
             <div id="collapseSchool" class="collapse" aria-labelledby="headingSchool" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="#">全部学校</a>
+                    <a class="collapse-item" th:href="@{/admin/allSchoolList}">全部学校</a>
                     <a class="collapse-item" th:href="@{/admin/addSchoolPage}">添加学校</a>
+                </div>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCommittee"
+               aria-expanded="true" aria-controls="collapseCommittee">
+                <i class="fa fa-fw fa-folder"></i>
+                <span>委员会管理</span>
+            </a>
+            <div id="collapseCommittee" class="collapse" aria-labelledby="headingCommittee" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item" th:href="@{/admin/committeeListPage}">委员会列表</a>
+                    <a class="collapse-item" th:href="@{/admin/addCommitteePage}">添加委员会</a>
                 </div>
             </div>
         </li>

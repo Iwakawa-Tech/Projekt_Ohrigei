@@ -51,11 +51,31 @@ class AdminQueryServiceImpl implements AdminQueryService {
             default: return null
         }
     }
-    List<Admin> adminList = new LinkedList<>()
+
+    @Override
+    String queryAllCommittee(Model model) {
+        List<Committee> committeeList = adminDao.queryAllCommittee()
+        model.addAttribute("committeeList",committeeList)
+        return "admin/AllCommitteeList"
+    }
+
+    @Override
+    String queryAdminIDAndName(Model model) {
+        List<Admin> adminList = adminDao.queryAdminIDAndName()
+        model.addAttribute("adminList", adminList)
+        return "admin/AddCommittee"
+    }
+
+    @Override
+    String queryCommitteeIDAndName(Model model) {
+        List<Committee> committeeList=adminDao.queryCommitteeIDAndName()
+        model.addAttribute("committeeList",committeeList)
+        return "admin/AddSeat"
+    }
 
     @Override
     String queryAdmin(HttpSession session, Model model) {
-        adminList = adminDao.queryAllAdmin()
+        List<Admin> adminList = adminDao.queryAllAdmin()
         model.addAttribute("adminList", adminList)
         return "admin/AllAdminList"
     }
@@ -91,6 +111,13 @@ class AdminQueryServiceImpl implements AdminQueryService {
     }
 
     @Override
+    String queryAllSchool(Model model) {
+        List<School> schoolList = adminDao.queryAllSchool()
+        model.addAttribute("schoolList", schoolList)
+        return "admin/AllSchoolList"
+    }
+
+    @Override
     String queryGroupById(Model model, String id) {
         Group group = adminDao.queryGroupById(id)
         List<School> schoolList = adminDao.queryAllSchool()
@@ -117,8 +144,9 @@ class AdminQueryServiceImpl implements AdminQueryService {
 
     @Override
     String queryAllSchoolType(Model model) {
-        List<SchoolType> schoolTypeList=adminDao.queryAllSchoolType()
-        model.addAttribute("schoolTypeList",schoolTypeList)
+        List<SchoolType> schoolTypeList = adminDao.queryAllSchoolType()
+        model.addAttribute("schoolTypeList", schoolTypeList)
         return "admin/AddSchool"
     }
+
 }

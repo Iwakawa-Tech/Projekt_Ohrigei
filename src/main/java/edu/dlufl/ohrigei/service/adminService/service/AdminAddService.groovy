@@ -15,4 +15,8 @@ interface AdminAddService {
     JSONObject addGroup(int schoolID, Integer headDelegateID, int size)
 
     JSONObject addSchool(HttpServletRequest request)
+
+    JSONObject addCommittee(HttpServletRequest request)
+
+    JSONObject addSeat(HttpServletRequest request)
 }
