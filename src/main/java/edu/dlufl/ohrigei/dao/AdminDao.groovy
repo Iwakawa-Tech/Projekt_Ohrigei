@@ -1,11 +1,13 @@
 package edu.dlufl.ohrigei.dao
 
 import edu.dlufl.ohrigei.model.Admin
+import edu.dlufl.ohrigei.model.ApplicationStatus
 import edu.dlufl.ohrigei.model.Committee
 import edu.dlufl.ohrigei.model.Delegate
 import edu.dlufl.ohrigei.model.Group
 import edu.dlufl.ohrigei.model.School
 import edu.dlufl.ohrigei.model.SchoolType
+import edu.dlufl.ohrigei.model.Seat
 
 interface AdminDao {
     List<Delegate> queryAllMember(int type)
@@ -35,4 +37,6 @@ interface AdminDao {
     int addSeat(String seatName,int committeeID,int seatDifficulty)
     int countSeatByCommitteeID(int committeeID)
     int committeeWidthSizeGet(int committeeID)
+    List<Seat>queryAllSeat()
+    List<ApplicationStatus>queryAllApplicationStatus()
 }

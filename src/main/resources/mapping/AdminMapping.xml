@@ -11,6 +11,7 @@
         <result column="email" property="email"/>
         <result column="phone" property="phone"/>
         <result column="group_ID" property="groupID"/>
+        <result column="application_status_ID" property="applicationStatusID"/>
     </resultMap>
     <resultMap id="Group" type="edu.dlufl.ohrigei.model.Group">
         <result column="id" property="id"/>
@@ -61,6 +62,11 @@
         <result column="committee_ID" property="committeeID"/>
         <result column="committee_name" property="committeeName"/>
         <result column="seat_difficulty" property="seatDifficulty"/>
+    </resultMap>
+    <resultMap id="ApplicationStatus" type="edu.dlufl.ohrigei.model.ApplicationStatus">
+        <result column="id" property="id"/>
+        <result column="application_status_text" property="applicationStatusText"/>
+        <result column="application_status_text_en" property="applicationStatusTextEN"/>
     </resultMap>
     <!--    select-->
     <select id="queryAllMember" resultMap="Delegate">
@@ -210,6 +216,12 @@
         SELECT ohrigei.user.id, name
         FROM user
         WHERE role_ID = 1
+    </select>
+    <select id="queryAllSeat" resultMap="Seat">
+        SELECT seat.id,seat_name,committee_ID,seat_difficulty,committee_name FROM seat,committee WHERE committee_ID=committee.id
+    </select>
+    <select id="queryAllApplicationStatus" resultMap="ApplicationStatus">
+        SELECT * FROM application_status
     </select>
     <!--    insert-->
 

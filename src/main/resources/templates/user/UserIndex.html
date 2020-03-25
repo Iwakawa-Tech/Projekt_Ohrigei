@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -13,45 +14,120 @@
     <link href="../css/bootstrap.css" rel="stylesheet">
     <link href="../css/sb-admin-2.css" rel="stylesheet">
     <link href="../css/font-awesome.css" rel="stylesheet">
-    <link href="../css/googleapis.css" rel="stylesheet">
     <title>用户界面</title>
 </head>
 <body id="page-top">
 <div th:replace="allUser/userHeader::userHeader"></div>
-<div id="res" hidden>
-<ul>
-    <li>首页</li>
-    <li>个人信息</li>
-    <li>学术测试</li>
-    <li>文件</li>
-    <li>代表团</li>
-    <li>后勤管理</li>
-    <li>活动</li>
-    <li>账单</li>
-</ul>
-<form>
-    <table>
-        <thead><h2>待办事项</h2></thead>
-        <tbody>
-        <tr>
-            <td>xx项文件待查看</td>
-            <td>x项文件收取待提交</td>
-            <td>x份账单待支付</td>
-        </tr>
-        </tbody>
-    </table>
-</form>
-<!--    <div th:replace="allUser/footer::footer"></div>-->
+<div id="res">
+    <div>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-header-pills">申请进度</div>
+            </div>
+            <div class="card-body">
+                <div class="progress" style="height: 30px">
+                    <div id="applyProgressBar" class="progress-bar progress-bar-animated progress-bar-striped"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">公告</div>
+                    <div class="card-body">
+                        <ul>
+                            <li>这是一条公告</li>
+                            <li>这是一条公告</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">申请状态</div>
+                    <div class="card-body">
+                        <span>申请状态描述————————</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">个人信息</div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <img src="../img/head/test.png" alt="" class="rounded img-fluid float-md-right">
+                                </div>
+                                <div class="col-md-8">
+                                    <p><strong th:text="${session.USER_INFO.name}"></strong></p>
+                                    申请类型：<span id="applicationType" th:text="${delegateInfo.applicationType}"></span>
+                                    <br>
+                                    申请状态：<span id="applicationStatus" th:text="${delegateInfo.applicationStatus}"></span>
+                                    <hr>
+                                    <p><strong>联系方式</strong></p>
+                                    <i class="fa fa-phone"></i>&nbsp;<span th:text="${delegateInfo.phone}"></span>
+                                    <br>
+                                    <i class="fa fa-envelope"></i>&nbsp;<span th:text="${delegateInfo.email}"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a th:href="@{/user/UserProfile(id=${delegateInfo.ID})}"><i class="fa fa-edit"></i>编辑信息</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 <script>
     $(function () {
         $('#main').append($('#res').html());
+        $('#res').remove();
+        applyStatusBar();
     });
+    function applyStatusBar() {
+        var applyStatus = [[${delegateInfo.applicationStatusID}]];
+        switch (applyStatus) {
+            case 1:
+                $('#applyProgressBar').css('width', '12.5%');
+                break;
+            case 3:
+                $('#applyProgressBar').css('width', '25%');
+                break;
+            case 5:
+                $('#applyProgressBar').css('width', '37.5%');
+                break;
+            case 7:
+                $('#applyProgressBar').css('width', '50%');
+                break;
+            case 9:
+                $('#applyProgressBar').css('width', '62.5%');
+                break;
+            case 11:
+                $('#applyProgressBar').css('width', '75%');
+                break;
+            case 12:
+                $('#applyProgressBar').css('width', '87.5%');
+                break;
+            case 14:
+                $('#applyProgressBar').css('width', '100%').addClass('bg-success');
+                break;
+            default:
+                $('#applyProgressBar').css('width', '100%').addClass('bg-danger');
+                break;
+        }
+    }
+    function test() {
+        var applyStatusText = $('#applicationStatus').text();
+        console.log(applyStatusText)
+    }
 </script>
 <script>
-    $("#sidebarToggle, #sidebarToggleTop").onclick(function(e) {
-        $("body").attr("class","sidebar-toggled");
+    $("#sidebarToggle, #sidebarToggleTop").onclick(function (e) {
+        $("body").attr("class", "sidebar-toggled");
         $(".sidebar").toggleClass("toggled");
         if ($(".sidebar").hasClass("toggled")) {
             $('.sidebar .collapse').collapse('hide');

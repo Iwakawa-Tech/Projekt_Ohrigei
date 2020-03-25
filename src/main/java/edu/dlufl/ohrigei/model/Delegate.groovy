@@ -7,6 +7,7 @@ class Delegate {
     private String committeeName
     private int committeeID
     private String schoolName
+    private int applicationStatusID
     private String applicationType
     private String applicationStatus
     private String phone
@@ -109,6 +110,14 @@ class Delegate {
 
     void setGroupID(Integer groupID) {
         this.groupID = groupID
+    }
+
+    int getApplicationStatusID() {
+        return applicationStatusID
+    }
+
+    void setApplicationStatusID(int applicationStatusID) {
+        this.applicationStatusID = applicationStatusID
     }
 
     @Override

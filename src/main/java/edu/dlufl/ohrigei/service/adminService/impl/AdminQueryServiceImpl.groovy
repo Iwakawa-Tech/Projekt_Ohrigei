@@ -1,12 +1,15 @@
 package edu.dlufl.ohrigei.service.adminService.impl
 
+import com.alibaba.fastjson.JSONObject
 import edu.dlufl.ohrigei.dao.AdminDao
 import edu.dlufl.ohrigei.model.Admin
+import edu.dlufl.ohrigei.model.ApplicationStatus
 import edu.dlufl.ohrigei.model.Committee
 import edu.dlufl.ohrigei.model.Delegate
 import edu.dlufl.ohrigei.model.Group
 import edu.dlufl.ohrigei.model.School
 import edu.dlufl.ohrigei.model.SchoolType
+import edu.dlufl.ohrigei.model.Seat
 import edu.dlufl.ohrigei.service.adminService.service.AdminQueryService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -149,4 +152,24 @@ class AdminQueryServiceImpl implements AdminQueryService {
         return "admin/AddSchool"
     }
 
+    @Override
+    String queryAllSeat(Model model) {
+        List<Seat> seatList=adminDao.queryAllSeat()
+        model.addAttribute("seatList",seatList)
+        return "admin/AllSeatList"
+    }
+
+    @Override
+    List<JSONObject> getApplyStatusList() {
+        List<ApplicationStatus>applicationStatusList=adminDao.queryAllApplicationStatus()
+        List<JSONObject> jsonObjectList= new ArrayList<>()
+        for (int n=0;n<applicationStatusList.size();n++){
+            jsonObjectList.add(new JSONObject())
+        }
+        for (int i=0;i<applicationStatusList.size();i++){
+            jsonObjectList[i].put("id",applicationStatusList[i].id)
+            jsonObjectList[i].put("text",applicationStatusList[i].applicationStatusText)
+        }
+        return jsonObjectList
+    }
 }

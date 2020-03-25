@@ -1,6 +1,6 @@
 package edu.dlufl.ohrigei.service.adminService.service
 
-
+import com.alibaba.fastjson.JSONObject
 import edu.dlufl.ohrigei.model.Committee
 import edu.dlufl.ohrigei.model.Group
 import org.springframework.stereotype.Service
@@ -17,6 +17,7 @@ interface AdminQueryService {
     String queryAllDelegateAndSchool(Model model)
     String queryAllGroup(Model model)
     String queryAllSchool(Model model)
+    String queryAllSeat(Model model)
     String queryGroupById(Model model,String id)
     String queryDelegateByGroupId(Model model,String groupID)
     String queryMemberByID(Model model,int id)
@@ -24,4 +25,5 @@ interface AdminQueryService {
     String queryAdminIDAndName(Model model)
     String queryAllCommittee(Model model)
     String queryCommitteeIDAndName(Model model)
+    List<JSONObject> getApplyStatusList()
 }

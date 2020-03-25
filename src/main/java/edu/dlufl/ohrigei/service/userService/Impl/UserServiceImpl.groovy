@@ -1,6 +1,7 @@
 package edu.dlufl.ohrigei.service.userService.Impl
 
 import edu.dlufl.ohrigei.dao.UserDao
+import edu.dlufl.ohrigei.model.Delegate
 import edu.dlufl.ohrigei.model.User
 import edu.dlufl.ohrigei.service.userService.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
@@ -30,7 +31,7 @@ class UserServiceImpl implements UserService, UserDetailsService {
             user.setPassword(password)
             userDao.userSignUp(user)
             userDao.insertDelegate(user)
-            return "login"
+            return "/login"
         }
     }
     @Override
@@ -42,5 +43,12 @@ class UserServiceImpl implements UserService, UserDetailsService {
             throw new LockedException("账户不可用")
         }
         return user
+    }
+
+    @Override
+    String userProfile(Model model, String id) {
+        Delegate delegate=userDao.getDelegateInfo(Integer.parseInt(id))
+        model.addAttribute("delegate",delegate)
+        return "user/UserPersonalProfile"
     }
 }

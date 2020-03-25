@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import edu.dlufl.ohrigei.dao.UserDao
 import edu.dlufl.ohrigei.model.Admin
+import edu.dlufl.ohrigei.model.Seat
 import edu.dlufl.ohrigei.model.User
 import edu.dlufl.ohrigei.service.adminService.service.AdminAddService
 import edu.dlufl.ohrigei.service.adminService.service.AdminCountService
@@ -140,6 +141,10 @@ class AdminController {
     String allSchoolList(Model model) {
         adminQueryService.queryAllSchool(model)
     }
+    @RequestMapping("/allSeatList")
+    String allSeatList(Model model){
+        return adminQueryService.queryAllSeat(model)
+    }
 
     @RequestMapping(value = "/addGroup", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ResponseBody
@@ -194,7 +199,7 @@ class AdminController {
     JSONObject addSchool(HttpServletRequest request) {
         adminAddService.addSchool(request)
     }
-    @RequestMapping(value = '/addCommittee',method = RequestMethod.POST)
+    @RequestMapping(value = "/addCommittee",method = RequestMethod.POST)
     @ResponseBody
     JSONObject addCommittee(HttpServletRequest request){
       return   adminAddService.addCommittee(request)
@@ -204,5 +209,11 @@ class AdminController {
     @ResponseBody
     JSONObject addSeat(HttpServletRequest request){
         return adminAddService.addSeat(request)
+    }
+
+    @RequestMapping(value = "/getApplicationStatusList",method = RequestMethod.GET)
+    @ResponseBody
+    List<JSONObject> getApplyStatusList(){
+        return adminQueryService.getApplyStatusList()
     }
 }

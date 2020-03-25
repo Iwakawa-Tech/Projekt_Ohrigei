@@ -7,4 +7,5 @@ import org.springframework.ui.Model;
 @Service
 public interface UserService {
     String userSignUp(User user,Model model);
+    String userProfile(Model model,String id);
 }

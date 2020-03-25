@@ -29,17 +29,9 @@ public class IndexController {
         }
         return "allUser/index";
     }
-    @RequestMapping("/testIndex")
-    public String testIndex(Model model,HttpSession httpSession){
-        return adminCountService.countDelegate(model,httpSession);
-    }
     @RequestMapping("/testUpload")
     public String testUpload(){
         return "allUser/testUpload";
-    }
-    @RequestMapping("/header")
-    public String header(){
-        return "adminHeader";
     }
     @RequestMapping("/question")
     public String question(){

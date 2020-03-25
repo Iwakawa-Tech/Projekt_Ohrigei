@@ -1,19 +1,23 @@
 <!DOCTYPE html>
-<html lang="zh-cn" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="../js/jquery-3.4.1.min.js"></script>
-    <script src="../js/sb-admin-2.js"></script>
     <script src="../js/popper.min.js"></script>
     <script src="../js/bootstrap.js"></script>
+    <script src="../js/sb-admin-2.js"></script>
+    <script src="../js/cropper.js"></script>
     <script src="../js/jquery.easing.js"></script>
-    <script src="../js/echarts.min.js"></script>
+    <script src="../js/jquery-cropper.js"></script>
     <script src="../js/bootstrap.bundle.min.js"></script>
+    <script src="../js/bootstrap-select.js"></script>
+    <script src="../js/bootstrap-select-defaults-zh_CN.js"></script>
     <link href="../css/bootstrap.css" rel="stylesheet">
     <link href="../css/sb-admin-2.css" rel="stylesheet">
     <link href="../css/font-awesome.css" rel="stylesheet">
-    <link href="../css/googleapis.css" rel="stylesheet">
+    <link href="../css/cropper.css" rel="stylesheet">
+    <link href="../css/bootstrap-select.css" rel="stylesheet">
     <title>DashBoard-Гулаш&nbsp;система&nbsp;会议管理系统</title>
 </head>
 <body id="page-top">
@@ -36,7 +40,7 @@
         <hr class="sidebar-divider my-0">
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" th:href="@{/user/index}">
                 <i class="fa fa-fw fa-tachometer"></i>
                 <span>Dashboard</span></a>
         </li>
@@ -51,44 +55,18 @@
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
-               aria-expanded="true" aria-controls="collapseTwo">
+            <a class="nav-link collapsed" href="#">
                 <i class="fa fa-fw fa-user"></i>
-                <span>人员管理</span>
+                <span>申请状态</span>
             </a>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">代表管理：</h6>
-                    <a class="collapse-item" th:href="@{/admin/manage(type=delegate)}">参会代表</a>
-                    <a class="collapse-item" th:href="@{/admin/manage(type=teacher)}">指导教师</a>
-                    <a class="collapse-item" th:href="@{/admin/manage(type=observer)}">观察员</a>
-                    <a class="collapse-item" th:href="@{/admin/manage(type=leader)}">领队</a>
-                    <div class="collapse-divider"></div>
-                    <h6 class="collapse-header">管理员管理：</h6>
-                    <a class="collapse-item" th:href="@{/admin/manage(type=admin)}">管理员列表</a>
-                    <a class="collapse-item" th:href="@{/admin/addAdmin}">添加管理员</a>
-                </div>
-            </div>
         </li>
 
         <!-- Nav Item - Utilities Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseInterview"
-               aria-expanded="true" aria-controls="collapseInterview">
+            <a class="nav-link collapsed" href="#">
                 <i class="fa fa-fw fa-wrench"></i>
-                <span>面试管理</span>
+                <span>个人资料</span>
             </a>
-            <div id="collapseInterview" class="collapse" aria-labelledby="headingInterview"
-                 data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="utilities-color.html">全部面试</a>
-                    <a class="collapse-item" href="utilities-border.html">全部未完成面试</a>
-                    <h6 class="collapse-header">我分配的面试：</h6>
-                    <a class="collapse-item" href="utilities-animation.html">面试队列</a>
-                    <a class="collapse-item" href="utilities-other.html">未完成面试</a>
-                    <a class="collapse-item" href="utilities-other.html">已完成面试</a>
-                </div>
-            </div>
         </li>
 
         <!-- Divider -->
@@ -101,74 +79,45 @@
 
         <!-- Nav Item - Committee Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseCommittee"
-               aria-expanded="true" aria-controls="collapseCommittee">
+            <a class="nav-link collapsed" href="#">
                 <i class="fa fa-fw fa-folder"></i>
-                <span>代表团管理</span>
+                <span>面试信息</span>
             </a>
-            <div id="collapseCommittee" class="collapse" aria-labelledby="headingCommittee" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="#">代表团列表</a>
-                    <a class="collapse-item" href="#">添加代表团</a>
-                </div>
-            </div>
         </li>
         <!-- Nav Item - Seat Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSeat"
-               aria-expanded="true" aria-controls="collapsePages">
+            <a class="nav-link collapsed" href="#">
                 <i class="fa fa-fw fa-folder"></i>
-                <span>席位管理</span>
+                <span>席位信息</span>
             </a>
-            <div id="collapseSeat" class="collapse" aria-labelledby="headingSeat" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="#">全部席位</a>
-                    <a class="collapse-item" href="#">添加席位</a>
-                </div>
-            </div>
+
         </li>
         <!-- Nav Item - Action Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAct"
-               aria-expanded="true" aria-controls="collapseAct">
+            <a class="nav-link collapsed" href="#">
                 <i class="fa fa-fw fa-folder"></i>
-                <span>活动管理</span>
+                <span>面试</span>
             </a>
-            <div id="collapseAct" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="#">发起活动</a>
-                    <a class="collapse-item" href="#">全部活动</a>
-                    <a class="collapse-item" href="#">管理已发起的活动</a>
-                    <a class="collapse-item" href="#">已取消的活动</a>
-                </div>
-            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="#">
+                <i class="fa fa-fw fa-folder"></i>
+                <span>学术测试</span>
+            </a>
         </li>
         <!-- Nav Item - File -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFile"
-               aria-expanded="true" aria-controls="collapseFile">
+            <a class="nav-link collapsed" href="#">
                 <i class="fa fa-fw fa-file"></i>
                 <span>文件</span>
             </a>
-            <div id="collapseFile" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="#">全部文件</a>
-                    <a class="collapse-item" href="#">发布文件</a>
-                </div>
-            </div>
         </li>
         <!-- Nav Item - Util -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtil" aria-expanded="true" aria-controls="collapseUtil">
+            <a class="nav-link collapsed" href="#">
                 <i class="fa fa-fw fa-wrench"></i>
-                <span>工具列表</span>
+                <span>账单</span>
             </a>
-            <div id="collapseUtil" class="collapse" aria-labelledby="headingUtil" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="#">统计图表</a>
-                    <a class="collapse-item" href="#">导出信息</a>
-                </div>
-            </div>
         </li>
         <!-- Nav Item - Tables -->
         <li class="nav-item">
@@ -367,13 +316,13 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">test User</span>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text="${session.USER_INFO.name}">test User</span>
                             <img class="img-profile rounded-circle" src="../img/head/test.png">
                         </a>
                         <!-- Dropdown - User Information -->
                         <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                              aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" th:href="@{/user/userProfile(id=${session.USER_INFO.id})}">
                                 <i class="fa fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 个人资料
                             </a>
