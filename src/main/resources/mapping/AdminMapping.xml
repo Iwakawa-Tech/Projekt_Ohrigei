@@ -68,6 +68,14 @@
         <result column="application_status_text" property="applicationStatusText"/>
         <result column="application_status_text_en" property="applicationStatusTextEN"/>
     </resultMap>
+    <resultMap id="Interview" type="edu.dlufl.ohrigei.model.Interview">
+        <result column="id" property="id"/>
+        <result column="admin_id" property="adminID"/>
+        <result column="date" property="date"/>
+        <result column="interview_point" property="interviewPoint"/>
+        <result column="interview_status" property="interviewStatus"/>
+        <result column="comment" property="comment"/>
+    </resultMap>
     <!--    select-->
     <select id="queryAllMember" resultMap="Delegate">
         SELECT ohrigei.user.id,
@@ -170,7 +178,9 @@
         WHERE committee_ID = #{committeeID}
     </select>
     <select id="committeeWidthSizeGet" resultType="int">
-        SELECT seat_width FROM committee WHERE id=#{committeeID}
+        SELECT seat_width
+        FROM committee
+        WHERE id = #{committeeID}
     </select>
     <select id="queryAllSchool" resultMap="School">
         SELECT school_info.id, school_name, school_name_EN, school_address, size, club_ID, school_type
@@ -218,10 +228,75 @@
         WHERE role_ID = 1
     </select>
     <select id="queryAllSeat" resultMap="Seat">
-        SELECT seat.id,seat_name,committee_ID,seat_difficulty,committee_name FROM seat,committee WHERE committee_ID=committee.id
+        SELECT seat.id, seat_name, committee_ID, seat_difficulty, committee_name
+        FROM seat,
+             committee
+        WHERE committee_ID = committee.id
     </select>
     <select id="queryAllApplicationStatus" resultMap="ApplicationStatus">
-        SELECT * FROM application_status
+        SELECT *
+        FROM application_status
+    </select>
+    <select id="queryAdminCanInterview" resultMap="Admin">
+        SELECT ohrigei.user.id,
+               ohrigei.user.name,
+               admin.title,
+               ohrigei.committee.committee_name,
+               ohrigei.admin.role_AG,
+               ohrigei.admin.role_AD,
+               ohrigei.admin.role_D,
+               ohrigei.admin.role_F,
+               ohrigei.admin.role_L,
+               ohrigei.admin.role_SG
+        from ohrigei.user
+                 LEFT JOIN ohrigei.admin ON ohrigei.user.id = admin.id
+                 LEFT JOIN ohrigei.committee ON ohrigei.admin.committee_ID = ohrigei.committee.id
+        where role_ID = 1
+          AND (admin.role_AD = 1 OR admin.role_AG = 1)
+    </select>
+    <select id="queryDelegate" resultMap="Delegate">
+        SELECT ohrigei.user.id,
+               ohrigei.user.name,
+               ohrigei.user.enable_login,
+               ohrigei.user.email,
+               ohrigei.user.phone,
+               ohrigei.delegate.group_ID,
+               ohrigei.school_info.school_name,
+               ohrigei.application_type.application_type,
+               ohrigei.application_status.application_status_text
+        FROM ohrigei.delegate
+                 left join user on delegate.id = ohrigei.user.id
+                 left join `group` on delegate.group_ID = `group`.id
+                 left join school_info on ohrigei.group.school_ID = school_info.id
+                 left join application_type on application_type.id = delegate.application_type_ID
+                 left join application_status on application_status.id = delegate.application_status_ID
+        WHERE ohrigei.delegate.role_ID = 1
+          AND user.id not IN (SELECT id from interview_info)
+    </select>
+    <select id="queryAllInterview" resultMap="Interview">
+        SELECT *
+        FROM interview_info
+    </select>
+    <select id="getNameByID" resultType="string" >
+        SELECT name
+        FROM user
+        where id = #{id}
+    </select>
+    <select id="queryInterviewUndone" resultMap="Interview">
+        SELECT *
+        FROM interview_info
+        where interview_status = #{interviewStatus}
+    </select>
+    <select id="queryInterviewAssignToMe" resultMap="Interview">
+        SELECT *
+        FROM interview_info
+        WHERE admin_id = #{id}
+    </select>
+    <select id="queryInterviewAssignToMeDoneOrUndone" resultMap="Interview">
+        SELECT *
+        FROM interview_info
+        WHERE admin_id = #{param1}
+          AND interview_status = #{param2}
     </select>
     <!--    insert-->
 
@@ -249,6 +324,10 @@
         INSERT INTO seat(seat_name, committee_ID, seat_difficulty)
         VALUES (#{param1}, #{param2}, #{param3})
     </insert>
+    <insert id="addInterview">
+        INSERT INTO interview_info(id, admin_id, date)
+        VALUES (#{param1}, #{param2}, #{param3})
+    </insert>
     <!--    update-->
 
     <update id="modifyGroup">
@@ -266,6 +345,11 @@
     <update id="modifyLoginStatusById">
         UPDATE `ohrigei`.`user`
         SET `user`.enable_login=#{param2}
+        WHERE `id` = #{param1}
+    </update>
+    <update id="modifyApplicationStatus">
+        UPDATE delegate
+        SET application_status_ID=#{param2}
         WHERE `id` = #{param1}
     </update>
 </mapper>

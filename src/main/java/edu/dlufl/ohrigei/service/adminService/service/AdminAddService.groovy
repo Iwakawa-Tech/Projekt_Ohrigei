@@ -19,4 +19,6 @@ interface AdminAddService {
     JSONObject addCommittee(HttpServletRequest request)
 
     JSONObject addSeat(HttpServletRequest request)
+
+    JSONObject addInterview(HttpServletRequest request)
 }

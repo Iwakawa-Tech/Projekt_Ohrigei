@@ -2,14 +2,7 @@ package edu.dlufl.ohrigei.service.adminService.impl
 
 import com.alibaba.fastjson.JSONObject
 import edu.dlufl.ohrigei.dao.AdminDao
-import edu.dlufl.ohrigei.model.Admin
-import edu.dlufl.ohrigei.model.ApplicationStatus
-import edu.dlufl.ohrigei.model.Committee
-import edu.dlufl.ohrigei.model.Delegate
-import edu.dlufl.ohrigei.model.Group
-import edu.dlufl.ohrigei.model.School
-import edu.dlufl.ohrigei.model.SchoolType
-import edu.dlufl.ohrigei.model.Seat
+import edu.dlufl.ohrigei.model.*
 import edu.dlufl.ohrigei.service.adminService.service.AdminQueryService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -58,7 +51,7 @@ class AdminQueryServiceImpl implements AdminQueryService {
     @Override
     String queryAllCommittee(Model model) {
         List<Committee> committeeList = adminDao.queryAllCommittee()
-        model.addAttribute("committeeList",committeeList)
+        model.addAttribute("committeeList", committeeList)
         return "admin/AllCommitteeList"
     }
 
@@ -71,8 +64,8 @@ class AdminQueryServiceImpl implements AdminQueryService {
 
     @Override
     String queryCommitteeIDAndName(Model model) {
-        List<Committee> committeeList=adminDao.queryCommitteeIDAndName()
-        model.addAttribute("committeeList",committeeList)
+        List<Committee> committeeList = adminDao.queryCommitteeIDAndName()
+        model.addAttribute("committeeList", committeeList)
         return "admin/AddSeat"
     }
 
@@ -154,22 +147,70 @@ class AdminQueryServiceImpl implements AdminQueryService {
 
     @Override
     String queryAllSeat(Model model) {
-        List<Seat> seatList=adminDao.queryAllSeat()
-        model.addAttribute("seatList",seatList)
+        List<Seat> seatList = adminDao.queryAllSeat()
+        model.addAttribute("seatList", seatList)
         return "admin/AllSeatList"
     }
 
     @Override
     List<JSONObject> getApplyStatusList() {
-        List<ApplicationStatus>applicationStatusList=adminDao.queryAllApplicationStatus()
-        List<JSONObject> jsonObjectList= new ArrayList<>()
-        for (int n=0;n<applicationStatusList.size();n++){
+        List<ApplicationStatus> applicationStatusList = adminDao.queryAllApplicationStatus()
+        List<JSONObject> jsonObjectList = new ArrayList<>()
+        for (int n = 0; n < applicationStatusList.size(); n++) {
             jsonObjectList.add(new JSONObject())
         }
-        for (int i=0;i<applicationStatusList.size();i++){
-            jsonObjectList[i].put("id",applicationStatusList[i].id)
-            jsonObjectList[i].put("text",applicationStatusList[i].applicationStatusText)
+        for (int i = 0; i < applicationStatusList.size(); i++) {
+            jsonObjectList[i].put("id", applicationStatusList[i].id)
+            jsonObjectList[i].put("text", applicationStatusList[i].applicationStatusText)
         }
         return jsonObjectList
+    }
+
+    @Override
+    String queryDelegateAndAdmin(Model model) {
+        List<Admin> adminList = adminDao.queryAdminCanInterview()
+        List<Delegate> delegateList = adminDao.queryDelegate()
+        model.addAttribute("adminList", adminList)
+        model.addAttribute("delegateList", delegateList)
+        return "admin/AddInterview"
+    }
+
+    @Override
+    String queryInterviewList(Model model, HttpSession session, String type) {
+        User user = session.getAttribute("USER_INFO") as User
+        int id = user.getId()
+        switch (type) {
+            case "all":
+                List<Interview> interviewList = addNameIntoList(adminDao.queryAllInterview())
+                model.addAttribute("interviewList", interviewList)
+                break
+            case "undone":
+                List<Interview> interviewList = addNameIntoList(adminDao.queryInterviewUndone(false))
+                model.addAttribute("interviewList", interviewList)
+                break
+            case "assignToMe":
+                List<Interview> interviewList = addNameIntoList(adminDao.queryInterviewAssignToMe(id))
+                model.addAttribute("interviewList", interviewList)
+                break
+            case "undoneByMe":
+                List<Interview> interviewList = addNameIntoList(adminDao.queryInterviewAssignToMeDoneOrUndone(id, false))
+                model.addAttribute("interviewList", interviewList)
+                break
+            case "doneByMe":
+                List<Interview> interviewList = addNameIntoList(adminDao.queryInterviewAssignToMeDoneOrUndone(id, true))
+                model.addAttribute("interviewList", interviewList)
+                break
+        }
+        return "admin/AllInterviewList"
+    }
+
+    List<Interview> addNameIntoList(List<Interview> interviewList) {
+        for (int i = 0; i < interviewList.size(); i++) {
+            String delegateName = adminDao.getNameByID(interviewList[i].getId())
+            interviewList[i].setDelegateName(delegateName)
+            String adminName = adminDao.getNameByID(interviewList[i].getAdminID())
+            interviewList[i].setAdminName(adminName)
+        }
+        return interviewList
     }
 }

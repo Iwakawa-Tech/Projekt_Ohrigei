@@ -50,4 +50,19 @@ class AdminModifyServiceImpl implements AdminModifyService {
         }
         return jsonObject
     }
+
+    @Override
+    JSONObject modifyApplicationStatus(HttpServletRequest request) {
+        JSONObject jsonObject=new JSONObject()
+        int id=request.getParameter("id") as int
+        int applicationID=request.getParameter("applicationStatus") as int
+        try {
+            adminDao.modifyApplicationStatus(id,applicationID)
+            jsonObject.put("status","SUCCESS")
+        }
+        catch (Exception ignored){
+            jsonObject.put("status","ERROR")
+        }
+        return null
+    }
 }

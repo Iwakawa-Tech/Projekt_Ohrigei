@@ -9,4 +9,5 @@ import javax.servlet.http.HttpServletRequest
 interface AdminModifyService {
     JSONObject modifyGroup(int schoolID, Integer headDelegateID, int size, int GroupID)
     JSONObject modifyLoginStatus(HttpServletRequest request)
+    JSONObject modifyApplicationStatus(HttpServletRequest request)
 }

@@ -74,9 +74,9 @@
                                         onclick="editApplication()"><i class="fa fa-edit"></i></button>
                                 <div id="applicationSelectGroup" hidden="hidden">
                                     <select id="applicationStatusSelect" title="选择一个申请状态"></select>
-                                    <button id="cancelApplicationStatusEdit" class="btn btn-secondary"><i
+                                    <button id="cancelApplicationStatusEdit" class="btn btn-secondary" onclick="cancelEditApplication()"><i
                                             class="fa fa-times"></i></button>
-                                    <button id="submitApplicationStatusEdit" class="btn btn-primary"><i
+                                    <button id="submitApplicationStatusEdit" class="btn btn-primary" onclick="submitEditApplication()"><i
                                             class="fa fa-check"></i></button>
                                 </div>
                             </td>
@@ -158,25 +158,55 @@
             })
         }
     }
-
     function editApplication() {
         $('#applicationStatus').attr('hidden', 'hidden');
         $('#applicationStatusButton').attr('hidden', 'hidden');
         $('#applicationSelectGroup').removeAttr('hidden');
-        $.ajax({
-            url: '/admin/getApplicationStatusList',
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                for (var i = 0; i < data.length; i++) {
-                    $('#applicationStatusSelect').append("<option value=" + data[i].id + ">" + data[i].text + "</option>")
+        var count=0;
+        if(count === 0){
+            $.ajax({
+                url: '/admin/getApplicationStatusList',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        $('#applicationStatusSelect').append("<option value=" + data[i].id + ">" + data[i].text + "</option>")
+                    }
+                    $('#applicationStatusSelect').selectpicker('refresh');
+                    $('#applicationStatusSelect').selectpicker('render');
+                    count=count+1
                 }
-                $('#applicationStatusSelect').selectpicker('refresh');
-                $('#applicationStatusSelect').selectpicker('render');
-            }
-        });
-    }
+            });
+        }
 
+    }
+    function cancelEditApplication(){
+        $('#applicationStatus').removeAttr('hidden');
+        $('#applicationStatusButton').removeAttr('hidden');
+        $('#applicationSelectGroup').attr('hidden','hidden');
+    }
+    function submitEditApplication(){
+        var id=[[${delegate.ID}]];
+        var applicationStatus= $('#applicationStatusSelect').val();
+        $.ajax({
+            url:'/admin/modifyApplicationStatus',
+            type:'POST',
+            dataType:'json',
+            data:{
+                'id':id,
+                'applicationStatus':applicationStatus
+            },
+            success:function (data) {
+                if (data['status']==='SUCCESS'){
+                    alert('修改申请状态成功');
+                    window.location.reload()
+                }else{
+                    alert('修改申请状态失败');
+                    window.location.reload()
+                }
+            }
+        })
+    }
     $(function () {
         $('#applicationStatusSelect').selectpicker(
             {

@@ -89,18 +89,20 @@ class AdminController {
     }
 
     @RequestMapping("/addCommitteePage")
-    String addCommitteePage(Model model){
+    String addCommitteePage(Model model) {
         adminQueryService.queryAdminIDAndName(model)
     }
 
     @RequestMapping("/committeeListPage")
-    String committeeList(Model model){
+    String committeeList(Model model) {
         return adminQueryService.queryAllCommittee(model)
     }
+
     @RequestMapping("/addSeatPage")
-    String addSeatPage(Model model){
+    String addSeatPage(Model model) {
         return adminQueryService.queryCommitteeIDAndName(model)
     }
+
     @RequestMapping("/adminDetail")
     String adminDetail(Model model, HttpSession httpSession, String id) {
         return adminDetailService.adminDetail(httpSession, model, id)
@@ -141,79 +143,19 @@ class AdminController {
     String allSchoolList(Model model) {
         adminQueryService.queryAllSchool(model)
     }
+
     @RequestMapping("/allSeatList")
-    String allSeatList(Model model){
+    String allSeatList(Model model) {
         return adminQueryService.queryAllSeat(model)
     }
 
-    @RequestMapping(value = "/addGroup", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    @ResponseBody
-    JSONObject addGroup(HttpServletRequest request, HttpServletResponse response) {
-        Integer headDelegateID
-        if (request.getParameter("headDelegateID") == '' || request.getParameter("headDelegateID") == null) {
-            headDelegateID = null
-        } else {
-            headDelegateID = Integer.parseInt(request.getParameter("headDelegateID"))
-        }
-        int schoolID = request.getParameter("schoolID") as int
-        int size = request.getParameter("groupSize") as int
-        return adminAddService.addGroup(schoolID, headDelegateID, size)
+    @RequestMapping("/addInterview")
+    String addInterview(Model model) {
+        return adminQueryService.queryDelegateAndAdmin(model)
     }
 
-    @RequestMapping(value = "/modifyGroup", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    @ResponseBody
-    JSONObject modifyGroup(HttpServletRequest request) {
-        Integer headDelegateID
-        if (request.getParameter("headDelegateID") == '' || request.getParameter("headDelegateID") == null) {
-            headDelegateID = null
-        } else {
-            headDelegateID = Integer.parseInt(request.getParameter("headDelegateID"))
-        }
-        int schoolID = request.getParameter("schoolID") as int
-        int size = request.getParameter("groupSize") as int
-        int groupID = request.getParameter("groupID") as int
-        return adminModifyService.modifyGroup(schoolID, headDelegateID, size, groupID)
-    }
-
-    @RequestMapping(value = "/deleteGroup", method = RequestMethod.POST)
-    @ResponseBody
-    JSONObject deleteGroup(HttpServletRequest request) {
-        int groupID = request.getParameter("groupID") as int
-        return adminDeleteService.deleteGroup(groupID)
-    }
-
-    @RequestMapping(value = "/addAdmin", method = RequestMethod.POST)
-    @ResponseBody
-    JSONObject addAdmin(HttpServletRequest request) {
-        return adminAddService.addAdmin(request)
-    }
-
-    @RequestMapping(value = "/modifyUserLoginStatus", method = RequestMethod.POST)
-    @ResponseBody
-    JSONObject modifyLoginStatus(HttpServletRequest request) {
-        adminModifyService.modifyLoginStatus(request)
-    }
-
-    @RequestMapping(value = "/addSchool", method = RequestMethod.POST)
-    @ResponseBody
-    JSONObject addSchool(HttpServletRequest request) {
-        adminAddService.addSchool(request)
-    }
-    @RequestMapping(value = "/addCommittee",method = RequestMethod.POST)
-    @ResponseBody
-    JSONObject addCommittee(HttpServletRequest request){
-      return   adminAddService.addCommittee(request)
-    }
-
-    @RequestMapping(value = "/addSeat",method = RequestMethod.POST)
-    @ResponseBody
-    JSONObject addSeat(HttpServletRequest request){
-        return adminAddService.addSeat(request)
-    }
-
-    @RequestMapping(value = "/getApplicationStatusList",method = RequestMethod.GET)
-    @ResponseBody
-    List<JSONObject> getApplyStatusList(){
-        return adminQueryService.getApplyStatusList()
+    @RequestMapping("/interviewList")
+    String interviewList(Model model,HttpSession session,String type){
+        return adminQueryService.queryInterviewList(model,session,type)
     }
 }

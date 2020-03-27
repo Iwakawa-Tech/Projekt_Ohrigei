@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
 import javax.servlet.http.HttpServletRequest
+import java.text.SimpleDateFormat
 
 @Service("AdminAddService")
 class AdminAddServiceImpl implements AdminAddService {
@@ -134,6 +135,24 @@ class AdminAddServiceImpl implements AdminAddService {
             jsonObject.put("errorText","委员会席位已满")
         }
 
+        return jsonObject
+    }
+
+    @Override
+    JSONObject addInterview(HttpServletRequest request) {
+        JSONObject jsonObject=new JSONObject()
+        SimpleDateFormat dateFormat=new SimpleDateFormat(("yyyy-MM-dd HH:mm:ss"))
+        String dateData=request.getParameter("interviewDate").replace("T"," ")
+        int delegateID=request.getParameter("delegateID") as int
+        int adminID=request.getParameter("adminID") as int
+        Date date = dateFormat.parse(dateData)
+        try {
+            adminDao.addInterview(delegateID,adminID,date)
+            jsonObject.put("status","SUCCESS")
+        }
+        catch (Exception ignored){
+            jsonObject.put("status","ERROR")
+        }
         return jsonObject
     }
 }
