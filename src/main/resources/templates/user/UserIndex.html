@@ -46,7 +46,7 @@
                 <div class="card">
                     <div class="card-header">申请状态</div>
                     <div class="card-body">
-                        <span>申请状态描述————————</span>
+                        <span th:text="${description}"></span>
                     </div>
                 </div>
             </div>
@@ -73,7 +73,7 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <a th:href="@{/user/UserProfile(id=${delegateInfo.ID})}"><i class="fa fa-edit"></i>编辑信息</a>
+                            <a th:href="@{/user/userProfile(id=${delegateInfo.ID})}"><i class="fa fa-edit"></i>编辑信息</a>
                         </div>
                     </div>
                 </div>

@@ -213,4 +213,36 @@ class AdminQueryServiceImpl implements AdminQueryService {
         }
         return interviewList
     }
+
+    @Override
+    String queryInterviewByID(Model model, String id) {
+        Interview interview=adminDao.queryInterviewByID(Integer.parseInt(id))
+        interview.setDelegateName(adminDao.getNameByID(interview.getId()))
+        interview.setAdminName(adminDao.getNameByID(interview.getAdminID()))
+        model.addAttribute("interview",interview)
+        return "admin/InterviewDetail"
+    }
+
+    @Override
+    String queryBillList(Model model,String type) {
+        switch (type){
+            case "all":
+                List<Bill> billList=adminDao.queryAllBillList()
+                model.addAttribute("billList",billList)
+                break
+            case "paid":
+                List<Bill> billList=adminDao.queryBillList(true)
+                model.addAttribute("billList",billList)
+                break
+            case "unpaid":
+                List<Bill> billList=adminDao.queryBillList(false)
+                model.addAttribute("billList",billList)
+                break
+            default:
+                List<Bill> billList=adminDao.queryAllBillList()
+                model.addAttribute("billList",billList)
+                break
+        }
+        return "admin/AllBillList"
+    }
 }

@@ -27,6 +27,8 @@ class UserController {
     String toIndex(Model model, Authentication authentication, HttpSession session) {
         User user = userDao.getUserByEmail(authentication.getName());
         Delegate userInfo = userDao.getDelegateInfo(user.getId());
+        String description =userDao.getDescription(userInfo.getApplicationStatusID())
+        model.addAttribute("description",description)
         model.addAttribute("delegateInfo", userInfo);
         session.setAttribute("USER_INFO", user);
         return "/user/UserIndex";
@@ -40,5 +42,9 @@ class UserController {
     @RequestMapping("/userProfile")
     String userProfile(Model model,String id) {
         return userService.userProfile(model,id)
+    }
+    @RequestMapping("/userInterviewDetail")
+    String userInterviewDetail(Model model,String id,HttpSession session){
+        return userService.userInterviewDetail(model,id,session)
     }
 }

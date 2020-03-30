@@ -162,6 +162,21 @@
                     </div>
                 </div>
             </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBill"
+                   aria-expanded="true" aria-controls="collapseBill">
+                    <i class="fa fa-fw fa-folder"></i>
+                    <span>账单管理</span>
+                </a>
+                <div id="collapseBill" class="collapse" aria-labelledby="headingBill"
+                     data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" th:href="@{/admin/allBillList(type=all)}">全部账单</a>
+                        <a class="collapse-item" th:href="@{/admin/allBillList(type=unpaid)}">未支付账单</a>
+                        <a class="collapse-item" th:href="@{/admin/allBillList(type=paid)}">已支付账单</a>
+                    </div>
+                </div>
+            </li>
             <!-- Nav Item - Action Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAct"

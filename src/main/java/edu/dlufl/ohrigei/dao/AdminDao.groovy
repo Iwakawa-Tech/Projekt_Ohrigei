@@ -2,6 +2,7 @@ package edu.dlufl.ohrigei.dao
 
 import edu.dlufl.ohrigei.model.Admin
 import edu.dlufl.ohrigei.model.ApplicationStatus
+import edu.dlufl.ohrigei.model.Bill
 import edu.dlufl.ohrigei.model.Committee
 import edu.dlufl.ohrigei.model.Delegate
 import edu.dlufl.ohrigei.model.Group
@@ -76,9 +77,36 @@ interface AdminDao {
     List<Delegate> queryDelegate()
 
     int addInterview(int delegateID, int adminID, Date interviewDate)
+
     List<Interview> queryAllInterview()
+
     List<Interview> queryInterviewUndone(boolean interviewStatus)
+
     List<Interview> queryInterviewAssignToMe(int id)
-    List<Interview> queryInterviewAssignToMeDoneOrUndone(int id,boolean interviewStatus)
+
+    List<Interview> queryInterviewAssignToMeDoneOrUndone(int id, boolean interviewStatus)
+
     String getNameByID(int id)
+
+    Interview queryInterviewByID(int id)
+
+    int modifyInterviewScore(int id, int academicScore, int passionScore, float totalScore)
+
+    int modifyInterviewDate(int id, String newDate)
+
+    int modifyInterviewStatus(int id, boolean interviewStatus)
+
+    int modifyUserStatus(int id, int statusID)
+
+    int modifyInterviewComment(int id, String comment)
+
+    int creatBillCheck(int id)
+
+    int creatNewBill(int id, int typeID, String date, boolean billStatus)
+
+    int getRoleIDByID(int id)
+
+    List<Bill> queryAllBillList()
+
+    List<Bill> queryBillList(Boolean billStatus)
 }

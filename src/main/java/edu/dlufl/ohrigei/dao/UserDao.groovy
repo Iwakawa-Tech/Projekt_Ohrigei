@@ -1,8 +1,9 @@
 package edu.dlufl.ohrigei.dao
 
+import edu.dlufl.ohrigei.model.Admin
 import edu.dlufl.ohrigei.model.Delegate
+import edu.dlufl.ohrigei.model.Interview
 import edu.dlufl.ohrigei.model.User
-import org.apache.ibatis.annotations.Param
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -23,4 +24,10 @@ interface UserDao {
     User getUserByEmail(String email)
 
     Delegate getDelegateInfo(int id)
+
+    String getDescription(int id)
+
+    Interview getInterviewById(int id)
+
+    Admin getInterviewAdmin(int adminID)
 }

@@ -1,7 +1,9 @@
 package edu.dlufl.ohrigei.service.userService.Impl
 
 import edu.dlufl.ohrigei.dao.UserDao
+import edu.dlufl.ohrigei.model.Admin
 import edu.dlufl.ohrigei.model.Delegate
+import edu.dlufl.ohrigei.model.Interview
 import edu.dlufl.ohrigei.model.User
 import edu.dlufl.ohrigei.service.userService.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
@@ -12,6 +14,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.ui.Model
+
+import javax.servlet.http.HttpSession
 
 @Service("UserService")
 class UserServiceImpl implements UserService, UserDetailsService {
@@ -50,5 +54,26 @@ class UserServiceImpl implements UserService, UserDetailsService {
         Delegate delegate=userDao.getDelegateInfo(Integer.parseInt(id))
         model.addAttribute("delegate",delegate)
         return "user/UserPersonalProfile"
+    }
+
+    @Override
+    String userInterviewDetail(Model model, String id,HttpSession session) {
+        User user=session.getAttribute("USER_INFO") as User
+        if (user.getId()!=Integer.parseInt(id)){
+            String noInterview="看别人的面试信息不是好孩子哦"
+            model.addAttribute("noInterview",noInterview)
+        }else {
+            try {
+                Interview interview=userDao.getInterviewById(Integer.parseInt(id))
+                Admin admin=userDao.getInterviewAdmin(interview.getAdminID())
+                model.addAttribute("interview",interview)
+                model.addAttribute("admin",admin)
+            }
+            catch (NullPointerException ignored){
+                String noInterview="尚未分配面试，请联系管理员。"
+                model.addAttribute("noInterview",noInterview)
+            }
+        }
+        return "user/UserInterviewDetail"
     }
 }

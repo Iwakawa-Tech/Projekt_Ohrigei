@@ -38,24 +38,24 @@
 
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
-        <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
-            <a class="nav-link" th:href="@{/user/index}">
-                <i class="fa fa-fw fa-tachometer"></i>
-                <span>Dashboard</span></a>
-        </li>
+<!--        &lt;!&ndash; Nav Item - Dashboard &ndash;&gt;-->
+<!--        <li class="nav-item active">-->
+<!--            <a class="nav-link" th:href="@{/user/index}">-->
+<!--                <i class="fa fa-fw fa-tachometer"></i>-->
+<!--                <span>Dashboard</span></a>-->
+<!--        </li>-->
 
-        <!-- Divider -->
-        <hr class="sidebar-divider">
+<!--        &lt;!&ndash; Divider &ndash;&gt;-->
+<!--        <hr class="sidebar-divider">-->
 
-        <!-- Heading -->
-        <div class="sidebar-heading">
-            Interface
-        </div>
+<!--        &lt;!&ndash; Heading &ndash;&gt;-->
+<!--        <div class="sidebar-heading">-->
+<!--            Interface-->
+<!--        </div>-->
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#">
+        <li class="nav-item active">
+            <a class="nav-link collapsed" th:href="@{/user/index}">
                 <i class="fa fa-fw fa-user"></i>
                 <span>申请状态</span>
             </a>
@@ -79,7 +79,7 @@
 
         <!-- Nav Item - Committee Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#">
+            <a class="nav-link collapsed" th:href="@{/user/userInterviewDetail(id=${session.USER_INFO.id})}">
                 <i class="fa fa-fw fa-folder"></i>
                 <span>面试信息</span>
             </a>

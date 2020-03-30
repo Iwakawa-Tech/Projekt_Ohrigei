@@ -2,18 +2,11 @@ package edu.dlufl.ohrigei.controller.adminController
 
 import com.alibaba.fastjson.JSONObject
 import edu.dlufl.ohrigei.dao.UserDao
-import edu.dlufl.ohrigei.service.adminService.service.AdminAddService
-import edu.dlufl.ohrigei.service.adminService.service.AdminCountService
-import edu.dlufl.ohrigei.service.adminService.service.AdminDeleteService
-import edu.dlufl.ohrigei.service.adminService.service.AdminDetailService
-import edu.dlufl.ohrigei.service.adminService.service.AdminModifyService
-import edu.dlufl.ohrigei.service.adminService.service.AdminQueryService
+import edu.dlufl.ohrigei.service.adminService.service.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.bind.annotation.RestController
 
 import javax.servlet.http.HttpServletRequest
@@ -101,12 +94,32 @@ class AdminRestController {
     }
 
     @PostMapping("/modifyApplicationStatus")
-    JSONObject modifyApplicationStatus(HttpServletRequest request){
+    JSONObject modifyApplicationStatus(HttpServletRequest request) {
         return adminModifyService.modifyApplicationStatus(request)
     }
 
     @PostMapping("/addInterview")
-    JSONObject addInterview(HttpServletRequest request){
+    JSONObject addInterview(HttpServletRequest request) {
         return adminAddService.addInterview(request)
+    }
+
+    @PostMapping("/modifyInterviewScore")
+    JSONObject modifyInterviewScore(HttpServletRequest request) {
+        return adminModifyService.modifyInterviewScore(request)
+    }
+
+    @PostMapping("/modifyInterviewDate")
+    JSONObject modifyInterviewDate(HttpServletRequest request){
+        return adminModifyService.modifyInterviewDate(request)
+    }
+
+    @PostMapping("/modifyInterviewStatus")
+    JSONObject modifyInterviewStatus(HttpServletRequest request){
+        return adminModifyService.modifyInterviewStatus(request)
+    }
+
+    @PostMapping("/modifyInterviewComment")
+    JSONObject modifyInterviewComment(HttpServletRequest request){
+        return adminModifyService.modifyInterviewComment(request)
     }
 }

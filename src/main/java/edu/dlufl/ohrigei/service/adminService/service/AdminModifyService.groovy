@@ -8,6 +8,16 @@ import javax.servlet.http.HttpServletRequest
 @Service
 interface AdminModifyService {
     JSONObject modifyGroup(int schoolID, Integer headDelegateID, int size, int GroupID)
+
     JSONObject modifyLoginStatus(HttpServletRequest request)
+
     JSONObject modifyApplicationStatus(HttpServletRequest request)
+
+    JSONObject modifyInterviewScore(HttpServletRequest request)
+
+    JSONObject modifyInterviewDate(HttpServletRequest request)
+
+    JSONObject modifyInterviewStatus(HttpServletRequest request)
+
+    JSONObject modifyInterviewComment(HttpServletRequest request)
 }

@@ -1,7 +1,6 @@
 package edu.dlufl.ohrigei.service.adminService.service
 
 import com.alibaba.fastjson.JSONObject
-import com.sun.org.apache.xpath.internal.operations.Mod
 import edu.dlufl.ohrigei.model.Committee
 import edu.dlufl.ohrigei.model.Group
 import org.springframework.stereotype.Service
@@ -29,4 +28,6 @@ interface AdminQueryService {
     List<JSONObject> getApplyStatusList()
     String queryDelegateAndAdmin(Model model)
     String queryInterviewList(Model model,HttpSession session,String type)
+    String queryInterviewByID(Model model,String id)
+    String queryBillList(Model model,String type)
 }

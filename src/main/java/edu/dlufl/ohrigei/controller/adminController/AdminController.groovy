@@ -1,32 +1,16 @@
 package edu.dlufl.ohrigei.controller.adminController
 
-import com.alibaba.fastjson.JSON
-import com.alibaba.fastjson.JSONObject
+
 import edu.dlufl.ohrigei.dao.UserDao
-import edu.dlufl.ohrigei.model.Admin
-import edu.dlufl.ohrigei.model.Seat
 import edu.dlufl.ohrigei.model.User
-import edu.dlufl.ohrigei.service.adminService.service.AdminAddService
-import edu.dlufl.ohrigei.service.adminService.service.AdminCountService
-import edu.dlufl.ohrigei.service.adminService.service.AdminDeleteService
-import edu.dlufl.ohrigei.service.adminService.service.AdminDetailService
-import edu.dlufl.ohrigei.service.adminService.service.AdminModifyService
-import edu.dlufl.ohrigei.service.adminService.service.AdminQueryService
-import groovyjarjarantlr.StringUtils
+import edu.dlufl.ohrigei.service.adminService.service.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.ResponseBody
-import sun.awt.ModalExclude
 
-import javax.jws.WebParam.Mode
 import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
 import javax.servlet.http.HttpSession
 
 @Controller
@@ -80,8 +64,6 @@ class AdminController {
         }
         return "admin/DashBoard"
     }
-
-    private int cont = 0
 
     @RequestMapping("/addAdminPage")
     String addAdmin(HttpServletRequest request, Model model, HttpSession httpSession) {
@@ -157,5 +139,15 @@ class AdminController {
     @RequestMapping("/interviewList")
     String interviewList(Model model,HttpSession session,String type){
         return adminQueryService.queryInterviewList(model,session,type)
+    }
+
+    @RequestMapping("/interviewDetail")
+    String interviewDetail(Model model,String delegateID){
+        return adminQueryService.queryInterviewByID(model,delegateID)
+    }
+
+    @RequestMapping("/allBillList")
+    String allBillList(Model model,String type){
+        return adminQueryService.queryBillList(model,type)
     }
 }
