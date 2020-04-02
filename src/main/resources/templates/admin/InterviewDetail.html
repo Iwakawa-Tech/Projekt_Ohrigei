@@ -71,7 +71,7 @@
                     </table>
                 </div>
                 <div class="card-footer">
-                    <div class="btn-group">
+                    <div class="btn-group" th:unless="${interview.interviewStatus}">
                         <button class="btn btn-success" onclick="submitInterviewStatus('pass')">面试通过</button>
                         <button class="btn btn-danger" onclick="submitInterviewStatus('failed')">面试未通过</button>
                     </div>

@@ -122,4 +122,9 @@ class AdminRestController {
     JSONObject modifyInterviewComment(HttpServletRequest request){
         return adminModifyService.modifyInterviewComment(request)
     }
+
+    @PostMapping("/billConfirm")
+    JSONObject billConfirm(HttpServletRequest request){
+        return adminModifyService.confirmBill(request)
+    }
 }

@@ -30,4 +30,6 @@ interface AdminQueryService {
     String queryInterviewList(Model model,HttpSession session,String type)
     String queryInterviewByID(Model model,String id)
     String queryBillList(Model model,String type)
+    String queryBillDetail(Model model,String id)
+    String querySeatWaitProcess(Model model)
 }

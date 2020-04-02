@@ -109,4 +109,10 @@ interface AdminDao {
     List<Bill> queryAllBillList()
 
     List<Bill> queryBillList(Boolean billStatus)
+
+    Bill queryBillDetail(int id)
+
+    int confirmBill(int id)
+
+    List<Seat> allSeatWaitProcess()
 }

@@ -137,17 +137,27 @@ class AdminController {
     }
 
     @RequestMapping("/interviewList")
-    String interviewList(Model model,HttpSession session,String type){
-        return adminQueryService.queryInterviewList(model,session,type)
+    String interviewList(Model model, HttpSession session, String type) {
+        return adminQueryService.queryInterviewList(model, session, type)
     }
 
     @RequestMapping("/interviewDetail")
-    String interviewDetail(Model model,String delegateID){
-        return adminQueryService.queryInterviewByID(model,delegateID)
+    String interviewDetail(Model model, String delegateID) {
+        return adminQueryService.queryInterviewByID(model, delegateID)
     }
 
     @RequestMapping("/allBillList")
-    String allBillList(Model model,String type){
-        return adminQueryService.queryBillList(model,type)
+    String allBillList(Model model, String type) {
+        return adminQueryService.queryBillList(model, type)
+    }
+
+    @RequestMapping("/billDetail")
+    String billDetail(Model model, String id) {
+        return adminQueryService.queryBillDetail(model, id)
+    }
+
+    @RequestMapping("/seatWaitProcess")
+    String seatWaitProcess(Model model) {
+        return adminQueryService.querySeatWaitProcess(model)
     }
 }

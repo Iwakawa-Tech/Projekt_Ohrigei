@@ -62,6 +62,13 @@
         <result column="committee_ID" property="committeeID"/>
         <result column="committee_name" property="committeeName"/>
         <result column="seat_difficulty" property="seatDifficulty"/>
+        <result column="delegate_ID" property="delegateID"/>
+        <result column="name" property="delegateName"/>
+        <result column="seat_select_date" property="seatSelectDate"/>
+        <result column="seat_select_status" property="seatSelectStatus"/>
+        <result column="seat_confirm_status" property="seatConfirmStatus"/>
+        <result column="phone" property="delegatePhone"/>
+        <result column="email" property="delegateEmail"/>
     </resultMap>
     <resultMap id="ApplicationStatus" type="edu.dlufl.ohrigei.model.ApplicationStatus">
         <result column="id" property="id"/>
@@ -352,7 +359,38 @@
                  LEFT JOIN bill_amount_type bat on bill_status.bill_type_ID = bat.id
                  LEFT JOIN delegate d on bill_status.id = d.id
                  LEFT JOIN user u on d.id = u.id
-        WHERE bill_status=#{billStatus}
+        WHERE bill_status = #{billStatus}
+    </select>
+    <select id="queryBillDetail" resultMap="Bill">
+        SELECT bill_status.id,
+               bill_type_ID,
+               bill_serial_number,
+               bill_generate_date,
+               bill_pay_date,
+               bill_status.bill_status,
+               bill_amount
+        FROM bill_status
+                 LEFT JOIN bill_amount_type bat on bill_status.bill_type_ID = bat.id
+        WHERE bill_status.id = #{id}
+    </select>
+    <select id="allSeatWaitProcess" resultMap="Seat">
+        SELECT seat.id,
+               seat_name,
+               delegate_ID,
+               committee_ID,
+               committee_name,
+               seat_difficulty,
+               seat_select_status,
+               seat_select_date,
+               seat_confirm_status,
+               name,
+               phone,
+               email
+        FROM seat
+                 LEFT JOIN committee c on seat.committee_ID = c.id
+                 LEFT JOIN delegate d on seat.delegate_ID = d.id
+                 LEFT JOIN user u on d.id = u.id
+        WHERE seat_select_status=true and seat_confirm_status=false
     </select>
     <!--    insert-->
 
@@ -434,5 +472,10 @@
         UPDATE interview_info
         SET comment=#{param2}
         WHERE id = #{param1}
+    </update>
+    <update id="confirmBill">
+        UPDATE bill_status
+        SET bill_status.bill_status= true
+        WHERE id = #{id}
     </update>
 </mapper>

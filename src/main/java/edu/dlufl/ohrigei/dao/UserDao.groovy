@@ -1,8 +1,10 @@
 package edu.dlufl.ohrigei.dao
 
 import edu.dlufl.ohrigei.model.Admin
+import edu.dlufl.ohrigei.model.Bill
 import edu.dlufl.ohrigei.model.Delegate
 import edu.dlufl.ohrigei.model.Interview
+import edu.dlufl.ohrigei.model.Seat
 import edu.dlufl.ohrigei.model.User
 import org.springframework.stereotype.Repository
 
@@ -30,4 +32,20 @@ interface UserDao {
     Interview getInterviewById(int id)
 
     Admin getInterviewAdmin(int adminID)
+
+    int modifyPayDetail(int id, String serialNumber, String billPayDate)
+
+    Bill getBillDetail(int id)
+
+    Seat querySeatByID(int id)
+
+    List<Seat> querySeatByCommitteeID(int committeeID)
+
+    List<Seat> queryAllSeat()
+
+    User getPhoneAndEmailByID(int id)
+
+    int modifyUserSelectSeat(int delegateID, int seatID, String date)
+    int deleteOldSeatSelect(int id)
+    int updateUserApplicationStatus(int id,int statusID)
 }

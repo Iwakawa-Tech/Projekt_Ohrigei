@@ -46,6 +46,20 @@
         <result column="group_ID" property="groupID"/>
         <result column="application_status_ID" property="applicationStatusID"/>
     </resultMap>
+    <resultMap id="Seat" type="edu.dlufl.ohrigei.model.Seat">
+        <result column="id" property="id"/>
+        <result column="seat_name" property="seatName"/>
+        <result column="committee_ID" property="committeeID"/>
+        <result column="committee_name" property="committeeName"/>
+        <result column="seat_difficulty" property="seatDifficulty"/>
+        <result column="delegate_ID" property="delegateID"/>
+        <result column="name" property="delegateName"/>
+        <result column="seat_select_date" property="seatSelectDate"/>
+        <result column="seat_select_status" property="seatSelectStatus"/>
+        <result column="seat_confirm_status" property="seatConfirmStatus"/>
+        <result column="phone" property="delegatePhone"/>
+        <result column="email" property="delegateEmail"/>
+    </resultMap>
     <resultMap id="Bill" type="edu.dlufl.ohrigei.model.Bill">
         <result column="id" property="id"/>
         <result column="name" property="delegateName"/>
@@ -87,16 +101,6 @@
                  left join application_status on application_status.id = delegate.application_status_ID
         WHERE `user`.id = #{id}
     </select>
-    <insert id="userSignUp" parameterType="edu.dlufl.ohrigei.model.User">
-        insert into ohrigei.user(name, last_name, first_name, email, password, phone, role_ID)
-        values (#{name}, #{last_name}, #{first_name}, #{email}, #{password}, #{phone}, 2)
-    </insert>
-    <insert id="insertDelegate" parameterType="edu.dlufl.ohrigei.model.User">
-        insert into ohrigei.delegate(id)
-        select id
-        from ohrigei.user
-        where email = #{email}
-    </insert>
     <select id="userEmailCheck" resultType="String">
         select email
         from ohrigei.user
@@ -126,4 +130,98 @@
         from ohrigei.user
         where user.id = #{adminID}
     </select>
+    <select id="getBillDetail" resultMap="Bill">
+        SELECT bill_status.id,
+               bill_type_ID,
+               bill_serial_number,
+               bill_generate_date,
+               bill_pay_date,
+               bill_status.bill_status,
+               bill_amount
+        FROM bill_status
+                 LEFT JOIN bill_amount_type bat on bill_status.bill_type_ID = bat.id
+        WHERE bill_status.id = #{id}
+    </select>
+    <select id="querySeatByCommitteeID" resultMap="Seat">
+        SELECT seat.id,
+               seat_name,
+               delegate_ID,
+               committee_ID,
+               seat_difficulty,
+               seat_select_status,
+               seat_select_date,
+               seat_confirm_status,
+               committee_name
+        FROM seat
+                 LEFT JOIN committee ON seat.committee_ID = committee.id
+        WHERE committee_ID = #{committeeID}
+    </select>
+    <select id="queryAllSeat" resultMap="Seat">
+        SELECT seat.id,
+               seat_name,
+               delegate_ID,
+               committee_ID,
+               seat_difficulty,
+               seat_select_status,
+               seat_select_date,
+               seat_confirm_status,
+               committee_name
+        FROM seat
+                 LEFT JOIN committee ON seat.committee_ID = committee.id
+        WHERE seat_select_status = false
+    </select>
+    <select id="querySeatByID" resultMap="Seat">
+        SELECT seat.id,
+               seat_name,
+               delegate_ID,
+               committee_ID,
+               seat_difficulty,
+               seat_select_status,
+               seat_select_date,
+               seat_confirm_status,
+               committee_name
+        FROM seat
+                 LEFT JOIN committee ON seat.committee_ID = committee.id
+        WHERE delegate_ID = #{id}
+    </select>
+    <select id="getPhoneAndEmailByID" resultMap="UserType">
+        SELECT phone, email, name
+        FROM user
+        WHERE id = #{id}
+    </select>
+    <insert id="userSignUp" parameterType="edu.dlufl.ohrigei.model.User">
+        insert into ohrigei.user(name, last_name, first_name, email, password, phone, role_ID)
+        values (#{name}, #{last_name}, #{first_name}, #{email}, #{password}, #{phone}, 2)
+    </insert>
+    <insert id="insertDelegate" parameterType="edu.dlufl.ohrigei.model.User">
+        insert into ohrigei.delegate(id)
+        select id
+        from ohrigei.user
+        where email = #{email}
+    </insert>
+    <update id="modifyPayDetail">
+        UPDATE bill_status
+        SET bill_pay_date=#{param3},
+            bill_serial_number=#{param2}
+        WHERE id = #{param1}
+    </update>
+    <update id="modifyUserSelectSeat">
+        UPDATE seat
+        SET delegate_ID=#{param1},
+            seat_select_status= true,
+            seat_select_date=#{param3}
+        WHERE id = #{param2}
+    </update>
+    <update id="deleteOldSeatSelect">
+        UPDATE seat
+        SET delegate_ID=null,
+            seat_select_status= false,
+            seat_select_date=null
+        WHERE id = #{id}
+    </update>
+    <update id="updateUserApplicationStatus">
+        UPDATE delegate
+        SET application_status_ID=#{param2}
+        WHERE id = #{param1}
+    </update>
 </mapper>

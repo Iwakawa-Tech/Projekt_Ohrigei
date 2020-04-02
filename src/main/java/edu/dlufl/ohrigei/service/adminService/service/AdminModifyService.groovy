@@ -20,4 +20,6 @@ interface AdminModifyService {
     JSONObject modifyInterviewStatus(HttpServletRequest request)
 
     JSONObject modifyInterviewComment(HttpServletRequest request)
+
+    JSONObject confirmBill(HttpServletRequest request)
 }

@@ -216,33 +216,49 @@ class AdminQueryServiceImpl implements AdminQueryService {
 
     @Override
     String queryInterviewByID(Model model, String id) {
-        Interview interview=adminDao.queryInterviewByID(Integer.parseInt(id))
+        Interview interview = adminDao.queryInterviewByID(Integer.parseInt(id))
         interview.setDelegateName(adminDao.getNameByID(interview.getId()))
         interview.setAdminName(adminDao.getNameByID(interview.getAdminID()))
-        model.addAttribute("interview",interview)
+        model.addAttribute("interview", interview)
         return "admin/InterviewDetail"
     }
 
     @Override
-    String queryBillList(Model model,String type) {
-        switch (type){
+    String queryBillList(Model model, String type) {
+        switch (type) {
             case "all":
-                List<Bill> billList=adminDao.queryAllBillList()
-                model.addAttribute("billList",billList)
+                List<Bill> billList = adminDao.queryAllBillList()
+                model.addAttribute("billList", billList)
                 break
             case "paid":
-                List<Bill> billList=adminDao.queryBillList(true)
-                model.addAttribute("billList",billList)
+                List<Bill> billList = adminDao.queryBillList(true)
+                model.addAttribute("billList", billList)
                 break
             case "unpaid":
-                List<Bill> billList=adminDao.queryBillList(false)
-                model.addAttribute("billList",billList)
+                List<Bill> billList = adminDao.queryBillList(false)
+                model.addAttribute("billList", billList)
                 break
             default:
-                List<Bill> billList=adminDao.queryAllBillList()
-                model.addAttribute("billList",billList)
+                List<Bill> billList = adminDao.queryAllBillList()
+                model.addAttribute("billList", billList)
                 break
         }
         return "admin/AllBillList"
+    }
+
+    @Override
+    String queryBillDetail(Model model, String id) {
+        Bill bill = adminDao.queryBillDetail(Integer.parseInt(id))
+        Delegate delegate = adminDao.queryMemberById(Integer.parseInt(id))
+        model.addAttribute("bill", bill)
+        model.addAttribute("delegate", delegate)
+        return "admin/AdminBillDetail"
+    }
+
+    @Override
+    String querySeatWaitProcess(Model model) {
+        List<Seat> seatList=adminDao.allSeatWaitProcess()
+        model.addAttribute("seatList",seatList)
+        return "admin/AllSeatWaitProcess"
     }
 }

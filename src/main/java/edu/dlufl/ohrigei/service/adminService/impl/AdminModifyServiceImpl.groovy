@@ -150,4 +150,20 @@ class AdminModifyServiceImpl implements AdminModifyService {
         }
         return jsonObject
     }
+
+    @Override
+    JSONObject confirmBill(HttpServletRequest request) {
+        JSONObject jsonObject = new JSONObject()
+        int id=Integer.parseInt(request.getParameter("id"))
+        try {
+            adminDao.confirmBill(id)
+            adminDao.modifyUserStatus(id,11)
+            jsonObject.put("status","SUCCESS")
+            jsonObject.put("confirm","已支付")
+        }
+        catch (Exception ignored){
+            jsonObject.put("status","ERROR")
+        }
+        return jsonObject
+    }
 }
