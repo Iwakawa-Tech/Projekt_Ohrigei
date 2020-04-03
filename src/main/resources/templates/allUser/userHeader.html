@@ -92,16 +92,15 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link collapsed" th:href="@{/user/userGroupDetail(id=${session.USER_INFO.id})}">
+                    <i class="fa fa-fw fa-folder"></i>
+                    <span>代表团信息</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link collapsed" th:href="@{/user/userBillDetail(id=${session.USER_INFO.id})}">
                     <i class="fa fa-fw fa-wrench"></i>
                     <span>账单信息</span>
-                </a>
-            </li>
-            <!-- Nav Item - Action Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#">
-                    <i class="fa fa-fw fa-folder"></i>
-                    <span>学术测试</span>
                 </a>
             </li>
             <!-- Nav Item - File -->

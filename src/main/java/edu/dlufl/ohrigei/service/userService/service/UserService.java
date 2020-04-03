@@ -16,4 +16,8 @@ public interface UserService {
     String userBillDetail(Model model,String id,HttpSession session);
     String userSeatDetail(Model model,String id,HttpSession session);
     JSONObject userSelectSeat(HttpServletRequest request);
+    String userGroupDetail(Model model,String id,HttpSession session);
+    JSONObject userSelectGroup(HttpServletRequest request);
+    JSONObject leaveFromConference(HttpServletRequest request);
+    JSONObject leaveGroup(HttpServletRequest request);
 }

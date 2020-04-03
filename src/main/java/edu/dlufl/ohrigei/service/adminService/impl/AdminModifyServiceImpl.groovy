@@ -69,20 +69,20 @@ class AdminModifyServiceImpl implements AdminModifyService {
 
     @Override
     JSONObject modifyInterviewScore(HttpServletRequest request) {
-        JSONObject jsonObject=new JSONObject()
+        JSONObject jsonObject = new JSONObject()
         int id = request.getParameter("id") as int
-        int academicScore=request.getParameter("academicScore") as int
-        int passionScore=request.getParameter("passionScore") as int
-        float totalScore=request.getParameter("totalScore") as float
+        int academicScore = request.getParameter("academicScore") as int
+        int passionScore = request.getParameter("passionScore") as int
+        float totalScore = request.getParameter("totalScore") as float
         try {
-            adminDao.modifyInterviewScore(id,academicScore,passionScore,totalScore)
-            jsonObject.put("status","SUCCESS")
-            jsonObject.put("academicScore",academicScore)
-            jsonObject.put("passionScore",passionScore)
-            jsonObject.put("totalScore",totalScore)
+            adminDao.modifyInterviewScore(id, academicScore, passionScore, totalScore)
+            jsonObject.put("status", "SUCCESS")
+            jsonObject.put("academicScore", academicScore)
+            jsonObject.put("passionScore", passionScore)
+            jsonObject.put("totalScore", totalScore)
         }
-        catch (Exception ignored){
-            jsonObject.put("status","ERROR")
+        catch (Exception ignored) {
+            jsonObject.put("status", "ERROR")
         }
         return jsonObject
     }
@@ -90,46 +90,46 @@ class AdminModifyServiceImpl implements AdminModifyService {
     @Override
     JSONObject modifyInterviewDate(HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject()
-        int id=request.getParameter('id') as int
-        String date =request.getParameter('newInterviewDate')
-        try{
-            adminDao.modifyInterviewDate(id,date)
-            jsonObject.put("status","SUCCESS")
-            jsonObject.put("date",date.replace("T"," "))
+        int id = request.getParameter('id') as int
+        String date = request.getParameter('newInterviewDate')
+        try {
+            adminDao.modifyInterviewDate(id, date)
+            jsonObject.put("status", "SUCCESS")
+            jsonObject.put("date", date.replace("T", " "))
         }
-        catch (Exception ignored){
-            jsonObject.put("status","ERROR")
+        catch (Exception ignored) {
+            jsonObject.put("status", "ERROR")
         }
         return jsonObject
     }
 
     @Override
     JSONObject modifyInterviewStatus(HttpServletRequest request) {
-        JSONObject jsonObject=new JSONObject()
-        int id=request.getParameter("id") as int
-        String interviewStatus=request.getParameter("interviewStatus")
-        if (interviewStatus == "pass"){
+        JSONObject jsonObject = new JSONObject()
+        int id = request.getParameter("id") as int
+        String interviewStatus = request.getParameter("interviewStatus")
+        if (interviewStatus == "pass") {
             try {
-                adminDao.modifyInterviewStatus(id,true)
-                adminDao.modifyUserStatus(id,9)
-                if (adminDao.creatBillCheck(id)!=0){
-                    adminDao.creatNewBill(id,adminDao.getRoleIDByID(id), UtilSet.getCurrentTime(),false)
+                adminDao.modifyInterviewStatus(id, true)
+                adminDao.modifyUserStatus(id, 9)
+                if (adminDao.creatBillCheck(id) != 0) {
+                    adminDao.creatNewBill(id, adminDao.getRoleIDByID(id), UtilSet.getCurrentTime(), false)
                 }
-                jsonObject.put("status","SUCCESS")
-                jsonObject.put("interviewStatus","已完成")
+                jsonObject.put("status", "SUCCESS")
+                jsonObject.put("interviewStatus", "已完成")
             }
-            catch (Exception ignored){
-                jsonObject.put("status","ERROR")
+            catch (Exception ignored) {
+                jsonObject.put("status", "ERROR")
             }
-        }else {
+        } else {
             try {
-                adminDao.modifyInterviewStatus(id,true)
-                adminDao.modifyUserStatus(id,8)
-                jsonObject.put("status","SUCCESS")
-                jsonObject.put("interviewStatus","已完成")
+                adminDao.modifyInterviewStatus(id, true)
+                adminDao.modifyUserStatus(id, 8)
+                jsonObject.put("status", "SUCCESS")
+                jsonObject.put("interviewStatus", "已完成")
             }
-            catch (Exception ignored){
-                jsonObject.put("status","ERROR")
+            catch (Exception ignored) {
+                jsonObject.put("status", "ERROR")
             }
         }
         return jsonObject
@@ -137,16 +137,16 @@ class AdminModifyServiceImpl implements AdminModifyService {
 
     @Override
     JSONObject modifyInterviewComment(HttpServletRequest request) {
-        JSONObject jsonObject=new JSONObject()
-        int id=request.getParameter("id") as int
-        String comment=request.getParameter("comment")
+        JSONObject jsonObject = new JSONObject()
+        int id = request.getParameter("id") as int
+        String comment = request.getParameter("comment")
         try {
-            adminDao.modifyInterviewComment(id,comment)
-            jsonObject.put("status","SUCCESS")
-            jsonObject.put("comment",comment)
+            adminDao.modifyInterviewComment(id, comment)
+            jsonObject.put("status", "SUCCESS")
+            jsonObject.put("comment", comment)
         }
-        catch (Exception ignored){
-            jsonObject.put("status","ERROR")
+        catch (Exception ignored) {
+            jsonObject.put("status", "ERROR")
         }
         return jsonObject
     }
@@ -154,12 +154,28 @@ class AdminModifyServiceImpl implements AdminModifyService {
     @Override
     JSONObject confirmBill(HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject()
-        int id=Integer.parseInt(request.getParameter("id"))
+        int id = Integer.parseInt(request.getParameter("id"))
         try {
             adminDao.confirmBill(id)
-            adminDao.modifyUserStatus(id,11)
+            adminDao.modifyUserStatus(id, 11)
+            jsonObject.put("status", "SUCCESS")
+            jsonObject.put("confirm", "已支付")
+        }
+        catch (Exception ignored) {
+            jsonObject.put("status", "ERROR")
+        }
+        return jsonObject
+    }
+
+    @Override
+    JSONObject seatSelectConfirm(HttpServletRequest request) {
+        JSONObject jsonObject = new JSONObject()
+        int seatID = request.getParameter("seatID") as int
+        int delegateID = request.getParameter("delegateID") as int
+        try {
+            adminDao.seatSelectConfirm(seatID)
+            adminDao.updateUserApplicationStatus(delegateID,14)
             jsonObject.put("status","SUCCESS")
-            jsonObject.put("confirm","已支付")
         }
         catch (Exception ignored){
             jsonObject.put("status","ERROR")

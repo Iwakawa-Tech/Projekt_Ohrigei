@@ -3,6 +3,7 @@ package edu.dlufl.ohrigei.dao
 import edu.dlufl.ohrigei.model.Admin
 import edu.dlufl.ohrigei.model.Bill
 import edu.dlufl.ohrigei.model.Delegate
+import edu.dlufl.ohrigei.model.Group
 import edu.dlufl.ohrigei.model.Interview
 import edu.dlufl.ohrigei.model.Seat
 import edu.dlufl.ohrigei.model.User
@@ -46,6 +47,21 @@ interface UserDao {
     User getPhoneAndEmailByID(int id)
 
     int modifyUserSelectSeat(int delegateID, int seatID, String date)
+
     int deleteOldSeatSelect(int id)
-    int updateUserApplicationStatus(int id,int statusID)
+
+    int updateUserApplicationStatus(int id, int statusID)
+
+    Integer queryGroupIDByID(int id)
+
+    Group queryUserGroupDetail(int groupID)
+
+    List<Group>queryAllGroup()
+
+    int getUsedCapacityByID(int id)
+
+    int userSelectGroup(int id,int groupID)
+
+    int leaveFromConference(int id)
+    int leaveGroup(int id)
 }

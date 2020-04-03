@@ -50,7 +50,7 @@
             <td th:text="${seat.delegateEmail}"></td>
             <td th:text="${seat.seatSelectDate}"></td>
             <td>
-                <button class="btn btn-success">
+                <button class="btn btn-success" th:onclick="confirmSeatSelect([[${seat.delegateID}]],[[${seat.id}]]);">
                     <i class="fa fa-check"></i>确认席位
                 </button>
             </td>
@@ -63,6 +63,30 @@
         $('#main').append($('#res').html());
         $('#res').remove();
     });
+
+    function confirmSeatSelect(id,seatID) {
+        if(confirm("确认该席位选定吗")){
+            console.log(id,seatID);
+            $.ajax({
+                type:'POST',
+                url:'/admin/seatSelectConfirm',
+                dataType:'json',
+                data:{
+                    'delegateID':id,
+                    'seatID':seatID
+                },
+                success:function (data) {
+                    if (data['status']==='SUCCESS'){
+                        alert("确认成功");
+                        window.location.reload()
+                    }else {
+                        alert("确认失败");
+                        window.location.reload()
+                    }
+                }
+            })
+        }
+    }
 </script>
 </body>
 </html>

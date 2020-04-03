@@ -7,6 +7,7 @@ class Group {
     private int headDelegateID
     private String headDelegateName
     private int groupSize
+    private int usedCapacity
 
     int getSchoolID() {
         return schoolID
@@ -60,8 +61,16 @@ class Group {
         this.groupSize = groupSize
     }
 
+    int getUsedCapacity() {
+        return usedCapacity
+    }
+
+    void setUsedCapacity(int usedCapacity) {
+        this.usedCapacity = usedCapacity
+    }
+
     @Override
-    String toString() {
+    public String toString() {
         return "Group{" +
                 "id=" + id +
                 ", schoolID=" + schoolID +
@@ -69,6 +78,7 @@ class Group {
                 ", headDelegateID=" + headDelegateID +
                 ", headDelegateName='" + headDelegateName + '\'' +
                 ", groupSize=" + groupSize +
+                ", usedCapacity=" + usedCapacity +
                 '}';
     }
 }

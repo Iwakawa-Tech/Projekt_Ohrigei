@@ -127,4 +127,9 @@ class AdminRestController {
     JSONObject billConfirm(HttpServletRequest request){
         return adminModifyService.confirmBill(request)
     }
+
+    @PostMapping("/seatSelectConfirm")
+    JSONObject seatSelectConfirm(HttpServletRequest request){
+        return adminModifyService.seatSelectConfirm(request)
+    }
 }

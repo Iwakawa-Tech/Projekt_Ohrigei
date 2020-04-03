@@ -58,4 +58,9 @@ class UserController {
     String userSeatDetail(Model model, String id, HttpSession session) {
         return userService.userSeatDetail(model, id, session)
     }
+
+    @RequestMapping("/userGroupDetail")
+    String userGroupDetail(Model model, String id, HttpSession session) {
+        return userService.userGroupDetail(model,id,session)
+    }
 }

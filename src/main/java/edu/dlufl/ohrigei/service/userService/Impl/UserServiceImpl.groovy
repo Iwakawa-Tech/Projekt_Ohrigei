@@ -104,14 +104,14 @@ class UserServiceImpl implements UserService, UserDetailsService {
             int userID = Integer.parseInt(id)
             Seat userSeat = userDao.querySeatByID(userID)
             if (userSeat == null) {
-                userSeat=new Seat()
+                userSeat = new Seat()
                 model.addAttribute("userSeatInfo", "尚未选定座位")
                 model.addAttribute("committeeInfo", "您尚未选择席位")
             } else {
                 List<Seat> seatInSameCommitteeList = userDao.querySeatByCommitteeID(userSeat.getCommitteeID())
                 for (int i = 0; i < seatInSameCommitteeList.size(); i++) {
                     userTmp = userDao.getPhoneAndEmailByID(seatInSameCommitteeList[i].getDelegateID())
-                    if (userTmp!=null){
+                    if (userTmp != null) {
                         seatInSameCommitteeList[i].setDelegatePhone(userTmp.getPhone())
                         seatInSameCommitteeList[i].setDelegateEmail(userTmp.getEmail())
                         seatInSameCommitteeList[i].setDelegateName(userTmp.getName())
@@ -131,14 +131,84 @@ class UserServiceImpl implements UserService, UserDetailsService {
         JSONObject jsonObject = new JSONObject()
         int delegateID = request.getParameter("delegateID") as int
         int seatID = request.getParameter("seatID") as int
-        int originID=(request.getParameter("originID"))as int
+        int originID = (request.getParameter("originID")) as int
         String date = UtilSet.getCurrentTime()
-        if (originID!=0){
+        if (originID != 0) {
             userDao.deleteOldSeatSelect(originID)
         }
         try {
             userDao.modifyUserSelectSeat(delegateID, seatID, date)
-            userDao.updateUserApplicationStatus(delegateID,12)
+            userDao.updateUserApplicationStatus(delegateID, 12)
+            jsonObject.put("status", "SUCCESS")
+        }
+        catch (Exception ignored) {
+            jsonObject.put("status", "ERROR")
+        }
+        return jsonObject
+    }
+
+    @Override
+    String userGroupDetail(Model model, String id, HttpSession session) {
+        User user = session.getAttribute("USER_INFO") as User
+        int delegateID = user.getId()
+        Integer groupID = userDao.queryGroupIDByID(delegateID)
+        if (groupID != null) {
+            Group group = userDao.queryUserGroupDetail(groupID)
+            model.addAttribute("group", group)
+        } else {
+            List<Group> groupList = userDao.queryAllGroup()
+            for (int i = 0; i < groupList.size(); i++) {
+                int usedSize = userDao.getUsedCapacityByID(groupList[i].getId())
+                groupList[i].setUsedCapacity(usedSize)
+            }
+            model.addAttribute("info", "您尚未加入代表团")
+            model.addAttribute("groupList", groupList)
+            model.addAttribute("group", new Group())
+        }
+        return "user/UserGroupDetail"
+    }
+
+    @Override
+    JSONObject userSelectGroup(HttpServletRequest request) {
+        JSONObject jsonObject = new JSONObject()
+        int delegateID = request.getParameter("delegateID") as int
+        int groupID = request.getParameter("groupID") as int
+        int usedSize = userDao.getUsedCapacityByID(groupID)
+        int size = userDao.queryUserGroupDetail(groupID).getGroupSize()
+        if (size - usedSize > 0) {
+            try {
+                userDao.userSelectGroup(delegateID, groupID)
+                jsonObject.put("status", "SUCCESS")
+            }
+            catch (Exception ignored) {
+                jsonObject.put("status", "ERROR")
+            }
+        } else {
+            jsonObject.put("info", "代表团容量已满，请选择其他代表团")
+        }
+        return jsonObject
+    }
+
+    @Override
+    JSONObject leaveFromConference(HttpServletRequest request) {
+        JSONObject jsonObject = new JSONObject()
+        int id = request.getParameter("id") as int
+        try {
+            userDao.leaveFromConference(id)
+            jsonObject.put("status", "SUCCESS")
+        }
+        catch (Exception ignored) {
+            jsonObject.put("status", "ERROR")
+        }
+        return jsonObject
+    }
+
+    @Override
+    JSONObject leaveGroup(HttpServletRequest request) {
+        JSONObject jsonObject=new JSONObject()
+        int id=request.getParameter("id") as int
+        try {
+            userDao.leaveGroup(id)
             jsonObject.put("status", "SUCCESS")
         }
         catch (Exception ignored) {

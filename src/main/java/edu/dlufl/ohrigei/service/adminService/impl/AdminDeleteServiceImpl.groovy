@@ -15,6 +15,7 @@ class AdminDeleteServiceImpl implements AdminDeleteService{
         JSONObject jsonObject = new JSONObject()
         try {
             adminDao.deleteGroup(groupID)
+            adminDao.deleteGroupIDFromDelegate(groupID)
             jsonObject.put("status", "SUCCESS")
         } catch (Exception ignored){
             jsonObject.put("status", "ERROR")

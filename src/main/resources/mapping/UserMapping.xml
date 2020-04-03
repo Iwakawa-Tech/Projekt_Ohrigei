@@ -70,6 +70,14 @@
         <result column="bill_pay_date" property="billPayDate"/>
         <result column="bill_status" property="billStatus"/>
     </resultMap>
+    <resultMap id="Group" type="edu.dlufl.ohrigei.model.Group">
+        <result column="id" property="id"/>
+        <result column="school_ID" property="schoolID"/>
+        <result column="school_name" property="schoolName"/>
+        <result column="head_delegate_ID" property="headDelegateID"/>
+        <result column="name" property="headDelegateName"/>
+        <result column="group_size" property="groupSize"/>
+    </resultMap>
     <select id="loginCheck" resultType="edu.dlufl.ohrigei.model.User" parameterType="edu.dlufl.ohrigei.model.User">
         select *
         from ohrigei.user
@@ -189,6 +197,32 @@
         FROM user
         WHERE id = #{id}
     </select>
+    <select id="queryAllGroup" resultMap="Group">
+        SELECT `group`.id, school_ID, head_delegate_ID, group_size, school_name, name
+        FROM `group`
+                 LEFT JOIN delegate d on `group`.head_delegate_ID = d.id
+                 LEFT JOIN user u on d.id = u.id
+                 LEFT JOIN school_info si on `group`.school_ID = si.id
+        WHERE `group`.delete_status = 0
+    </select>
+    <select id="getUsedCapacityByID" resultType="int">
+        SELECT count(id)
+        FROM delegate
+        WHERE group_ID = #{id}
+    </select>
+    <select id="queryGroupIDByID" resultType="integer">
+        SELECT group_ID
+        FROM delegate
+        WHERE id = #{id}
+    </select>
+    <select id="queryUserGroupDetail" resultMap="Group">
+        SELECT `group`.id, school_ID, head_delegate_ID, group_size, school_name, name
+        FROM `group`
+                 LEFT JOIN delegate d on `group`.head_delegate_ID = d.id
+                 LEFT JOIN user u on d.id = u.id
+                 LEFT JOIN school_info si on `group`.school_ID = si.id
+        WHERE `group`.id = #{groupID}
+    </select>
     <insert id="userSignUp" parameterType="edu.dlufl.ohrigei.model.User">
         insert into ohrigei.user(name, last_name, first_name, email, password, phone, role_ID)
         values (#{name}, #{last_name}, #{first_name}, #{email}, #{password}, #{phone}, 2)
@@ -223,5 +257,20 @@
         UPDATE delegate
         SET application_status_ID=#{param2}
         WHERE id = #{param1}
+    </update>
+    <update id="userSelectGroup">
+        UPDATE delegate
+        SET group_ID =#{param2}
+        WHERE id = #{param1}
+    </update>
+    <update id="leaveFromConference">
+        UPDATE delegate
+        SET application_status_ID=11
+        WHERE id = #{id}
+    </update>
+    <update id="leaveGroup">
+        UPDATE delegate
+        SET group_ID=null
+        WHERE id = #{id}
     </update>
 </mapper>

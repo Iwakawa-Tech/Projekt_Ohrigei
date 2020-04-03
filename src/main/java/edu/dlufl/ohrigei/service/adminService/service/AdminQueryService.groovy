@@ -32,4 +32,5 @@ interface AdminQueryService {
     String queryBillList(Model model,String type)
     String queryBillDetail(Model model,String id)
     String querySeatWaitProcess(Model model)
+
 }

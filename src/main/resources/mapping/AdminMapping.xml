@@ -290,7 +290,7 @@
                  left join application_type on application_type.id = delegate.application_type_ID
                  left join application_status on application_status.id = delegate.application_status_ID
         WHERE ohrigei.delegate.role_ID = 1
-          AND user.id not IN (SELECT id from interview_info)
+          AND user.id not IN (SELECT id from interview_info) AND application_status_ID=3
     </select>
     <select id="queryAllInterview" resultMap="Interview">
         SELECT *
@@ -390,7 +390,8 @@
                  LEFT JOIN committee c on seat.committee_ID = c.id
                  LEFT JOIN delegate d on seat.delegate_ID = d.id
                  LEFT JOIN user u on d.id = u.id
-        WHERE seat_select_status=true and seat_confirm_status=false
+        WHERE seat_select_status = true
+          and seat_confirm_status = false
     </select>
     <!--    insert-->
 
@@ -477,5 +478,20 @@
         UPDATE bill_status
         SET bill_status.bill_status= true
         WHERE id = #{id}
+    </update>
+    <update id="seatSelectConfirm">
+        UPDATE seat
+        SET seat_confirm_status= true
+        WHERE id = #{seatID}
+    </update>
+    <update id="updateUserApplicationStatus">
+        UPDATE delegate
+        SET application_status_ID=#{param2}
+        WHERE id = #{param1}
+    </update>
+    <update id="deleteGroupIDFromDelegate">
+        UPDATE delegate
+        SET group_ID=null
+        WHERE group_ID = #{groupID}
     </update>
 </mapper>

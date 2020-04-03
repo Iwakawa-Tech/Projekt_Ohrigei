@@ -84,7 +84,8 @@
                                     <p>账户类型</p>
                                 </div>
                                 <div class="col-md-10">
-                                    <span th:text="${delegate.applicationType}"></span>(<a href="#">更改</a>)
+                                    <span th:text="${delegate.applicationType}"></span>
+                                    <span th:if="${delegate.applicationStatusID!=11}">(<a href="#">更改</a>)</span>
                                 </div>
                             </div>
                             <div class="row mt-1">
@@ -92,7 +93,10 @@
                                     <p>申请状态</p>
                                 </div>
                                 <div class="col-md-10">
-                                    <span th:text="${delegate.applicationStatus}"></span><button class="btn btn-danger">退会</button>
+                                    <span th:text="${delegate.applicationStatus}"></span>
+                                    <button th:if="${delegate.applicationStatusID!=11}" class="btn btn-danger"
+                                            onclick="leaveFromConference()">退会
+                                    </button>
                                 </div>
                             </div>
                             <div class="row mt-1">
@@ -101,7 +105,8 @@
                                 </div>
                                 <div class="col-md-10">
                                     <div class="input-group">
-                                        <input type="text" id="email" disabled th:value="${delegate.email}" class="form-control">
+                                        <input type="text" id="email" disabled th:value="${delegate.email}"
+                                               class="form-control">
                                         <button class="btn btn-primary" id="emailEditButton"
                                                 onclick="editItem('#email','#emailEditButton','#emailCancelButton')"><i
                                                 class="fa fa-pencil"></i></button>
@@ -119,7 +124,8 @@
                                 </div>
                                 <div class="col-md-10">
                                     <div class="input-group">
-                                        <input type="text" id="phone" disabled th:value="${delegate.phone}" class="form-control">
+                                        <input type="text" id="phone" disabled th:value="${delegate.phone}"
+                                               class="form-control">
                                         <button class="btn btn-primary" id="phoneEditButton"
                                                 onclick="editItem('#phone','#phoneEditButton','#phoneCancelButton')"><i
                                                 class="fa fa-pencil"></i></button>
@@ -348,13 +354,34 @@
         $(cancelButton).removeAttr("hidden");
     }
 
+    function leaveFromConference() {
+        if (confirm("您确认要放弃参加本次会议了吗？")) {
+            $.ajax({
+                type: "POST",
+                url: "/user/leaveFromConference",
+                datatype: "json",
+                data: {
+                    'id': [[${session.USER_INFO.id}]]
+                },
+                success: function (data) {
+                    if (data['status'] === 'SUCCESS') {
+                        alert("退会成功！");
+                        window.location.reload()
+                    } else {
+                        alert("退会失败");
+                        window.location.reload()
+                    }
+                }
+            })
+        }
+    }
 
 </script>
 <script th:inline="javascript">
     function cancelEdit(item, editButton, cancelButton) {
-        if(item==='#phone'){
+        if (item === '#phone') {
             $(item).val([[${session.USER_INFO.phone}]])
-        }else {
+        } else {
             $(item).val([[${session.USER_INFO.email}]])
         }
         $(item).attr("disabled", "disabled");

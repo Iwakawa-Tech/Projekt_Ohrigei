@@ -32,7 +32,8 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary">参会代表数量</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${countMap['delegate']}">0</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${countMap['delegate']}">0
+                            </div>
                         </div>
                         <div class="col-auto">
                             <i class="fa fa-user fa-2x text-gray-300"></i>
@@ -77,7 +78,8 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-warning">观察员数量</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${countMap['observer']}">0</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${countMap['observer']}">0
+                            </div>
                         </div>
                         <div class="col-auto">
                             <i class="fa fa-user fa-2x text-gray-300"></i>
@@ -97,9 +99,9 @@
                 </div>
                 <div class="card-body">
                     <div class="list-group list-group-flush">
-                        <a href="#" class="list-group-item list-group-item-action">待办事项1</a>
-                        <a href="#" class="list-group-item list-group-item-action">待办事项1</a>
-                        <a href="#" class="list-group-item list-group-item-action">待办事项1</a>
+                        <a href="#" class="list-group-item list-group-item-action">当前有<span></span>个代表的参会申请待确认</a>
+                        <a href="#" class="list-group-item list-group-item-action">当前有<span></span>个代表的席位选定待确认</a>
+                        <a href="#" class="list-group-item list-group-item-action">当前有<span></span>个代表的席位选定待确认</a>
                         <a href="#" class="list-group-item list-group-item-action">待办事项1</a>
                         <a href="#" class="list-group-item list-group-item-action">待办事项1</a>
                     </div>
@@ -132,7 +134,7 @@
         $('#main').append($('#res').html());
         $('#res').remove();
         // 基于准备好的dom，初始化echarts实例
-        var myChart=echarts.init(document.getElementById('dataChart'));
+        var myChart = echarts.init($('#dataChart'));
 
         // 指定图表的配置项和数据
         var option = {
@@ -168,7 +170,7 @@
 
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
-        window.onresize =function () {
+        window.onresize = function () {
             myChart.resize()
         }
     });

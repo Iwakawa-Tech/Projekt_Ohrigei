@@ -115,4 +115,10 @@ interface AdminDao {
     int confirmBill(int id)
 
     List<Seat> allSeatWaitProcess()
+
+    int seatSelectConfirm(int seatID)
+
+    int updateUserApplicationStatus(int id, int statusID)
+
+    int deleteGroupIDFromDelegate(int groupID)
 }
