@@ -46,8 +46,9 @@ public class IndexController {
         if (CONT==0){
             model.addAttribute("User",new User());
             CONT=CONT+1;
-            return "allUser/SignUp";
+            return "allUser/register";
         }else {
+            CONT=0;
             return userService.userSignUp(user,model);
         }
     }

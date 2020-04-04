@@ -73,7 +73,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <p>姓名</p>
+                                    <p th:text="#{name}"></p>
                                 </div>
                                 <div class="col-md-10">
                                     <p th:text="${delegate.name}">testUser</p>
@@ -81,7 +81,7 @@
                             </div>
                             <div class="row mt-1">
                                 <div class="col-md-2">
-                                    <p>账户类型</p>
+                                    <p th:text="#{applicationType}"></p>
                                 </div>
                                 <div class="col-md-10">
                                     <span th:text="${delegate.applicationType}"></span>
@@ -90,18 +90,18 @@
                             </div>
                             <div class="row mt-1">
                                 <div class="col-md-2">
-                                    <p>申请状态</p>
+                                    <p th:text="#{applicationStatus}"></p>
                                 </div>
                                 <div class="col-md-10">
                                     <span th:text="${delegate.applicationStatus}"></span>
                                     <button th:if="${delegate.applicationStatusID!=11}" class="btn btn-danger"
-                                            onclick="leaveFromConference()">退会
+                                            onclick="leaveFromConference()" th:text="#{leaveGroup}">
                                     </button>
                                 </div>
                             </div>
                             <div class="row mt-1">
                                 <div class="col-md-2">
-                                    <label for="email">电子邮箱</label>
+                                    <label for="email" th:text="#{email}"></label>
                                 </div>
                                 <div class="col-md-10">
                                     <div class="input-group">
@@ -120,7 +120,7 @@
                             </div>
                             <div class="row mt-1">
                                 <div class="col-md-2">
-                                    <label for="phone">手机</label>
+                                    <label for="phone" th:text="#{phone}"></label>
                                 </div>
                                 <div class="col-md-10">
                                     <div class="input-group">

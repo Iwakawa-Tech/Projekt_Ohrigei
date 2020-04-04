@@ -26,7 +26,7 @@
             </div>
             <div class="card-body">
                 <div class="progress" style="height: 30px">
-                    <div id="applyProgressBar" class="progress-bar progress-bar-animated progress-bar-striped"></div>
+                    <div id="applyProgressBar" class="progress-bar"></div>
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@
             </div>
             <div class="col-md-4">
                 <div class="card">
-                    <div class="card-header">申请状态</div>
+                    <div class="card-header"><span th:text="#{applicationStatus}"></span></div>
                     <div class="card-body">
                         <span th:text="${description}"></span>
                     </div>
@@ -52,7 +52,7 @@
             </div>
             <div class="col-md-4">
                 <div class="card">
-                    <div class="card-header">个人信息</div>
+                    <div class="card-header"><span th:text="#{personalInformation}"></span></div>
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
@@ -61,11 +61,11 @@
                                 </div>
                                 <div class="col-md-8">
                                     <p><strong th:text="${session.USER_INFO.name}"></strong></p>
-                                    申请类型：<span id="applicationType" th:text="${delegateInfo.applicationType}"></span>
+                                    <span th:text="#{applicationType}"></span>：<span id="applicationType" th:text="${delegateInfo.applicationType}"></span>
                                     <br>
-                                    申请状态：<span id="applicationStatus" th:text="${delegateInfo.applicationStatus}"></span>
+                                    <span th:text="#{applicationStatus}"></span>：<span id="applicationStatus" th:text="${delegateInfo.applicationStatus}"></span>
                                     <hr>
-                                    <p><strong>联系方式</strong></p>
+                                    <p><strong th:text="#{contactInformation}"></strong></p>
                                     <i class="fa fa-phone"></i>&nbsp;<span th:text="${delegateInfo.phone}"></span>
                                     <br>
                                     <i class="fa fa-envelope"></i>&nbsp;<span th:text="${delegateInfo.email}"></span>
@@ -73,7 +73,7 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <a th:href="@{/user/userProfile(id=${delegateInfo.ID})}"><i class="fa fa-edit"></i>编辑信息</a>
+                            <a th:href="@{/user/userProfile(id=${delegateInfo.ID})}"><i class="fa fa-edit"></i><span th:text="#{editInformation}"></span></a>
                         </div>
                     </div>
                 </div>

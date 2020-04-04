@@ -11,7 +11,6 @@ import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.RequestMapping
 
 import javax.servlet.http.HttpSession
-
 /**
  * @author yifei.yuan
  */
@@ -22,7 +21,13 @@ class UserController {
     UserService userService
     @Autowired
     UserDao userDao;
-
+//    @Autowired
+//    ReloadableResourceBundleMessageSource messageSource
+//    @RequestMapping("/changeLocale")
+//    String changeLocale(String locale,HttpSession session){
+//        session.setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME,locale)
+//        return "redirect:/user/index"
+//    }
     @RequestMapping("/index")
     String toIndex(Model model, Authentication authentication, HttpSession session) {
         User user = userDao.getUserByEmail(authentication.getName());

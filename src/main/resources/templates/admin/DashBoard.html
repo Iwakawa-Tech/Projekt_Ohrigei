@@ -134,7 +134,7 @@
         $('#main').append($('#res').html());
         $('#res').remove();
         // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init($('#dataChart'));
+        var myChart = echarts.init(document.getElementById('dataChart'));
 
         // 指定图表的配置项和数据
         var option = {
