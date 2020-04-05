@@ -56,12 +56,17 @@ interface UserDao {
 
     Group queryUserGroupDetail(int groupID)
 
-    List<Group>queryAllGroup()
+    List<Group> queryAllGroup()
 
     int getUsedCapacityByID(int id)
 
-    int userSelectGroup(int id,int groupID)
+    int userSelectGroup(int id, int groupID)
 
     int leaveFromConference(int id)
+
     int leaveGroup(int id)
+
+    String getPasswordByID(int id)
+
+    int changePasswordByID(int id, String password)
 }

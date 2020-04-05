@@ -1,6 +1,5 @@
 package edu.dlufl.ohrigei.controller.adminController
 
-
 import edu.dlufl.ohrigei.dao.UserDao
 import edu.dlufl.ohrigei.model.User
 import edu.dlufl.ohrigei.service.adminService.service.*
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.RequestMapping
 
-import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpSession
 
 @Controller
@@ -66,7 +64,7 @@ class AdminController {
     }
 
     @RequestMapping("/addAdminPage")
-    String addAdmin(HttpServletRequest request, Model model, HttpSession httpSession) {
+    String addAdmin() {
         return "admin/AddAdmin"
     }
 

@@ -20,4 +20,5 @@ public interface UserService {
     JSONObject userSelectGroup(HttpServletRequest request);
     JSONObject leaveFromConference(HttpServletRequest request);
     JSONObject leaveGroup(HttpServletRequest request);
+    JSONObject passwordChange(HttpServletRequest request);
 }

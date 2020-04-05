@@ -218,7 +218,9 @@
                                     <label for="password-after">新密码</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="password" id="password-after" disabled class="form-control">
+                                    <input type="password" id="password-after" disabled class="form-control"
+                                           onkeyup="passwordPatternCheck()">
+                                    <span id="passwordInfo"></span>
                                 </div>
                             </div>
                             <div class="row mt-1">
@@ -226,7 +228,9 @@
                                     <label for="password-confirm">确认密码</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="password" id="password-confirm" disabled class="form-control">
+                                    <input type="password" id="password-confirm" disabled class="form-control"
+                                           onkeyup="passwordCheck()">
+                                    <span id="confirmInfo"></span>
                                 </div>
                             </div>
                         </div>
@@ -235,9 +239,12 @@
                                 修改密码
                             </button>
                             <div class="btn-group mt-1" id="changePassBtnGroup" hidden>
-                                <button class="btn btn-primary"><i class="fa fa-check"></i>确认修改</button>
-                                <button class="btn btn-secondary" onclick="cancelChangePassword()"><i
-                                        class="fa fa-close"></i>取消修改
+                                <button class="btn btn-primary" disabled id="submitPasswordButton"
+                                        onclick="submitPassword()">
+                                    <i class="fa fa-check"></i>确认修改
+                                </button>
+                                <button class="btn btn-secondary" onclick="cancelChangePassword()">
+                                    <i class="fa fa-close"></i>取消修改
                                 </button>
                             </div>
                         </div>
@@ -292,14 +299,60 @@
     }
 
     function cancelChangePassword() {
-        $('#password-before').attr('disabled', 'disabled');
-        $('#password-before').val("");
-        $('#password-after').attr('disabled', 'disabled');
-        $('#password-after').val("");
-        $('#password-confirm').attr('disabled', 'disabled');
-        $('#password-confirm').val("");
+        $('#password-before').attr('disabled', 'disabled').val("");
+        $('#password-after').attr('disabled', 'disabled').val("");
+        $('#password-confirm').attr('disabled', 'disabled').val("");
         $('#changePassBtnGroup').attr('hidden', 'hidden');
         $('#changePasswordButton').removeAttr('hidden');
+    }
+
+    function passwordPatternCheck() {
+        pattern = /[a-zA-Z0-9]{6,16}/;
+        var password = $("#password-after").val();
+        if (pattern.test(password)) {
+            $("#passwordInfo").html("<i class='fa fa-check'></i>").css("color", "green");
+        } else {
+            $("#submitPasswordButton").attr("disabled", "disabled");
+            $("#passwordInfo").text("密码必须包含大写字母小写字母和数字").css("color", "red")
+        }
+    }
+
+    function passwordCheck() {
+        var passwordAfter = $("#password-after").val();
+        var passwordConfirm = $("#password-confirm").val();
+        if (passwordAfter === passwordConfirm) {
+            $("#confirmInfo").html("<i class='fa fa-check'></i>").css("color", "green");
+            $("#submitPasswordButton").removeAttr("disabled")
+        } else {
+            $("#confirmInfo").text("两次密码不一致").css("color", "red")
+        }
+    }
+
+    function submitPassword() {
+        var delegateID = [[${session.USER_INFO.id}]];
+        var passwordOld = $('#password-before').val();
+        var passwordNew = $('#password-after').val();
+        if (confirm('确认更改密码')) {
+            $.ajax({
+                type: 'POST',
+                url: '/user/passwordChange',
+                dataType: 'json',
+                data: {
+                    'id': delegateID,
+                    'passwordOld': passwordOld,
+                    'passwordNew': passwordNew
+                },
+                success: function (data) {
+                    if (data['status'] === 'SUCCESS') {
+                        alert('修改密码成功，请重新登录');
+                        window.location.href = "/logout";
+                    } else if (data['status'] === 'ERROR') {
+                        alert(data['info']);
+                        window.location.reload()
+                    }
+                }
+            })
+        }
     }
 
     function clearImg() {

@@ -93,24 +93,50 @@
     <div class="row">
         <!-- TO-DO List-->
         <div class="col-xl-4 mb-4">
-            <div class="card shadow h-100 ">
+            <div class="card shadow">
                 <div class="card-header">
                     待办事项
                 </div>
                 <div class="card-body">
                     <div class="list-group list-group-flush">
-                        <a href="#" class="list-group-item list-group-item-action">当前有<span></span>个代表的参会申请待确认</a>
-                        <a href="#" class="list-group-item list-group-item-action">当前有<span></span>个代表的席位选定待确认</a>
-                        <a href="#" class="list-group-item list-group-item-action">当前有<span></span>个代表的席位选定待确认</a>
-                        <a href="#" class="list-group-item list-group-item-action">待办事项1</a>
-                        <a href="#" class="list-group-item list-group-item-action">待办事项1</a>
+                        <a href="#" class="list-group-item list-group-item-action">当前有<span
+                                th:text="${infoMap['application']}"></span>个代表的参会申请待确认</a>
+                        <a href="#" class="list-group-item list-group-item-action">当前有<span
+                                th:text="${infoMap['seat']}"></span>个代表的席位选定待确认</a>
+                        <a href="#" class="list-group-item list-group-item-action">当前有<span
+                                th:text="${infoMap['bill']}"></span>个代表的账单待确认</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card shadow mt-4">
+                <div class="card-header">
+                    公告
+                </div>
+                <div class="card-body">
+                    <div class="input-group">
+                        <input type="text" id="newPost" class="form-control" placeholder="发出一条新公告……">
+                        <div class="input-group-btn">
+                            <button class="btn btn-success" onclick="submitNewPost()"><i class="fa fa-angle-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <table class="table table-hover text-center">
+                            <tr th:each="post:${postList}">
+                                <td th:text="${post.postMessage}"></td>
+                                <td>
+                                    <button class="btn btn-danger" th:onclick="deletePost([[${post.id}]])"><i
+                                            class="fa fa-times"></i></button>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
         <!-- E-Charts-->
         <div class="col-xl-8 mb-4">
-            <div class="card shadow h-100">
+            <div class="card shadow">
                 <div class="card-header">周代表增量统计</div>
                 <div class="card-body">
                     <div id="dataChart" style="width: 100%;height: 300px"></div>
@@ -128,6 +154,55 @@
             $('.sidebar .collapse').collapse('hide');
         }
     });
+
+    function submitNewPost() {
+        var postMessage = $('#newPost').val();
+        if (postMessage === '') {
+            alert('公告内容不能为空')
+        } else {
+            if (confirm('确认发布公告吗')) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/admin/addPost',
+                    dataType: 'json',
+                    data: {
+                        'post': postMessage
+                    },
+                    success: function (data) {
+                        if (data['status'] === 'SUCCESS') {
+                            alert('发布成功');
+                            window.location.reload()
+                        } else {
+                            alert('发布失败');
+                            window.location.reload()
+                        }
+                    }
+                })
+            }
+        }
+    }
+
+    function deletePost(id) {
+        if (confirm("确定要删除该条公告吗")) {
+            $.ajax({
+                type: 'POST',
+                url: '/admin/deletePost',
+                dataType: 'json',
+                data: {
+                    'postID': id
+                },
+                success: function (data) {
+                    if (data['status'] === 'SUCCESS') {
+                        alert('删除成功');
+                        window.location.reload()
+                    } else {
+                        alert('删除失败');
+                        window.location.reload()
+                    }
+                }
+            })
+        }
+    }
 </script>
 <script>
     $(function () {

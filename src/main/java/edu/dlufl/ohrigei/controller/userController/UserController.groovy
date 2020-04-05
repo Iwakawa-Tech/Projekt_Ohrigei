@@ -1,7 +1,9 @@
 package edu.dlufl.ohrigei.controller.userController
 
+import edu.dlufl.ohrigei.dao.AdminDao
 import edu.dlufl.ohrigei.dao.UserDao
 import edu.dlufl.ohrigei.model.Delegate
+import edu.dlufl.ohrigei.model.Post
 import edu.dlufl.ohrigei.model.User
 import edu.dlufl.ohrigei.service.userService.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,21 +23,18 @@ class UserController {
     UserService userService
     @Autowired
     UserDao userDao;
-//    @Autowired
-//    ReloadableResourceBundleMessageSource messageSource
-//    @RequestMapping("/changeLocale")
-//    String changeLocale(String locale,HttpSession session){
-//        session.setAttribute(SessionLocaleResolver.LOCALE_SESSION_ATTRIBUTE_NAME,locale)
-//        return "redirect:/user/index"
-//    }
+    @Autowired
+    AdminDao adminDao;
     @RequestMapping("/index")
     String toIndex(Model model, Authentication authentication, HttpSession session) {
         User user = userDao.getUserByEmail(authentication.getName());
         Delegate userInfo = userDao.getDelegateInfo(user.getId());
         String description = userDao.getDescription(userInfo.getApplicationStatusID())
+        List<Post> postList = adminDao.getPost()
         model.addAttribute("description", description)
-        model.addAttribute("delegateInfo", userInfo);
-        session.setAttribute("USER_INFO", user);
+        model.addAttribute("delegateInfo", userInfo)
+        session.setAttribute("USER_INFO", user)
+        model.addAttribute("postList",postList)
         return "/user/UserIndex";
     }
 

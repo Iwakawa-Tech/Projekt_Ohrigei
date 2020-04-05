@@ -138,7 +138,7 @@ class UserServiceImpl implements UserService, UserDetailsService {
         }
         try {
             userDao.modifyUserSelectSeat(delegateID, seatID, date)
-            userDao.updateUserApplicationStatus(delegateID, 12)
+            userDao.updateUserApplicationStatus(delegateID, 8)
             jsonObject.put("status", "SUCCESS")
         }
         catch (Exception ignored) {
@@ -213,6 +213,30 @@ class UserServiceImpl implements UserService, UserDetailsService {
         }
         catch (Exception ignored) {
             jsonObject.put("status", "ERROR")
+        }
+        return jsonObject
+    }
+
+    @Override
+    JSONObject passwordChange(HttpServletRequest request) {
+        BCryptPasswordEncoder encoder=new BCryptPasswordEncoder()
+        JSONObject jsonObject=new JSONObject()
+        int delegateID= request.getParameter("id") as int
+        String passwordDB=userDao.getPasswordByID(delegateID)
+        String passwordOld=request.getParameter("passwordOld")
+        if (encoder.matches(passwordOld,passwordDB)){
+            String passwordNew=new BCryptPasswordEncoder().encode(request.getParameter("passwordNew"))
+            try {
+                    userDao.changePasswordByID(delegateID,passwordNew)
+                jsonObject.put("status","SUCCESS")
+            }
+            catch (Exception ignored){
+                jsonObject.put("status","ERROR")
+                jsonObject.put("info","修改密码发生错误，请稍后再试")
+            }
+        }else {
+            jsonObject.put('status','ERROR')
+            jsonObject.put('info','原密码错误，请重新输入')
         }
         return jsonObject
     }

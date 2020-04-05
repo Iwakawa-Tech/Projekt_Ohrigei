@@ -59,4 +59,8 @@ class UserRestController {
     JSONObject leaveGroup(HttpServletRequest request){
         return userService.leaveGroup(request)
     }
+    @PostMapping("/passwordChange")
+    JSONObject passwordChange(HttpServletRequest request){
+        return userService.passwordChange(request)
+    }
 }

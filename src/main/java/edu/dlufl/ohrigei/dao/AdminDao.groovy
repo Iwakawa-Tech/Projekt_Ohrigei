@@ -1,15 +1,6 @@
 package edu.dlufl.ohrigei.dao
 
-import edu.dlufl.ohrigei.model.Admin
-import edu.dlufl.ohrigei.model.ApplicationStatus
-import edu.dlufl.ohrigei.model.Bill
-import edu.dlufl.ohrigei.model.Committee
-import edu.dlufl.ohrigei.model.Delegate
-import edu.dlufl.ohrigei.model.Group
-import edu.dlufl.ohrigei.model.Interview
-import edu.dlufl.ohrigei.model.School
-import edu.dlufl.ohrigei.model.SchoolType
-import edu.dlufl.ohrigei.model.Seat
+import edu.dlufl.ohrigei.model.*
 
 interface AdminDao {
     List<Delegate> queryAllMember(int type)
@@ -121,4 +112,16 @@ interface AdminDao {
     int updateUserApplicationStatus(int id, int statusID)
 
     int deleteGroupIDFromDelegate(int groupID)
+
+    int countSeatSelectWaitConfirm()
+
+    int countDelegateWaitConfirm()
+
+    int countBillWaitConfirm()
+
+    int addPost(String post)
+
+    List<Post> getPost()
+
+    int deletePost(int id)
 }

@@ -1,12 +1,9 @@
 package edu.dlufl.ohrigei.service.adminService.service
 
 import com.alibaba.fastjson.JSONObject
-import edu.dlufl.ohrigei.model.Admin
 import org.springframework.stereotype.Service
-import org.springframework.ui.Model
 
 import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpSession
 
 @Service
 interface AdminAddService {
@@ -21,4 +18,6 @@ interface AdminAddService {
     JSONObject addSeat(HttpServletRequest request)
 
     JSONObject addInterview(HttpServletRequest request)
+
+    JSONObject addPost(HttpServletRequest request)
 }

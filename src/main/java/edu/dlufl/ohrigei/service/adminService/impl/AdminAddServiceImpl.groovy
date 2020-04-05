@@ -155,4 +155,18 @@ class AdminAddServiceImpl implements AdminAddService {
         }
         return jsonObject
     }
+
+    @Override
+    JSONObject addPost(HttpServletRequest request) {
+        JSONObject jsonObject = new JSONObject()
+        String post=request.getParameter("post")
+        try {
+            adminDao.addPost(post)
+            jsonObject.put("status","SUCCESS")
+        }
+        catch (Exception ignored){
+            jsonObject.put("status","ERROR")
+        }
+        return jsonObject
+    }
 }

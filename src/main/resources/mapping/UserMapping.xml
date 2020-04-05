@@ -223,6 +223,11 @@
                  LEFT JOIN school_info si on `group`.school_ID = si.id
         WHERE `group`.id = #{groupID}
     </select>
+    <select id="getPasswordByID" resultType="string">
+        SELECT password
+        FROM user
+        WHERE id = #{id}
+    </select>
     <insert id="userSignUp" parameterType="edu.dlufl.ohrigei.model.User">
         insert into ohrigei.user(name, last_name, first_name, email, password, phone, role_ID)
         values (#{name}, #{last_name}, #{first_name}, #{email}, #{password}, #{phone}, 2)
@@ -272,5 +277,10 @@
         UPDATE delegate
         SET group_ID=null
         WHERE id = #{id}
+    </update>
+    <update id="changePasswordByID">
+        UPDATE user
+        SET password=#{param2}
+        WHERE id = #{param1}
     </update>
 </mapper>

@@ -14,13 +14,13 @@
     <link href="../css/bootstrap.css" rel="stylesheet">
     <link href="../css/sb-admin-2.css" rel="stylesheet">
     <link href="../css/font-awesome.css" rel="stylesheet">
-    <title>用户界面</title>
+    <title>申请进度-Гулаш&nbsp;система&nbsp;会议管理系统</title>
 </head>
 <body id="page-top">
 <div th:replace="allUser/userHeader::userHeader"></div>
 <div id="res">
     <div>
-        <div class="card">
+        <div class="card shadow">
             <div class="card-header">
                 <div class="card-header-pills">申请进度</div>
             </div>
@@ -30,28 +30,25 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-3">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">公告</div>
-                    <div class="card-body">
-                        <ul>
-                            <li>这是一条公告</li>
-                            <li>这是一条公告</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <div class="card shadow">
                     <div class="card-header"><span th:text="#{applicationStatus}"></span></div>
                     <div class="card-body">
                         <span th:text="${description}"></span>
                     </div>
                 </div>
+                <div class="card shadow mt-4">
+                    <div class="card-header">公告</div>
+                    <div class="card-body">
+                        <ul>
+                            <li th:each="post:${postList}" th:text="${post.postMessage}"></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-4">
-                <div class="card">
+            <div class="col-md-6">
+                <div class="card shadow">
                     <div class="card-header"><span th:text="#{personalInformation}"></span></div>
                     <div class="card">
                         <div class="card-body">

@@ -95,6 +95,10 @@
         <result column="bill_pay_date" property="billPayDate"/>
         <result column="bill_status" property="billStatus"/>
     </resultMap>
+    <resultMap id="Post" type="edu.dlufl.ohrigei.model.Post">
+        <result column="id" property="id"/>
+        <result column="post" property="postMessage"/>
+    </resultMap>
     <!--    select-->
     <select id="queryAllMember" resultMap="Delegate">
         SELECT ohrigei.user.id,
@@ -290,7 +294,8 @@
                  left join application_type on application_type.id = delegate.application_type_ID
                  left join application_status on application_status.id = delegate.application_status_ID
         WHERE ohrigei.delegate.role_ID = 1
-          AND user.id not IN (SELECT id from interview_info) AND application_status_ID=3
+          AND user.id not IN (SELECT id from interview_info)
+          AND application_status_ID = 3
     </select>
     <select id="queryAllInterview" resultMap="Interview">
         SELECT *
@@ -393,6 +398,27 @@
         WHERE seat_select_status = true
           and seat_confirm_status = false
     </select>
+    <select id="countSeatSelectWaitConfirm" resultType="int">
+        SELECT count(id)
+        FROM seat
+        WHERE seat_select_status = 1
+          AND seat_confirm_status = 0
+    </select>
+    <select id="countDelegateWaitConfirm" resultType="int">
+        SELECT count(id)
+        FROM delegate
+        WHERE application_status_ID = 1
+    </select>
+    <select id="countBillWaitConfirm" resultType="int">
+        SELECT count(id)
+        FROM bill_status
+        WHERE bill_generate_date IS NOT NULL
+          AND bill_status = 0
+    </select>
+    <select id="getPost" resultMap="Post">
+        SELECT *
+        FROM post
+    </select>
     <!--    insert-->
 
     <insert id="addAdminStep1" parameterType="edu.dlufl.ohrigei.model.Admin">
@@ -422,6 +448,9 @@
     <insert id="addInterview">
         INSERT INTO interview_info(id, admin_id, date)
         VALUES (#{param1}, #{param2}, #{param3})
+    </insert>
+    <insert id="addPost">
+        INSERT INTO post(post) VALUES (#{post})
     </insert>
     <!--    update-->
 
@@ -494,4 +523,9 @@
         SET group_ID=null
         WHERE group_ID = #{groupID}
     </update>
+
+    <!--    Delete-->
+    <delete id="deletePost">
+        DELETE FROM post WHERE id=#{id}
+    </delete>
 </mapper>

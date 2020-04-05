@@ -132,4 +132,12 @@ class AdminRestController {
     JSONObject seatSelectConfirm(HttpServletRequest request){
         return adminModifyService.seatSelectConfirm(request)
     }
+    @PostMapping("/addPost")
+    JSONObject addPost(HttpServletRequest request){
+        return adminAddService.addPost(request)
+    }
+    @PostMapping("/deletePost")
+    JSONObject deletePost(HttpServletRequest request){
+        return adminDeleteService.deletePost(request)
+    }
 }

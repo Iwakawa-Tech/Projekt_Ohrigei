@@ -111,7 +111,7 @@ class AdminModifyServiceImpl implements AdminModifyService {
         if (interviewStatus == "pass") {
             try {
                 adminDao.modifyInterviewStatus(id, true)
-                adminDao.modifyUserStatus(id, 9)
+                adminDao.modifyUserStatus(id, 5)
                 if (adminDao.creatBillCheck(id) != 0) {
                     adminDao.creatNewBill(id, adminDao.getRoleIDByID(id), UtilSet.getCurrentTime(), false)
                 }
@@ -124,7 +124,7 @@ class AdminModifyServiceImpl implements AdminModifyService {
         } else {
             try {
                 adminDao.modifyInterviewStatus(id, true)
-                adminDao.modifyUserStatus(id, 8)
+                adminDao.modifyUserStatus(id, 4)
                 jsonObject.put("status", "SUCCESS")
                 jsonObject.put("interviewStatus", "已完成")
             }
@@ -157,7 +157,7 @@ class AdminModifyServiceImpl implements AdminModifyService {
         int id = Integer.parseInt(request.getParameter("id"))
         try {
             adminDao.confirmBill(id)
-            adminDao.modifyUserStatus(id, 11)
+            adminDao.modifyUserStatus(id, 7)
             jsonObject.put("status", "SUCCESS")
             jsonObject.put("confirm", "已支付")
         }
@@ -174,7 +174,7 @@ class AdminModifyServiceImpl implements AdminModifyService {
         int delegateID = request.getParameter("delegateID") as int
         try {
             adminDao.seatSelectConfirm(seatID)
-            adminDao.updateUserApplicationStatus(delegateID,14)
+            adminDao.updateUserApplicationStatus(delegateID,10)
             jsonObject.put("status","SUCCESS")
         }
         catch (Exception ignored){
