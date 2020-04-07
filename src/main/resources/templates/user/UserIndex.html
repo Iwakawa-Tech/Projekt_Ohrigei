@@ -54,13 +54,20 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-4">
-                                    <img src="../img/head/test.png" alt="" class="rounded img-fluid float-md-right">
+                                    <img th:unless="${#strings.isEmpty(session.USER_INFO.avatarPath)}"
+                                         th:src="${session.USER_INFO.avatarPath}" alt="head"
+                                         class="rounded img-fluid float-md-right">
+                                    <img th:if="${#strings.isEmpty(session.USER_INFO.avatarPath)}"
+                                         src="../img/head/defaultHead.png" alt="head"
+                                         class="rounded img-fluid float-md-right">
                                 </div>
                                 <div class="col-md-8">
                                     <p><strong th:text="${session.USER_INFO.name}"></strong></p>
-                                    <span th:text="#{applicationType}"></span>：<span id="applicationType" th:text="${delegateInfo.applicationType}"></span>
+                                    <span th:text="#{applicationType}"></span>：<span id="applicationType"
+                                                                                     th:text="${delegateInfo.applicationType}"></span>
                                     <br>
-                                    <span th:text="#{applicationStatus}"></span>：<span id="applicationStatus" th:text="${delegateInfo.applicationStatus}"></span>
+                                    <span th:text="#{applicationStatus}"></span>：<span id="applicationStatus"
+                                                                                       th:text="${delegateInfo.applicationStatus}"></span>
                                     <hr>
                                     <p><strong th:text="#{contactInformation}"></strong></p>
                                     <i class="fa fa-phone"></i>&nbsp;<span th:text="${delegateInfo.phone}"></span>
@@ -70,7 +77,8 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <a th:href="@{/user/userProfile(id=${delegateInfo.ID})}"><i class="fa fa-edit"></i><span th:text="#{editInformation}"></span></a>
+                            <a th:href="@{/user/userProfile(id=${delegateInfo.ID})}"><i class="fa fa-edit"></i><span
+                                    th:text="#{editInformation}"></span></a>
                         </div>
                     </div>
                 </div>
@@ -85,6 +93,7 @@
         $('#res').remove();
         applyStatusBar();
     });
+
     function applyStatusBar() {
         var applyStatus = [[${delegateInfo.applicationStatusID}]];
         switch (applyStatus) {
@@ -111,6 +120,7 @@
                 break;
         }
     }
+
     function test() {
         var applyStatusText = $('#applicationStatus').text();
         console.log(applyStatusText)

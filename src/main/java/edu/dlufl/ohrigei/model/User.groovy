@@ -1,6 +1,6 @@
 package edu.dlufl.ohrigei.model
 
-import com.alibaba.fastjson.JSONObject
+
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.AuthorityUtils
 import org.springframework.security.core.userdetails.UserDetails
@@ -15,6 +15,7 @@ class User implements UserDetails{
     private String phone
     private String role
     private boolean enable_Login
+    private String avatarPath
 
     private List<GrantedAuthority>authorities
     int getId() {
@@ -55,6 +56,18 @@ class User implements UserDetails{
 
     void setEmail(String email) {
         this.email = email
+    }
+
+    void setEnable_Login(boolean enable_Login) {
+        this.enable_Login = enable_Login
+    }
+
+    String getAvatarPath() {
+        return avatarPath
+    }
+
+    void setAvatarPath(String avatarPath) {
+        this.avatarPath = avatarPath
     }
 
     @Override
@@ -122,17 +135,19 @@ class User implements UserDetails{
     }
 
     @Override
-    String toString() {
-        JSONObject jsonObject = new JSONObject()
-        jsonObject.put("id", id)
-        jsonObject.put("name", name)
-        jsonObject.put("email", email)
-        jsonObject.put("password", password)
-        jsonObject.put("phone", phone)
-        jsonObject.put("role", role)
-        jsonObject.put("last_name", last_name)
-        jsonObject.put("first_name", first_name)
-        jsonObject.put("enable_Login", enable_Login)
-        return jsonObject.toJSONString()
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", last_name='" + last_name + '\'' +
+                ", first_name='" + first_name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", phone='" + phone + '\'' +
+                ", role='" + role + '\'' +
+                ", enable_Login=" + enable_Login +
+                ", avatarPath='" + avatarPath + '\'' +
+                ", authorities=" + authorities +
+                '}';
     }
 }

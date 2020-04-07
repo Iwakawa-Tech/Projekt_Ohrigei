@@ -14,6 +14,15 @@ class Delegate {
     private String email
     private Integer groupID
     private boolean enable_Login
+    private String avatarPath
+
+    String getAvatarPath() {
+        return avatarPath
+    }
+
+    void setAvatarPath(String avatarPath) {
+        this.avatarPath = avatarPath
+    }
 
     String getPhone() {
         return phone
@@ -129,12 +138,14 @@ class Delegate {
                 ", committeeName='" + committeeName + '\'' +
                 ", committeeID=" + committeeID +
                 ", schoolName='" + schoolName + '\'' +
+                ", applicationStatusID=" + applicationStatusID +
                 ", applicationType='" + applicationType + '\'' +
                 ", applicationStatus='" + applicationStatus + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
                 ", groupID=" + groupID +
                 ", enable_Login=" + enable_Login +
+                ", avatarPath='" + avatarPath + '\'' +
                 '}';
     }
 }

@@ -20,4 +20,6 @@ interface AdminAddService {
     JSONObject addInterview(HttpServletRequest request)
 
     JSONObject addPost(HttpServletRequest request)
+
+    JSONObject addImg(HttpServletRequest request)
 }

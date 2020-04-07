@@ -13,6 +13,7 @@ class Admin {
     private boolean role_L
     private boolean role_F
     private boolean role_SG
+    private String avatarPath
 
     int getId() {
         return id
@@ -118,6 +119,14 @@ class Admin {
         this.role_SG = role_SG
     }
 
+    String getAvatarPath() {
+        return avatarPath
+    }
+
+    void setAvatarPath(String avatarPath) {
+        this.avatarPath = avatarPath
+    }
+
     @Override
     public String toString() {
         return "Admin{" +
@@ -134,6 +143,7 @@ class Admin {
                 ", role_L=" + role_L +
                 ", role_F=" + role_F +
                 ", role_SG=" + role_SG +
+                ", avatarPath='" + avatarPath + '\'' +
                 '}';
     }
 }

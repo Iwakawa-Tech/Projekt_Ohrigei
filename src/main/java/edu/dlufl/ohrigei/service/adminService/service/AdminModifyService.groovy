@@ -24,4 +24,6 @@ interface AdminModifyService {
     JSONObject confirmBill(HttpServletRequest request)
 
     JSONObject seatSelectConfirm(HttpServletRequest request)
+
+    JSONObject passwordChange(HttpServletRequest request)
 }

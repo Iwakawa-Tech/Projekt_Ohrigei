@@ -22,20 +22,15 @@ public class IndexController {
     UserService userService;
     @RequestMapping("/")
     public String index(Model model, HttpSession session) {
-        model.addAttribute("userInfo", new User());
-        model.addAttribute("errorMessage");
-        if(session.getAttribute("user")!=null){
-            return "user/UserIndex";
+        if (session.getAttribute("USER_INFO")!=null){
+            User user= (User) session.getAttribute("USER_INFO");
+            if ("ROLE_ADMIN".equals(user.getRole())){
+                return "redirect:admin/DashBoard";
+            }else {
+                return "redirect:user/UserIndex";
+            }
         }
-        return "allUser/index";
-    }
-    @RequestMapping("/testUpload")
-    public String testUpload(){
-        return "allUser/testUpload";
-    }
-    @RequestMapping("/question")
-    public String question(){
-        return "user/UserAcademicTest";
+        return "allUser/login";
     }
     @RequestMapping("/login")
     public String login(){

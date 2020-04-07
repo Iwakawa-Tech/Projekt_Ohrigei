@@ -11,10 +11,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface UserDao {
-    //密码校验
-    User loginCheck(User user)
-    //区分用户类型
-    int authorityControl(String email)
 
     String userEmailCheck(String email)
 
@@ -69,4 +65,6 @@ interface UserDao {
     String getPasswordByID(int id)
 
     int changePasswordByID(int id, String password)
+
+    int getApplicationStatusByID(int id)
 }

@@ -76,7 +76,10 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3">
-                            <img src="../img/head/test.png" alt="" class="img-fluid">
+                            <img th:unless="${#strings.isEmpty(admin.avatarPath)}"
+                                 th:src="${admin.avatarPath}" alt="" class="img-fluid">
+                            <img th:if="${#strings.isEmpty(admin.avatarPath)}"
+                                 src="../img/head/defaultHead.png" alt="head" class="img-fluid">
                         </div>
                         <div class="col-md-9">
                             管理员姓名：<span th:text="${admin.name}"></span>

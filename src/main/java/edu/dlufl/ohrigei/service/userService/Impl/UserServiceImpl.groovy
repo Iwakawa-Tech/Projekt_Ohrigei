@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject
 import edu.dlufl.ohrigei.dao.UserDao
 import edu.dlufl.ohrigei.model.*
 import edu.dlufl.ohrigei.service.userService.service.UserService
+import edu.dlufl.ohrigei.util.Base64ToFile
 import edu.dlufl.ohrigei.util.UtilSet
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.LockedException
@@ -61,9 +62,11 @@ class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     String userInterviewDetail(Model model, String id, HttpSession session) {
         User user = session.getAttribute("USER_INFO") as User
+        if (userDao.getApplicationStatusByID(user.id) < 3) {
+            return "error/403"
+        }
         if (user.getId() != Integer.parseInt(id)) {
-            String noInterview = "看别人的面试信息不是好孩子哦"
-            model.addAttribute("noInterview", noInterview)
+            return "error/403"
         } else {
             try {
                 Interview interview = userDao.getInterviewById(Integer.parseInt(id))
@@ -81,10 +84,13 @@ class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     String userBillDetail(Model model, String id, HttpSession session) {
-        int delegateID = Integer.parseInt(id)
         User user = session.getAttribute("USER_INFO") as User
+        if (userDao.getApplicationStatusByID(user.id) < 5) {
+            return "error/403"
+        }
+        int delegateID = Integer.parseInt(id)
         if (delegateID != user.getId()) {
-            model.addAttribute("info", "偷看别人的信息不好哦")
+            return "error/403"
         } else {
             Bill bill = userDao.getBillDetail(delegateID)
             Delegate delegate = userDao.getDelegateInfo(delegateID)
@@ -97,9 +103,12 @@ class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     String userSeatDetail(Model model, String id, HttpSession session) {
         User user = session.getAttribute("USER_INFO") as User
+        if (userDao.getApplicationStatusByID(user.id) < 7) {
+            return "error/403"
+        }
         User userTmp = new User()
         if (user.getId() != Integer.parseInt(id)) {
-            model.addAttribute("info", "偷看别人的信息不好哦")
+            return "error/403"
         } else {
             int userID = Integer.parseInt(id)
             Seat userSeat = userDao.querySeatByID(userID)
@@ -150,6 +159,9 @@ class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     String userGroupDetail(Model model, String id, HttpSession session) {
         User user = session.getAttribute("USER_INFO") as User
+        if (userDao.getApplicationStatusByID(user.id) < 3) {
+            return "error/403"
+        }
         int delegateID = user.getId()
         Integer groupID = userDao.queryGroupIDByID(delegateID)
         if (groupID != null) {
@@ -205,8 +217,8 @@ class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     JSONObject leaveGroup(HttpServletRequest request) {
-        JSONObject jsonObject=new JSONObject()
-        int id=request.getParameter("id") as int
+        JSONObject jsonObject = new JSONObject()
+        int id = request.getParameter("id") as int
         try {
             userDao.leaveGroup(id)
             jsonObject.put("status", "SUCCESS")
@@ -219,25 +231,33 @@ class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     JSONObject passwordChange(HttpServletRequest request) {
-        BCryptPasswordEncoder encoder=new BCryptPasswordEncoder()
-        JSONObject jsonObject=new JSONObject()
-        int delegateID= request.getParameter("id") as int
-        String passwordDB=userDao.getPasswordByID(delegateID)
-        String passwordOld=request.getParameter("passwordOld")
-        if (encoder.matches(passwordOld,passwordDB)){
-            String passwordNew=new BCryptPasswordEncoder().encode(request.getParameter("passwordNew"))
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder()
+        JSONObject jsonObject = new JSONObject()
+        int delegateID = request.getParameter("id") as int
+        String passwordDB = userDao.getPasswordByID(delegateID)
+        String passwordOld = request.getParameter("passwordOld")
+        if (encoder.matches(passwordOld, passwordDB)) {
+            String passwordNew = new BCryptPasswordEncoder().encode(request.getParameter("passwordNew"))
             try {
-                    userDao.changePasswordByID(delegateID,passwordNew)
-                jsonObject.put("status","SUCCESS")
+                userDao.changePasswordByID(delegateID, passwordNew)
+                jsonObject.put("status", "SUCCESS")
             }
-            catch (Exception ignored){
-                jsonObject.put("status","ERROR")
-                jsonObject.put("info","修改密码发生错误，请稍后再试")
+            catch (Exception ignored) {
+                jsonObject.put("status", "ERROR")
+                jsonObject.put("info", "修改密码发生错误，请稍后再试")
             }
-        }else {
-            jsonObject.put('status','ERROR')
-            jsonObject.put('info','原密码错误，请重新输入')
+        } else {
+            jsonObject.put('status', 'ERROR')
+            jsonObject.put('info', '原密码错误，请重新输入')
         }
+        return jsonObject
+    }
+
+    @Override
+    JSONObject addImg(HttpServletRequest request) {
+        String base64=request.getParameter("imgData")
+        int id=request.getParameter("id") as int
+        JSONObject jsonObject = Base64ToFile.base64ToFile(base64, id)
         return jsonObject
     }
 }

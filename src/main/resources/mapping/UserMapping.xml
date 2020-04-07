@@ -7,6 +7,7 @@
         <result column="phone" property="phone"/>
         <result column="email" property="email"/>
         <result column="enable_login" property="enable_Login"/>
+        <result column="avatar_path" property="avatarPath"/>
         <result column="password" property="password"/>
         <result column="role" property="role"/>
     </resultMap>
@@ -23,6 +24,7 @@
         <result column="email" property="email"/>
         <result column="phone" property="phone"/>
         <result column="committee_name" property="committeeName"/>
+        <result column="avatar_path" property="avatarPath"/>
     </resultMap>
     <resultMap id="Interview" type="edu.dlufl.ohrigei.model.Interview">
         <result column="id" property="id"/>
@@ -78,12 +80,6 @@
         <result column="name" property="headDelegateName"/>
         <result column="group_size" property="groupSize"/>
     </resultMap>
-    <select id="loginCheck" resultType="edu.dlufl.ohrigei.model.User" parameterType="edu.dlufl.ohrigei.model.User">
-        select *
-        from ohrigei.user
-        where email = #{email}
-          and password = #{password}
-    </select>
     <select id="login" resultMap="UserType">
         select ohrigei.user.id, name, phone, password, email, enable_login, user_role.role
         from ohrigei.user
@@ -100,7 +96,8 @@
                ohrigei.delegate.application_status_ID,
                ohrigei.school_info.school_name,
                ohrigei.application_type.application_type,
-               ohrigei.application_status.application_status_text
+               ohrigei.application_status.application_status_text,
+               user.avatar_path
         FROM ohrigei.delegate
                  left join user on delegate.id = ohrigei.user.id
                  left join `group` on delegate.group_ID = `group`.id
@@ -115,7 +112,7 @@
         where email = #{email}
     </select>
     <select id="getUserByEmail" resultMap="UserType">
-        select user.id, name, phone, email, user_role.role
+        select user.id, name, phone, email, user_role.role, avatar_path
         from user
                  left join user_role on user.role_ID = user_role.id
         where email = #{email}
@@ -134,7 +131,8 @@
         SELECT ohrigei.user.id,
                ohrigei.user.name,
                user.email,
-               user.phone
+               user.phone,
+               user.avatar_path
         from ohrigei.user
         where user.id = #{adminID}
     </select>
@@ -228,6 +226,12 @@
         FROM user
         WHERE id = #{id}
     </select>
+    <select id="getApplicationStatusByID" resultType="int">
+        SELECT application_status_ID
+        FROM delegate
+        WHERE id = #{id}
+    </select>
+    <!--    INSERT-->
     <insert id="userSignUp" parameterType="edu.dlufl.ohrigei.model.User">
         insert into ohrigei.user(name, last_name, first_name, email, password, phone, role_ID)
         values (#{name}, #{last_name}, #{first_name}, #{email}, #{password}, #{phone}, 2)

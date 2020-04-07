@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSONObject
 import edu.dlufl.ohrigei.dao.UserDao
 import edu.dlufl.ohrigei.service.adminService.service.*
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -19,8 +16,6 @@ class AdminRestController {
     AdminQueryService adminQueryService
     @Autowired
     AdminAddService adminAddService
-    @Autowired
-    AdminDetailService adminDetailService
     @Autowired
     AdminCountService adminCountService
     @Autowired
@@ -109,35 +104,51 @@ class AdminRestController {
     }
 
     @PostMapping("/modifyInterviewDate")
-    JSONObject modifyInterviewDate(HttpServletRequest request){
+    JSONObject modifyInterviewDate(HttpServletRequest request) {
         return adminModifyService.modifyInterviewDate(request)
     }
 
     @PostMapping("/modifyInterviewStatus")
-    JSONObject modifyInterviewStatus(HttpServletRequest request){
+    JSONObject modifyInterviewStatus(HttpServletRequest request) {
         return adminModifyService.modifyInterviewStatus(request)
     }
 
     @PostMapping("/modifyInterviewComment")
-    JSONObject modifyInterviewComment(HttpServletRequest request){
+    JSONObject modifyInterviewComment(HttpServletRequest request) {
         return adminModifyService.modifyInterviewComment(request)
     }
 
     @PostMapping("/billConfirm")
-    JSONObject billConfirm(HttpServletRequest request){
+    JSONObject billConfirm(HttpServletRequest request) {
         return adminModifyService.confirmBill(request)
     }
 
     @PostMapping("/seatSelectConfirm")
-    JSONObject seatSelectConfirm(HttpServletRequest request){
+    JSONObject seatSelectConfirm(HttpServletRequest request) {
         return adminModifyService.seatSelectConfirm(request)
     }
+
     @PostMapping("/addPost")
-    JSONObject addPost(HttpServletRequest request){
+    JSONObject addPost(HttpServletRequest request) {
         return adminAddService.addPost(request)
     }
+
     @PostMapping("/deletePost")
-    JSONObject deletePost(HttpServletRequest request){
+    JSONObject deletePost(HttpServletRequest request) {
         return adminDeleteService.deletePost(request)
+    }
+
+    @PostMapping("removeDelegateFromGroup")
+    JSONObject removeDelegateFromGroup(HttpServletRequest request) {
+        return adminDeleteService.removeDelegateFromGroup(request)
+    }
+
+    @PostMapping("/uploadImg")
+    JSONObject testUpload(HttpServletRequest request) {
+        return adminAddService.addImg(request)
+    }
+    @PostMapping("/passwordChange")
+    JSONObject passwordChange(HttpServletRequest request){
+        return adminModifyService.passwordChange(request)
     }
 }

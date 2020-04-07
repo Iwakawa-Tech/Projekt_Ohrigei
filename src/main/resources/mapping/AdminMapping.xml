@@ -11,6 +11,7 @@
         <result column="email" property="email"/>
         <result column="phone" property="phone"/>
         <result column="group_ID" property="groupID"/>
+        <result column="avatar_path" property="avatarPath"/>
         <result column="application_status_ID" property="applicationStatusID"/>
     </resultMap>
     <resultMap id="Group" type="edu.dlufl.ohrigei.model.Group">
@@ -33,6 +34,7 @@
         <result column="password" property="password"/>
         <result column="email" property="email"/>
         <result column="phone" property="phone"/>
+        <result column="avatar_path" property="avatarPath"/>
         <result column="committee_name" property="committeeName"/>
     </resultMap>
     <resultMap id="Committee" type="edu.dlufl.ohrigei.model.Committee">
@@ -177,6 +179,8 @@
     </select>
     <select id="adminDetail" resultMap="Admin">
         SELECT ohrigei.user.name,
+               user.email,
+               user.phone,
                admin.title,
                ohrigei.committee.committee_name,
                ohrigei.admin.role_AG,
@@ -419,6 +423,42 @@
         SELECT *
         FROM post
     </select>
+    <select id="getGroupMember" resultMap="Delegate">
+        SELECT ohrigei.user.id,
+               ohrigei.user.name,
+               ohrigei.user.enable_login,
+               ohrigei.user.email,
+               ohrigei.user.phone,
+               ohrigei.delegate.group_ID,
+               ohrigei.school_info.school_name,
+               ohrigei.application_type.application_type,
+               ohrigei.application_status.application_status_text
+        FROM ohrigei.delegate
+                 left join user on delegate.id = ohrigei.user.id
+                 left join `group` on delegate.group_ID = `group`.id
+                 left join school_info on ohrigei.group.school_ID = school_info.id
+                 left join application_type on application_type.id = delegate.application_type_ID
+                 left join application_status on application_status.id = delegate.application_status_ID
+        WHERE ohrigei.delegate.group_ID = #{id}
+    </select>
+    <select id="queryGroupLeaderList" resultMap="Delegate">
+        SELECT ohrigei.user.id,
+               ohrigei.user.name,
+               ohrigei.user.enable_login,
+               ohrigei.user.email,
+               ohrigei.user.phone,
+               ohrigei.delegate.group_ID,
+               ohrigei.school_info.school_name,
+               ohrigei.application_type.application_type,
+               ohrigei.application_status.application_status_text
+        FROM ohrigei.delegate
+                 left join user on delegate.id = ohrigei.user.id
+                 left join `group` on delegate.group_ID = `group`.id
+                 left join school_info on ohrigei.group.school_ID = school_info.id
+                 left join application_type on application_type.id = delegate.application_type_ID
+                 left join application_status on application_status.id = delegate.application_status_ID
+        WHERE ohrigei.delegate.id IN (SELECT head_delegate_ID FROM `group` WHERE head_delegate_ID IS NOT NULL)
+    </select>
     <!--    insert-->
 
     <insert id="addAdminStep1" parameterType="edu.dlufl.ohrigei.model.Admin">
@@ -450,7 +490,8 @@
         VALUES (#{param1}, #{param2}, #{param3})
     </insert>
     <insert id="addPost">
-        INSERT INTO post(post) VALUES (#{post})
+        INSERT INTO post(post)
+        VALUES (#{post})
     </insert>
     <!--    update-->
 
@@ -523,9 +564,20 @@
         SET group_ID=null
         WHERE group_ID = #{groupID}
     </update>
-
+    <update id="removeDelegateFromGroup">
+        UPDATE delegate
+        SET group_ID =null
+        WHERE id = #{param1}
+    </update>
+    <update id="addImgPath">
+        UPDATE user
+        SET avatar_path=#{param2}
+        WHERE id = #{param1}
+    </update>
     <!--    Delete-->
     <delete id="deletePost">
-        DELETE FROM post WHERE id=#{id}
+        DELETE
+        FROM post
+        WHERE id = #{id}
     </delete>
 </mapper>

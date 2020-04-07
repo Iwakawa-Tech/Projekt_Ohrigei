@@ -19,8 +19,6 @@ class AdminController {
     @Autowired
     AdminAddService adminAddService
     @Autowired
-    AdminDetailService adminDetailService
-    @Autowired
     AdminCountService adminCountService
     @Autowired
     AdminModifyService adminModifyService
@@ -85,7 +83,7 @@ class AdminController {
 
     @RequestMapping("/adminDetail")
     String adminDetail(Model model, HttpSession httpSession, String id) {
-        return adminDetailService.adminDetail(httpSession, model, id)
+        return adminQueryService.adminDetail(httpSession, model, id)
     }
 
     @RequestMapping("/addGroupPage")
@@ -110,7 +108,7 @@ class AdminController {
 
     @RequestMapping("/groupMemberDetail")
     String groupMemberDetail(Model model, String groupID) {
-        return null
+        return adminQueryService.groupMemberDetail(model,groupID)
     }
 
     @RequestMapping("/memberDetailPage")

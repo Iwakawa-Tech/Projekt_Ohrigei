@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject
 import edu.dlufl.ohrigei.dao.AdminDao
 import edu.dlufl.ohrigei.model.Admin
 import edu.dlufl.ohrigei.service.adminService.service.AdminAddService
+import edu.dlufl.ohrigei.util.Base64ToFile
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -167,6 +168,14 @@ class AdminAddServiceImpl implements AdminAddService {
         catch (Exception ignored){
             jsonObject.put("status","ERROR")
         }
+        return jsonObject
+    }
+
+    @Override
+    JSONObject addImg(HttpServletRequest request) {
+        String base64=request.getParameter("imgData")
+        int id=request.getParameter("id") as int
+        JSONObject jsonObject = Base64ToFile.base64ToFile(base64, id)
         return jsonObject
     }
 }

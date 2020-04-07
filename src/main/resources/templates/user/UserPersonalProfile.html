@@ -152,7 +152,11 @@
                         <div class="card-body">
                             <div id="personHeaderGroup">
                                 <div>
-                                    <img src="../img/head/defaultHead.png" style="width: 144px;height: 144px"
+                                    <img th:if="${#strings.isEmpty(session.USER_INFO.avatarPath)}"
+                                         src="../img/head/defaultHead.png" style="width: 144px;height: 144px"
+                                         alt="当前头像">
+                                    <img th:unless="${#strings.isEmpty(session.USER_INFO.avatarPath)}"
+                                         th:src="${session.USER_INFO.avatarPath}" style="width: 144px;height: 144px"
                                          alt="当前头像">
                                 </div>
                             </div>
@@ -276,18 +280,21 @@
         var cropUrl = cropCanvas.toDataURL('image/jpeg', 0.5);
         $.ajax({
             type: "POST",
-            url: '/testUpload/upload',
+            url: '/user/uploadImg',
             dataType: "json",
             data: {
+                "id": [[${session.USER_INFO.id}]],
                 "imgData": cropUrl
             },
             success: function (data) {
                 if (data['status'] === "SUCCESS") {
-                    alert("上传成功");
-                } else alert("上传失败")
+                    alert("上传成功,请重新登录以查看");
+                } else {
+                    alert("上传失败");
+                    window.location.reload()
+                }
             },
         });
-        console.log(cropUrl)
     }
 
     function changePassword() {

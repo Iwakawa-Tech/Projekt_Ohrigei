@@ -21,4 +21,5 @@ public interface UserService {
     JSONObject leaveFromConference(HttpServletRequest request);
     JSONObject leaveGroup(HttpServletRequest request);
     JSONObject passwordChange(HttpServletRequest request);
+    JSONObject addImg(HttpServletRequest request);
 }

@@ -124,4 +124,12 @@ interface AdminDao {
     List<Post> getPost()
 
     int deletePost(int id)
+
+    List<Delegate> getGroupMember(int id)
+
+    int removeDelegateFromGroup(int id)
+
+    int addImgPath(int id,String path)
+
+    List<Delegate> queryGroupLeaderList()
 }

@@ -39,7 +39,7 @@ class AdminQueryServiceImpl implements AdminQueryService {
                 model.addAttribute("queryType", queryType)
                 return "/admin/AllMemberList"
             case "leader":
-                memberList = adminDao.queryAllMember(4)
+                memberList = adminDao.queryGroupLeaderList()
                 model.addAttribute("memberList", memberList)
                 queryType = "领队列表"
                 model.addAttribute("queryType", queryType)
@@ -260,5 +260,21 @@ class AdminQueryServiceImpl implements AdminQueryService {
         List<Seat> seatList=adminDao.allSeatWaitProcess()
         model.addAttribute("seatList",seatList)
         return "admin/AllSeatWaitProcess"
+    }
+
+    @Override
+    String adminDetail(HttpSession httpSession, Model model, String id) {
+        int ID=Integer.parseInt(id)
+        Admin admin = adminDao.adminDetail(ID)
+        model.addAttribute("admin",admin)
+        return "admin/AdminDetail"
+    }
+
+    @Override
+    String groupMemberDetail(Model model, String groupID) {
+        int id=Integer.parseInt(groupID)
+        List<Delegate> delegateList=adminDao.getGroupMember(id)
+        model.addAttribute("delegateList",delegateList)
+        return "admin/GroupMemberList"
     }
 }

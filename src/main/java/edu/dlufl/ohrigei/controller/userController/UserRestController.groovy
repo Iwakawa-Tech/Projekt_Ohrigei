@@ -46,21 +46,27 @@ class UserRestController {
     }
 
     @PostMapping("/userSelectGroup")
-    JSONObject selectGroup(HttpServletRequest request){
+    JSONObject selectGroup(HttpServletRequest request) {
         return userService.userSelectGroup(request)
     }
 
     @PostMapping("/leaveFromConference")
-    JSONObject leaveFromConference(HttpServletRequest request){
+    JSONObject leaveFromConference(HttpServletRequest request) {
         return userService.leaveFromConference(request)
     }
 
     @PostMapping("/leaveGroup")
-    JSONObject leaveGroup(HttpServletRequest request){
+    JSONObject leaveGroup(HttpServletRequest request) {
         return userService.leaveGroup(request)
     }
+
     @PostMapping("/passwordChange")
-    JSONObject passwordChange(HttpServletRequest request){
+    JSONObject passwordChange(HttpServletRequest request) {
         return userService.passwordChange(request)
+    }
+
+    @PostMapping("/uploadImg")
+    JSONObject testUpload(HttpServletRequest request) {
+        return userService.addImg(request)
     }
 }

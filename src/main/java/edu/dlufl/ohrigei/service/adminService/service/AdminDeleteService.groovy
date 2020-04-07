@@ -9,4 +9,5 @@ import javax.servlet.http.HttpServletRequest
 interface AdminDeleteService {
     JSONObject deleteGroup(int GroupID)
     JSONObject deletePost(HttpServletRequest request)
+    JSONObject removeDelegateFromGroup(HttpServletRequest request)
 }

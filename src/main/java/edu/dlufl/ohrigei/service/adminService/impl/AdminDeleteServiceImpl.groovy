@@ -37,4 +37,17 @@ class AdminDeleteServiceImpl implements AdminDeleteService{
         }
         return jsonObject
     }
+
+    @Override
+    JSONObject removeDelegateFromGroup(HttpServletRequest request) {
+        JSONObject jsonObject = new JSONObject()
+        int id=request.getParameter("delegateID") as int
+        try {
+            adminDao.removeDelegateFromGroup(id)
+            jsonObject.put("status", "SUCCESS")
+        } catch (Exception ignored){
+            jsonObject.put("status", "ERROR")
+        }
+        return jsonObject
+    }
 }

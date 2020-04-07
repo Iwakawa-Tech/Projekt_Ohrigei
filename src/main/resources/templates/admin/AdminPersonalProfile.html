@@ -83,8 +83,7 @@
                                     <p>账户类型</p>
                                 </div>
                                 <div class="col-md-10">
-                                    <span th:if="${session.USER_INFO.role} eq 'ROLE_ADMIN'"><i class="fa fa-user"></i>管理员（<a
-                                            href="#">更改</a>）</span>
+                                    <span th:if="${session.USER_INFO.role} eq 'ROLE_ADMIN'"><i class="fa fa-user"></i>管理员</span>
                                     <span th:if="${session.USER_INFO.role} eq 'ROLE_USER'"><i class="fa fa-user"></i>代表</span>
                                 </div>
                             </div>
@@ -139,7 +138,11 @@
                         <div class="card-body">
                             <div id="personHeaderGroup">
                                 <div>
-                                    <img src="../img/head/defaultHead.png" style="width: 144px;height: 144px"
+                                    <img th:if="${#strings.isEmpty(session.USER_INFO.avatarPath)}"
+                                         src="../img/head/defaultHead.png" style="width: 144px;height: 144px"
+                                         alt="当前头像">
+                                    <img th:unless="${#strings.isEmpty(session.USER_INFO.avatarPath)}"
+                                         th:src="${session.USER_INFO.avatarPath}" style="width: 144px;height: 144px"
                                          alt="当前头像">
                                 </div>
                             </div>
@@ -189,7 +192,7 @@
             </div>
             <div class="row mt-2">
                 <div class="col">
-                    <div class="card shadow h-100">
+                    <div class="card shadow">
                         <div class="card-header">修改密码</div>
                         <div class="card-body">
                             <div class="row">
@@ -215,7 +218,8 @@
                                     <label for="password-confirm">确认密码</label>
                                 </div>
                                 <div class="col-md-10">
-                                    <input type="password" id="password-confirm" disabled class="form-control">
+                                    <input type="password" id="password-confirm" disabled class="form-control"
+                                           onkeyup="passwordCheck()">
                                     <span id="confirmInfo"></span>
                                 </div>
                             </div>
@@ -272,6 +276,7 @@
     function passwordCheck() {
         var passwordAfter = $("#password-after").val();
         var passwordConfirm = $("#password-confirm").val();
+        console.log(passwordAfter,passwordConfirm);
         if (passwordAfter === passwordConfirm) {
             $("#confirmInfo").html("<i class='fa fa-check'></i>").css("color", "green");
             $("#submitPasswordButton").removeAttr("disabled")
@@ -287,7 +292,7 @@
         if (confirm('确认更改密码')) {
             $.ajax({
                 type: 'POST',
-                url: '/user/passwordChange',
+                url: '/admin/passwordChange',
                 dataType: 'json',
                 data: {
                     'id': delegateID,
@@ -313,15 +318,19 @@
         var cropUrl = cropCanvas.toDataURL('image/jpeg', 0.5);
         $.ajax({
             type: "POST",
-            url: '/testUpload/upload',
+            url: '/admin/uploadImg',
             dataType: "json",
             data: {
+                "id": [[${session.USER_INFO.id}]],
                 "imgData": cropUrl
             },
             success: function (data) {
                 if (data['status'] === "SUCCESS") {
-                    alert("上传成功");
-                } else alert("上传失败")
+                    alert("上传成功,请重新登录以查看");
+                } else {
+                    alert("上传失败");
+                    window.location.reload()
+                }
             },
         });
         console.log(cropUrl)

@@ -2,9 +2,11 @@ package edu.dlufl.ohrigei.service.adminService.impl
 
 import com.alibaba.fastjson.JSONObject
 import edu.dlufl.ohrigei.dao.AdminDao
+import edu.dlufl.ohrigei.dao.UserDao
 import edu.dlufl.ohrigei.service.adminService.service.AdminModifyService
 import edu.dlufl.ohrigei.util.UtilSet
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
 import javax.servlet.http.HttpServletRequest
@@ -13,7 +15,8 @@ import javax.servlet.http.HttpServletRequest
 class AdminModifyServiceImpl implements AdminModifyService {
     @Autowired
     AdminDao adminDao
-
+    @Autowired
+    UserDao userDao
     @Override
     JSONObject modifyGroup(int schoolID, Integer headDelegateID, int size, int groupID) {
         JSONObject jsonObject = new JSONObject()
@@ -179,6 +182,30 @@ class AdminModifyServiceImpl implements AdminModifyService {
         }
         catch (Exception ignored){
             jsonObject.put("status","ERROR")
+        }
+        return jsonObject
+    }
+
+    @Override
+    JSONObject passwordChange(HttpServletRequest request) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder()
+        JSONObject jsonObject = new JSONObject()
+        int delegateID = request.getParameter("id") as int
+        String passwordDB = userDao.getPasswordByID(delegateID)
+        String passwordOld = request.getParameter("passwordOld")
+        if (encoder.matches(passwordOld, passwordDB)) {
+            String passwordNew = new BCryptPasswordEncoder().encode(request.getParameter("passwordNew"))
+            try {
+                userDao.changePasswordByID(delegateID, passwordNew)
+                jsonObject.put("status", "SUCCESS")
+            }
+            catch (Exception ignored) {
+                jsonObject.put("status", "ERROR")
+                jsonObject.put("info", "修改密码发生错误，请稍后再试")
+            }
+        } else {
+            jsonObject.put('status', 'ERROR')
+            jsonObject.put('info', '原密码错误，请重新输入')
         }
         return jsonObject
     }
