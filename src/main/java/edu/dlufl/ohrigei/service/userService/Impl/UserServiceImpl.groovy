@@ -37,7 +37,7 @@ class UserServiceImpl implements UserService, UserDetailsService {
             user.setPassword(password)
             userDao.userSignUp(user)
             userDao.insertDelegate(user)
-            return "/login"
+            return "allUser/login"
         }
     }
 

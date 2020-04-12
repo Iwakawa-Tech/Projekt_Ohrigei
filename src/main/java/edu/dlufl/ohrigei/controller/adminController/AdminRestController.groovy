@@ -144,7 +144,7 @@ class AdminRestController {
     }
 
     @PostMapping("/uploadImg")
-    JSONObject testUpload(HttpServletRequest request) {
+    JSONObject imgUpload(HttpServletRequest request) {
         return adminAddService.addImg(request)
     }
     @PostMapping("/passwordChange")

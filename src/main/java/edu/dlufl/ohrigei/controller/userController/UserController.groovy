@@ -38,10 +38,6 @@ class UserController {
         return "/user/UserIndex";
     }
 
-    @RequestMapping("/test")
-    String toTest() {
-        return "user/UserAcademicTest";
-    }
 
     @RequestMapping("/userProfile")
     String userProfile(Model model, String id) {

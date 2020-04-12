@@ -66,7 +66,7 @@ class UserRestController {
     }
 
     @PostMapping("/uploadImg")
-    JSONObject testUpload(HttpServletRequest request) {
+    JSONObject imgUpload(HttpServletRequest request) {
         return userService.addImg(request)
     }
 }
